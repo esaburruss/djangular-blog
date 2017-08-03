@@ -35,8 +35,8 @@ class CategoryDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = [
-            'name',
-            'name_slug',
+            'title',
+            'slug',
             #'blogs',
         ]
     '''def get_blogs(self, obj, *args, **kwargs):
@@ -50,6 +50,6 @@ class CategoryListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = [
-            'name',
-            'name_slug',
+            'title',
+            'slug',
         ]

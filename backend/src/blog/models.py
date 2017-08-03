@@ -24,8 +24,8 @@ class Blog(models.Model):
         return ('view_blog_post', None, { 'slug': self.slug })
 
 class Category(models.Model):
-    name = models.CharField(max_length=100, db_index=True)
-    name_slug = models.SlugField(max_length=100, db_index=True)
+    title = models.CharField(max_length=100, db_index=True)
+    slug = models.SlugField(max_length=100, db_index=True)
 
     def __str__(self):
         return self.name
