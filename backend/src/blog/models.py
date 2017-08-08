@@ -28,9 +28,9 @@ class Category(models.Model):
     slug = models.SlugField(max_length=100, db_index=True)
 
     def __str__(self):
-        return self.name
+        return self.title
     def __unicode__(self):
-        return '%s' % self.name
+        return '%s' % self.title
     def blogs(self):
         return Blog.objects.filter(categories=self.pk)
 

@@ -19,6 +19,18 @@ class Section(models.Model):
     order = models.PositiveSmallIntegerField(unique=True, default = section_default)
     is_visible = models.BooleanField(default=False)
 
+    def __str__(self):
+        return self.title
+    def __unicode__(self):
+        return '%s' % self.title
+    def pages(self):
+        pages = Page.objects.filter(section=self)
+        if pages.count == 1:
+            p = pages.get(0)
+            p.order = self.order
+            return p
+        else:
+            return pages
 
 class Page(models.Model):
     title = models.CharField(max_length=100, unique=True)
@@ -33,7 +45,10 @@ class Page(models.Model):
         null=True,
         blank=True
     )
-
+    def __str__(self):
+        return self.title
+    def __unicode__(self):
+        return '%s' % self.title
     class Meta:
         unique_together = (('section', 'order'),)
 
