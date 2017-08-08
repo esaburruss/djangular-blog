@@ -5,7 +5,7 @@ from django.db.models import permalink
 from django.db.models import Max
 
 def section_default():
-    if FooterLinks.objects.all().count() == 0:
+    if Section.objects.all().count() == 0:
         new_order_default = 1
     else:
         new_order_default = Section.objects.all().aggregate(Max('order'))['order__max']+1
@@ -27,7 +27,12 @@ class Page(models.Model):
     body = models.TextField()
     is_visible = models.BooleanField(default=False)
     footer_link = models.BooleanField(default=False)
-    section = models.ForeignKey(Section, on_delete=models.PROTECT)
+    section = models.ForeignKey(
+        Section,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True
+    )
 
     class Meta:
         unique_together = (('section', 'order'),)
@@ -36,8 +41,12 @@ class Page(models.Model):
         print('AAA')
         if self.section is None:
             print('AAA')
-            s = Section(title=self.title, is_visible=self.is_visible, slug=self.slug)
+            s = Section(
+                title=self.title,
+                is_visible=self.is_visible,
+                slug=self.slug
+            )
             s.save()
             print(s)
-            self.section = s.pk
+            self.section = s
         super(Page, self).save(*args, **kwargs)

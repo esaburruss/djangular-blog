@@ -1,12 +1,10 @@
-from profiles.models import Profile
-from profiles.api.serializers import ProfileDetailSerializer, ProfileListSerializer
-from blog.models import Blog, Category
+from ..models import Page, Section
 from rest_framework import serializers
 
-class BlogDetailSerializer(serializers.ModelSerializer):
-    author = ProfileDetailSerializer(read_only=True)
+class PageDetailSerializer(serializers.ModelSerializer):
+
     class Meta:
-        model = Blog
+        model = Page
         fields = [
             'title',
             'slug',
