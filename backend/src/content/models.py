@@ -1,5 +1,10 @@
-from django.db import models
+from __future__ import unicode_literals
 
+from django.db import models
+from django.db.models import permalink
+from django.db.models import Max
+
+from profiles.models import Profile
 # Create your models here.
 class Content(models.Model):
     title = models.CharField(max_length=100, unique=True)
@@ -27,8 +32,8 @@ class Section(Content):
     order = models.PositiveSmallIntegerField(unique=True,
         default = section_default)
 
-class Page(models.Model):
-    order = models.PositiveSmallIntegerField(default=1)
+class Page(Content):
+    order = models.PositiveSmallIntegerField(blank=True, null=True)
     body = models.TextField()
     footer_link = models.BooleanField(default=False)
     section = models.ForeignKey(
@@ -51,6 +56,11 @@ class Page(models.Model):
             )
             s.save()
             self.section = s
+            if self.order is None:
+                self.order = 1
+        else:
+            if self.order is None:
+                self.order = Page.objects.filter(section=self.section).aggregate(Max('order'))['order__max']+1
         super(Page, self).save(*args, **kwargs)
 
 
@@ -64,7 +74,7 @@ class Category(Content):
         return ('view_blog_category', None, { 'slug': self.slug })
 
 
-class Blog(models.Model):
+class Blog(Content):
     body = models.TextField()
     categories = models.ManyToManyField(Category, )
     author = models.ForeignKey(Profile, on_delete=models.PROTECT)

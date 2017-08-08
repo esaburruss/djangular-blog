@@ -32,6 +32,15 @@ class Section(models.Model):
         else:
             return pages
 
+
+def page_default(p):
+    pages = Page.objects.filter(section=p.section)
+    if pages == 0:
+        new_order_default = 1
+    else:
+        new_order_default = pages.aggregate(Max('order'))['order__max']+1
+    return new_order_default
+
 class Page(models.Model):
     title = models.CharField(max_length=100, unique=True)
     slug = models.SlugField(max_length=100, unique=True)
