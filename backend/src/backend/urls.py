@@ -18,11 +18,11 @@ from django.conf.urls import include, url
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.views.generic.base import TemplateView
-#from blog.api.views import BlogListAPIView
+from content.api.views import BlogListAPIView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     #url(r'^test/$', login_user, name='login'),
     url(r'^$', TemplateView.as_view(template_name="home.html"), name='home'),
-    #url(r'^api/', include("blog.api.urls", namespace='blog-api')),
+    url(r'^api/content/', include("content.api.urls", namespace='content-api')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

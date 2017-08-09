@@ -31,6 +31,13 @@ def section_default():
 class Section(Content):
     order = models.PositiveSmallIntegerField(unique=True,
         default = section_default)
+    class Meta:
+        ordering = ['order']
+    def nav_pages(self):
+        if self.pages.all().count() > 1:
+            return self.pages.all()
+
+
 
 class Page(Content):
     order = models.PositiveSmallIntegerField(blank=True, null=True)
@@ -46,6 +53,7 @@ class Page(Content):
 
     class Meta:
         unique_together = (('section', 'order'),)
+        ordering = ['section','order']
 
     def save(self, *args, **kwargs):
         if self.section is None:
@@ -60,15 +68,14 @@ class Page(Content):
                 self.order = 1
         else:
             if self.order is None:
-                self.order = Page.objects.filter(section=self.section).aggregate(Max('order'))['order__max']+1
+                if Page.objects.filter(section=self.section).count() == 0:
+                    self.order = 1
+                else:
+                    self.order = Page.objects.filter(section=self.section).aggregate(Max('order'))['order__max']+1
         super(Page, self).save(*args, **kwargs)
 
 
 class Category(Content):
-    def blogs(self):
-        return Blog.objects.filter(categories=self.pk,
-            related_name='categories')
-
     @permalink
     def get_absolute_url(self):
         return ('view_blog_category', None, { 'slug': self.slug })
@@ -76,7 +83,7 @@ class Category(Content):
 
 class Blog(Content):
     body = models.TextField()
-    categories = models.ManyToManyField(Category, )
+    categories = models.ManyToManyField(Category, related_name='blogs')
     author = models.ForeignKey(Profile, on_delete=models.PROTECT)
 
     @permalink

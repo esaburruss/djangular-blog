@@ -1,19 +1,40 @@
-from ..models import Page, Section
+from profiles.models import Profile
+from profiles.api.serializers import ProfileDetailSerializer, ProfileListSerializer
+from ..models import Blog, Category, Page, Section
 from rest_framework import serializers
 
-class PageDetailSerializer(serializers.ModelSerializer):
 
+class PageListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Page
         fields = [
             'title',
             'slug',
+        ]
+
+
+class SectionListSerializer(serializers.ModelSerializer):
+    nav_pages = PageListSerializer(many=True, read_only=True)
+    class Meta:
+        model = Section
+        fields = [
+            'title',
+            'slug',
+            'nav_pages',
+        ]
+
+
+class BlogDetailSerializer(serializers.ModelSerializer):
+    author = ProfileDetailSerializer(read_only=True)
+    class Meta:
+        model = Blog
+        fields = [
+            'title',
+            'slug',
             'body',
-            'posted',
             'categories',
             'author',
         ]
-
 
 
 class BlogListSerializer(serializers.ModelSerializer):
@@ -23,25 +44,20 @@ class BlogListSerializer(serializers.ModelSerializer):
         fields = [
             'title',
             'slug',
-            'posted',
             'author',
         ]
 
+
 class CategoryDetailSerializer(serializers.ModelSerializer):
     #blogs = serializers.SerializerMethodField()
-    #blogs = BlogListSerializer(read_only=True)
+    blogs = BlogListSerializer(many=True, read_only=True)
     class Meta:
         model = Category
         fields = [
             'title',
             'slug',
-            #'blogs',
+            'blogs',
         ]
-    '''def get_blogs(self, obj, *args, **kwargs):
-        serializer = BlogListSerializer(Blog.objects.filter(categories=obj.pk))
-        print(serializer)
-        return serializer.data'''
-
 
 
 class CategoryListSerializer(serializers.ModelSerializer):

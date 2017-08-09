@@ -18,7 +18,7 @@ from rest_framework.permissions import (
         IsAdminUser,
         IsAuthenticatedOrReadOnly,
     )
-from blog.models import Blog, Category
+from ..models import Blog, Category, Page, Section
 
 from .pagination import BlogLimitOffsetPagination, BlogPageNumberPagination
 from .permissions import IsOwnerOrReadOnly
@@ -28,6 +28,8 @@ from .serializers import (
     BlogListSerializer,
     CategoryDetailSerializer,
     CategoryListSerializer,
+    PageListSerializer,
+    SectionListSerializer,
     )
 
 class BlogDetailAPIView(RetrieveAPIView):
@@ -60,7 +62,7 @@ class BlogListAPIView(ListAPIView):
 class CategoryDetailAPIView(RetrieveAPIView):
     queryset = Category.objects.all()
     serializer_class = CategoryDetailSerializer
-    lookup_field = 'name_slug'
+    lookup_field = 'slug'
     permission_classes = [AllowAny]
     #lookup_url_kwarg = "abc"
 
@@ -68,7 +70,7 @@ class CategoryListAPIView(ListAPIView):
     serializer_class = CategoryListSerializer
     filter_backends= [SearchFilter, OrderingFilter]
     permission_classes = [AllowAny]
-    search_fields = ['name_slug']
+    search_fields = ['slug']
     pagination_class = BlogPageNumberPagination #PageNumberPagination
 
     def get_queryset(self, *args, **kwargs):
@@ -83,3 +85,10 @@ class CategoryListAPIView(ListAPIView):
                     Q(user__last_name__icontains=query)
                     ).distinct()
         return queryset_list
+
+
+class NavbarAPIView(ListAPIView):
+    queryset = Section.objects.all()
+    serializer_class = SectionListSerializer
+    filter_backends= [SearchFilter, OrderingFilter]
+    permission_classes = [AllowAny]
