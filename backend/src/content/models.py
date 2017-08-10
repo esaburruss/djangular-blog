@@ -50,6 +50,7 @@ class Page(Content):
         blank=True,
         related_name='pages'
     )
+    is_home = models.BooleanField(editable=False, db_index=True, default=False)
 
     class Meta:
         unique_together = (('section', 'order'),)
@@ -76,6 +77,8 @@ class Page(Content):
 
 
 class Category(Content):
+    class Meta:
+        verbose_name_plural = "categories"
     @permalink
     def get_absolute_url(self):
         return ('view_blog_category', None, { 'slug': self.slug })

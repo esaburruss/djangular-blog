@@ -1,6 +1,3 @@
 mysql -u root -p < initial_setup.sql
-cd src
-python manage.py migrate
-python initial_setup.py
-cd ..
+python src/manage.py migrate
 echo 'Installation Completed'
