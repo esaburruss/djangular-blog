@@ -30,6 +30,7 @@ from .serializers import (
     CategoryListSerializer,
     PageListSerializer,
     SectionListSerializer,
+    NavbarSerializer,
     )
 
 class BlogDetailAPIView(RetrieveAPIView):
@@ -88,7 +89,7 @@ class CategoryListAPIView(ListAPIView):
 
 
 class NavbarAPIView(ListAPIView):
-    queryset = Section.objects.all()
-    serializer_class = SectionListSerializer
-    filter_backends= [SearchFilter, OrderingFilter]
+    queryset = Section.objects.filter(is_visible=True)
+    serializer_class = NavbarSerializer
+    #filter_backends= [SearchFilter, OrderingFilter]
     permission_classes = [AllowAny]

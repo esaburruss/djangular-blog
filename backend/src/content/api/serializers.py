@@ -1,7 +1,9 @@
+from collections import OrderedDict
 from profiles.models import Profile
 from profiles.api.serializers import ProfileDetailSerializer, ProfileListSerializer
 from ..models import Blog, Category, Page, Section
 from rest_framework import serializers
+from rest_framework.relations import Hyperlink, PKOnlyObject
 
 
 class PageListSerializer(serializers.ModelSerializer):
@@ -14,7 +16,7 @@ class PageListSerializer(serializers.ModelSerializer):
 
 
 class SectionListSerializer(serializers.ModelSerializer):
-    nav_pages = PageListSerializer(many=True, read_only=True)
+    nav_pages = PageListSerializer(many=True, read_only=True, required=False)
     class Meta:
         model = Section
         fields = [
@@ -67,3 +69,25 @@ class CategoryListSerializer(serializers.ModelSerializer):
             'title',
             'slug',
         ]
+
+class NavbarPageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Page
+        fields = [
+            'nav_title',
+            'nav_url',
+        ]
+
+
+class NavbarSerializer(serializers.ModelSerializer):
+    nav_pages = NavbarPageSerializer(many=True, read_only=True, required=False)
+    class Meta:
+        model = Section
+        fields = [
+            'nav_title',
+            'nav_url',
+            'nav_pages',
+        ]
+    def to_representation(self, instance):
+        result = super(NavbarSerializer, self).to_representation(instance)
+        return OrderedDict([(key, result[key]) for key in result if result[key] is not None])

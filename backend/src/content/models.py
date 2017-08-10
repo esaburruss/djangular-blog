@@ -36,8 +36,29 @@ class Section(Content):
     def nav_pages(self):
         if self.pages.all().count() > 1:
             return self.pages.all()
-
-
+    def not_dropdown(self):
+        if self.pages.all().count() == 1:
+            return True
+        else:
+            return False
+    def nav_slug(self):
+        if self.not_dropdown():
+            return self.pages.first().slug
+        else:
+            return self.slug
+    def nav_title(self):
+        if self.not_dropdown():
+            return self.pages.first().title
+        else:
+            return self.title
+    def nav_url(self):
+        if self.not_dropdown():
+            p = self.pages.first()
+            if p.is_home:
+                return '/'
+            return '/' + p.slug
+        else:
+            return None
 
 class Page(Content):
     order = models.PositiveSmallIntegerField(blank=True, null=True)
@@ -74,6 +95,10 @@ class Page(Content):
                 else:
                     self.order = Page.objects.filter(section=self.section).aggregate(Max('order'))['order__max']+1
         super(Page, self).save(*args, **kwargs)
+    def nav_title(self):
+        return self.title
+    def nav_url(self):
+        return '/' + self.slug
 
 
 class Category(Content):
