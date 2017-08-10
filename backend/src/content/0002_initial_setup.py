@@ -2,7 +2,10 @@ from __future__ import unicode_literals
 from django.db import models, migrations
 
 def create_defaults(apps, schema_editor):
-    Page = apps.get_model("pages", "Page")
+    Section = apps.get_model("content", "Section")
+    Page = apps.get_model("content", "Page")
+    Category = apps.get_model("content", "Category")
+    Blog = apps.get_model("content", "Blog")
     db_alias = schema_editor.connection.alias
     Page.objects.using(db_alias).bulk_create([
         Page(
