@@ -6,23 +6,13 @@ from rest_framework import serializers
 from rest_framework.relations import Hyperlink, PKOnlyObject
 
 
-class PageListSerializer(serializers.ModelSerializer):
+class PageDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Page
         fields = [
             'title',
             'slug',
-        ]
-
-
-class SectionListSerializer(serializers.ModelSerializer):
-    nav_pages = PageListSerializer(many=True, read_only=True, required=False)
-    class Meta:
-        model = Section
-        fields = [
-            'title',
-            'slug',
-            'nav_pages',
+            'body',
         ]
 
 

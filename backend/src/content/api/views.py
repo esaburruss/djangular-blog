@@ -28,10 +28,17 @@ from .serializers import (
     BlogListSerializer,
     CategoryDetailSerializer,
     CategoryListSerializer,
-    PageListSerializer,
-    SectionListSerializer,
+    PageDetailSerializer,
     NavbarSerializer,
     )
+
+
+class PageDetailAPIView(RetrieveAPIView):
+    queryset = Page.objects.all()
+    serializer_class = PageDetailSerializer
+    lookup_field = 'slug'
+    permission_classes = [AllowAny]
+    #lookup_url_kwarg = "abc"
 
 class BlogDetailAPIView(RetrieveAPIView):
     queryset = Blog.objects.all()
