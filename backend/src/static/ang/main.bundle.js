@@ -57,7 +57,7 @@ module.exports = module.exports.toString();
 /***/ 142:
 /***/ (function(module, exports) {
 
-module.exports = "<app-navbar></app-navbar>\n<h1>\n  {{title}}\n</h1>\n"
+module.exports = "<app-navbar></app-navbar>\n"
 
 /***/ }),
 
@@ -71,7 +71,7 @@ module.exports = "<p>\n  login-form works!\n</p>\n{{ csrftoken }}\n"
 /***/ 144:
 /***/ (function(module, exports) {
 
-module.exports = "<p>\n  navbar works!\n</p>\n"
+module.exports = "<ul>\n  <li *ngFor=\"let navitem of navbar.navitems\" [ngSwitch]=\"navitem.nav_pages\">\n\n    <ng-template [ngSwitchCase]=\"undefined\">\n      <a href=\"{{navitem.nav_url}}\">{{ navitem.nav_title }}</a>\n    </ng-template>\n\n    <ng-template ngSwitchDefault>\n      {{ navitem.nav_title }}\n      <ul *ngIf=\"navitem.nav_pages\">\n        <li *ngFor=\"let page of navitem.nav_pages\">\n          <a href=\"{{page.nav_url}}\">{{ page.nav_title }}</a>\n        </li>\n      </ul>\n    </ng-template>\n\n  </li>\n</ul>\n"
 
 /***/ }),
 
@@ -90,6 +90,8 @@ module.exports = __webpack_require__(73);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_http__ = __webpack_require__(31);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__models_navbar_model__ = __webpack_require__(82);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_Subject__ = __webpack_require__(48);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_Subject___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_Subject__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return NavService; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -103,16 +105,19 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var NavService = (function () {
     function NavService(http) {
         this.http = http;
+        this.navSource = new __WEBPACK_IMPORTED_MODULE_3_rxjs_Subject__["Subject"]();
+        this.navbar$ = this.navSource.asObservable();
     }
     NavService.prototype.getNavbar = function () {
         var _this = this;
         this.http.get('http://127.0.0.1:8000/api/content/navbar/')
             .subscribe(function (res) {
             console.log(res.json());
-            _this.navbar = new __WEBPACK_IMPORTED_MODULE_2__models_navbar_model__["a" /* Navbar */](res.json());
+            _this.navSource.next(new __WEBPACK_IMPORTED_MODULE_2__models_navbar_model__["a" /* Navbar */](res.json()));
             console.log(_this.navbar);
         });
     };
@@ -334,6 +339,7 @@ var Navbar = (function () {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_nav_service__ = __webpack_require__(50);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__models_navbar_model__ = __webpack_require__(82);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return NavbarComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -346,25 +352,34 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 
 
+
 var NavbarComponent = (function () {
     function NavbarComponent(navService) {
+        var _this = this;
         this.navService = navService;
+        navService.navbar$.subscribe(function (nav) {
+            _this.navbar = nav;
+        });
     }
     NavbarComponent.prototype.ngOnInit = function () {
         this.navService.getNavbar();
     };
     return NavbarComponent;
 }());
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["O" /* Input */])(),
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__models_navbar_model__["a" /* Navbar */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__models_navbar_model__["a" /* Navbar */]) === "function" && _a || Object)
+], NavbarComponent.prototype, "navbar", void 0);
 NavbarComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_5" /* Component */])({
         selector: 'app-navbar',
         template: __webpack_require__(144),
         styles: [__webpack_require__(141)]
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__services_nav_service__["a" /* NavService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__services_nav_service__["a" /* NavService */]) === "function" && _a || Object])
+    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__services_nav_service__["a" /* NavService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__services_nav_service__["a" /* NavService */]) === "function" && _b || Object])
 ], NavbarComponent);
 
-var _a;
+var _a, _b;
 //# sourceMappingURL=navbar.component.js.map
 
 /***/ }),
