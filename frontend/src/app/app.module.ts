@@ -28,7 +28,7 @@ import { BlogListItemComponent } from './blog-list-item/blog-list-item.component
     NavbarModule,
     RouterModule.forRoot([
       {
-        path: 'page/:nav_url',
+        path: '',
         component: PageComponent
       },
       {

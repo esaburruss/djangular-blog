@@ -8,7 +8,7 @@ exports = module.exports = __webpack_require__(21)(false);
 
 
 // module
-exports.push([module.i, "", ""]);
+exports.push([module.i, "\n", ""]);
 
 // exports
 
@@ -163,7 +163,7 @@ module.exports = module.exports.toString();
 /***/ 177:
 /***/ (function(module, exports) {
 
-module.exports = "<div [innerHTML]=\"page.body\"></div>\n"
+module.exports = "<div class=\"content-block\">\n  <div [innerHTML]=\"page.body\"></div>\n</div>\n"
 
 /***/ }),
 
@@ -295,7 +295,7 @@ module.exports = module.exports.toString();
 /***/ 202:
 /***/ (function(module, exports) {
 
-module.exports = "<h3 [innerHTML]=\"blog.title\"></h3>\n<div [innerHTML]=\"blog.body\"></div>\n"
+module.exports = "<div class=\"content-block\">\n  <h3 [innerHTML]=\"blog.title\"></h3>\n  <div [innerHTML]=\"blog.body\"></div>\n</div>\n"
 
 /***/ }),
 
@@ -655,7 +655,7 @@ AppModule = __decorate([
             __WEBPACK_IMPORTED_MODULE_9__navbar_navbar_module__["a" /* NavbarModule */],
             __WEBPACK_IMPORTED_MODULE_4__angular_router__["a" /* RouterModule */].forRoot([
                 {
-                    path: 'page/:nav_url',
+                    path: '',
                     component: __WEBPACK_IMPORTED_MODULE_8__page_page_component__["a" /* PageComponent */]
                 },
                 {
