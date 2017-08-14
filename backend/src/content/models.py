@@ -55,7 +55,7 @@ class Section(Content):
         if self.not_dropdown():
             p = self.pages.first()
             if p.is_home:
-                return '/'
+                return '/home'
             return '/' + p.slug
         else:
             return None

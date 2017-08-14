@@ -10,8 +10,8 @@ class PageDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Page
         fields = [
-            'title',
-            'slug',
+            'nav_title',
+            'nav_url',
             'body',
         ]
 

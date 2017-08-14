@@ -1,0 +1,21 @@
+<nav>
+<ul>
+  <li *ngFor="let navitem of navbar.navitems" [ngSwitch]="navitem.nav_pages">
+
+    <ng-template [ngSwitchCase]="undefined">
+      <a routerLink="/page/{{navitem.nav_url}}" routerLinkActive="active">{{ navitem.nav_title }}</a>
+    </ng-template>
+
+    <ng-template ngSwitchDefault>
+      {{ navitem.nav_title }}
+      <ul *ngIf="navitem.nav_pages">
+        <li *ngFor="let page of navitem.nav_pages">
+          <a routerLink="/page/{{page.nav_url}}" routerLinkActive="active">{{ page.nav_title }}</a>
+        </li>
+      </ul>
+    </ng-template>
+
+  </li>
+</ul>
+</nav>
+<router-outlet></router-outlet>
