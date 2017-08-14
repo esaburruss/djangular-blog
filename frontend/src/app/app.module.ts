@@ -9,13 +9,17 @@ import { LoginFormComponent } from './login-form/login-form.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { PageComponent } from './page/page.component';
 import { NavbarModule } from './navbar/navbar.module';
+import { BlogComponent } from './blog/blog.component';
+import { BlogListItemComponent } from './blog-list-item/blog-list-item.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginFormComponent,
     NavbarComponent,
-    PageComponent
+    PageComponent,
+    BlogComponent,
+    BlogListItemComponent
   ],
   imports: [
     BrowserModule,
@@ -24,12 +28,16 @@ import { NavbarModule } from './navbar/navbar.module';
     NavbarModule,
     RouterModule.forRoot([
       {
-        path: '',
+        path: 'page/:nav_url',
         component: PageComponent
       },
       {
         path: 'page/:nav_url',
         component: PageComponent
+      },
+      {
+        path: 'blog/:slug',
+        component: BlogComponent
       }
     ])
   ],

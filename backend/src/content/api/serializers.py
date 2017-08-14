@@ -16,8 +16,18 @@ class PageDetailSerializer(serializers.ModelSerializer):
         ]
 
 
+class CategoryListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = [
+            'title',
+            'slug',
+        ]
+
+
 class BlogDetailSerializer(serializers.ModelSerializer):
     author = ProfileDetailSerializer(read_only=True)
+    categories = CategoryListSerializer(read_only=True, many=True)
     class Meta:
         model = Blog
         fields = [
@@ -25,6 +35,7 @@ class BlogDetailSerializer(serializers.ModelSerializer):
             'slug',
             'body',
             'categories',
+            'creation_date',
             'author',
         ]
 
@@ -36,6 +47,7 @@ class BlogListSerializer(serializers.ModelSerializer):
         fields = [
             'title',
             'slug',
+            'creation_date',
             'author',
         ]
 
@@ -49,15 +61,6 @@ class CategoryDetailSerializer(serializers.ModelSerializer):
             'title',
             'slug',
             'blogs',
-        ]
-
-
-class CategoryListSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Category
-        fields = [
-            'title',
-            'slug',
         ]
 
 class NavbarPageSerializer(serializers.ModelSerializer):

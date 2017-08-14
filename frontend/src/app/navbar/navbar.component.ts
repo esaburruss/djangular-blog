@@ -4,6 +4,7 @@ import {
   Input, } from '@angular/core';
 import { NavService } from '../services/nav.service';
 import { Navbar } from '../models/navbar.model';
+import { Blog } from '../models/blog.model';
 
 @Component({
   selector: 'app-navbar',
@@ -11,16 +12,21 @@ import { Navbar } from '../models/navbar.model';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
-  @Input() navbar: Navbar;
+  navbar: Navbar;
+  blogs: Blog[] = [];
   constructor(private navService: NavService) {
     this.navbar = new Navbar();
     navService.navbar$.subscribe( nav => {
       this.navbar = nav;
     });
+    navService.blogs$.subscribe( blogs => {
+      this.blogs = blogs;
+    });
   }
 
   ngOnInit() {
     this.navService.getNavbar();
+    this.navService.getBlogs();
   }
 
 }

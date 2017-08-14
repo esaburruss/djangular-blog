@@ -19,3 +19,9 @@
 </ul>
 </nav>
 <router-outlet></router-outlet>
+
+<div>
+  <app-blog-list-item *ngFor="let blog of blogs" [blog]="blog">
+
+  </app-blog-list-item>
+</div>

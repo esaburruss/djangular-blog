@@ -117,3 +117,6 @@ class Blog(Content):
     @permalink
     def get_absolute_url(self):
         return ('view_blog_post', None, { 'slug': self.slug })
+
+    def get_categories(self):
+        return Category.objects.filter(pk=1)

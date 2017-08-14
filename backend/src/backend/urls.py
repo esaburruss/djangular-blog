@@ -25,5 +25,6 @@ urlpatterns = [
     #url(r'^test/$', login_user, name='login'),
     url(r'^$', TemplateView.as_view(template_name="home.html"), name='home'),
     url(r'^page/*', TemplateView.as_view(template_name="home.html"), name='home'),
+    url(r'^blog/*', TemplateView.as_view(template_name="home.html"), name='home'),
     url(r'^api/content/', include("content.api.urls", namespace='content-api')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
