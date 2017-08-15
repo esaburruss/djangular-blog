@@ -1,1 +1,1 @@
-ng build --env=prod --output-path ../backend/src/static/ang/ --watch --output-hashing none
+ng build --env=prod --extractCss=true --output-path ../backend/src/static/ang/ --watch --output-hashing none

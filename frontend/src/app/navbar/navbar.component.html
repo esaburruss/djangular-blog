@@ -1,27 +1,64 @@
-<nav>
-<ul>
-  <li *ngFor="let navitem of navbar.navitems" [ngSwitch]="navitem.nav_pages">
+<nav class="navbar navbar-dark text-white bg-dark fixed-top navbar-expand-lg">
+  <button
+    class="navbar-toggler navbar-toggler-right"
+    type="button"
+    (click)="navbarCollapsed = !navbarCollapsed"
+    >
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div
+    class="navbar-collapse"
+    [ngbCollapse]="navbarCollapsed"
+    id="navbarContent"
+    >
 
-    <ng-template [ngSwitchCase]="undefined">
-      <a routerLink="/page/{{navitem.nav_url}}" routerLinkActive="active">{{ navitem.nav_title }}</a>
-    </ng-template>
+    <ul class="navbar-nav mr-auto">
+      <li
+        *ngFor="let navitem of navbar.navitems"
+        [ngSwitch]="navitem.nav_pages"
+        class="nav-item" >
 
-    <ng-template ngSwitchDefault>
-      {{ navitem.nav_title }}
-      <ul *ngIf="navitem.nav_pages">
-        <li *ngFor="let page of navitem.nav_pages">
-          <a routerLink="/page/{{page.nav_url}}" routerLinkActive="active">{{ page.nav_title }}</a>
-        </li>
-      </ul>
-    </ng-template>
+        <ng-template [ngSwitchCase]="undefined">
+          <a class="nav-link" routerLink="/page/{{navitem.nav_url}}" routerLinkActive="active">{{ navitem.nav_title }}</a>
+        </ng-template>
 
-  </li>
-</ul>
+        <ng-template ngSwitchDefault>
+          <div class="ng-dropdown" ngbDropdown >
+
+            <a
+              class="nav-link dropdown-toggle"
+              id="dropdown_{{ navitem.nav_url }}"
+              ngbDropdownToggle>
+              {{ navitem.nav_title }}
+            </a>
+            <div
+              class="dropdown-menu"
+              id="dropdown_{{ navitem.nav_url }}"
+              ngbDropdownMenu
+              *ngIf="navitem.nav_pages">
+              <button
+                *ngFor="let page of navitem.nav_pages"
+                routerLink="/page/{{page.nav_url}}"
+                routerLinkActive="active"
+                class="dropdown-item">
+                {{ page.nav_title }}
+              </button>
+            </div>
+          </div>
+        </ng-template>
+
+      </li>
+    </ul>
+  </div>
 </nav>
-<router-outlet></router-outlet>
-
-<div>
-  <app-blog-list-item *ngFor="let blog of blogs" [blog]="blog">
-
-  </app-blog-list-item>
+<div class="container">
+  <div class="row">
+    <div class="col-lg-9">
+      <router-outlet></router-outlet>
+    </div>
+    <div class="col">
+      <app-blog-list-item *ngFor="let blog of blogs" [blog]="blog">
+      </app-blog-list-item>
+    </div>
+  </div>
 </div>

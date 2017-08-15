@@ -5,14 +5,15 @@ export class Blog {
   slug: string;
   body: string;
   categories: Category[];
-  date_created: Date;
+  creation_date: Date;
   author: Profile;
   constructor(obj?: any) {
+    console.log(obj.creation_date);
     this.title         = obj && obj.title            || '';
     this.slug          = obj && obj.slug             || '';
     this.body          = obj && obj.body             || '';
     this.categories    = obj && obj.categories       || [];
-    this.date_created  = obj && obj.date_created     || new Date();
+    this.creation_date = obj && obj.creation_date    || new Date();
     this.author        = obj && obj.author           || new Profile();
   }
 }

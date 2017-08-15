@@ -13,4 +13,9 @@ export class BlogListItemComponent implements OnInit {
   ngOnInit() {
   }
 
+
+
+  getNiceDate(): any {
+    return this.blog.creation_date.getMonth();
+  }
 }

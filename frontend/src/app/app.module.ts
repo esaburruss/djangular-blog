@@ -4,6 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule }   from '@angular/router';
 
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+
 import { AppComponent } from './app.component';
 import { LoginFormComponent } from './login-form/login-form.component';
 import { NavbarComponent } from './navbar/navbar.component';
@@ -39,7 +41,8 @@ import { BlogListItemComponent } from './blog-list-item/blog-list-item.component
         path: 'blog/:slug',
         component: BlogComponent
       }
-    ])
+    ]),
+    NgbModule.forRoot(),
   ],
   providers: [],
   bootstrap: [AppComponent]

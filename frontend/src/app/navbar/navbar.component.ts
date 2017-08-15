@@ -9,13 +9,16 @@ import { Blog } from '../models/blog.model';
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.css']
+  styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent implements OnInit {
   navbar: Navbar;
   blogs: Blog[] = [];
+  navbarCollapsed: boolean;
   constructor(private navService: NavService) {
+    this.navbarCollapsed = false;
     this.navbar = new Navbar();
+
     navService.navbar$.subscribe( nav => {
       this.navbar = nav;
     });
