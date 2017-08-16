@@ -10,34 +10,27 @@ def create_defaults(apps, schema_editor):
     db_alias = schema_editor.connection.alias
     Section.objects.using(db_alias).bulk_create([
         Section(
-            title="Home",
-            slug="home",
-            is_visible=True,
-            order=1
-        ),
-        Section(
             title="About",
             slug="about",
             is_visible=True,
-            order=2
+            order=1
         ),
         Section(
             title="Dropdown",
             slug="dropdown",
             is_visible=True,
-            order=3
+            order=2
         )
     ])
     Page.objects.using(db_alias).bulk_create([
         Page(
             title="Home",
             slug="home",
-            body="<h1>Hello World!</h1>",
+            body="<h1>Hello World!</h1><p>Welcome To my Djangular Blog!</p>",
             is_visible=True,
             footer_link=True,
-            order=1,
-            is_home=True,
-            section=Section.objects.using(db_alias).get(pk=1)
+            order=0,
+            is_home=True
         ),
         Page(
             title="About",
@@ -46,7 +39,7 @@ def create_defaults(apps, schema_editor):
             is_visible=True,
             footer_link=True,
             order=1,
-            section=Section.objects.using(db_alias).get(pk=2)
+            section=Section.objects.using(db_alias).get(pk=1)
         ),
         Page(
             title="Page 1",
@@ -54,7 +47,7 @@ def create_defaults(apps, schema_editor):
             body="<p>A New Hope</p>",
             is_visible=True,
             order=1,
-            section=Section.objects.using(db_alias).get(pk=3)
+            section=Section.objects.using(db_alias).get(pk=2)
         ),
         Page(
             title="Page 2",
@@ -62,7 +55,7 @@ def create_defaults(apps, schema_editor):
             body="<p>The Empire Strikes Back</p>",
             is_visible=True,
             order=2,
-            section=Section.objects.using(db_alias).get(pk=3)
+            section=Section.objects.using(db_alias).get(pk=2)
         ),
         Page(
             title="Page 3",
@@ -70,7 +63,7 @@ def create_defaults(apps, schema_editor):
             body="<p>Return of the Jedi</p>",
             is_visible=True,
             order=3,
-            section=Section.objects.using(db_alias).get(pk=3)
+            section=Section.objects.using(db_alias).get(pk=2)
         )
     ])
     Category.objects.using(db_alias).bulk_create([

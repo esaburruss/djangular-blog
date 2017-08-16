@@ -1,9 +1,25 @@
 from collections import OrderedDict
 from profiles.models import Profile
 from profiles.api.serializers import ProfileDetailSerializer, ProfileListSerializer
-from ..models import Blog, Category, Page, Section
+from ..models import Blog, Category, Page, Section, HtmlContent
 from rest_framework import serializers
 from rest_framework.relations import Hyperlink, PKOnlyObject
+
+class HtmlPageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Page
+        fields = [
+            'body',
+        ]
+
+
+class HtmlBlogSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Page
+        fields = [
+            'body',
+            'categories',
+        ]
 
 
 class PageDetailSerializer(serializers.ModelSerializer):
@@ -53,7 +69,6 @@ class BlogListSerializer(serializers.ModelSerializer):
 
 
 class CategoryDetailSerializer(serializers.ModelSerializer):
-    #blogs = serializers.SerializerMethodField()
     blogs = BlogListSerializer(many=True, read_only=True)
     class Meta:
         model = Category

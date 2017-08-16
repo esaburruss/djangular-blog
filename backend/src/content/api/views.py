@@ -4,6 +4,8 @@ from rest_framework.filters import (
         SearchFilter,
         OrderingFilter,
     )
+from rest_framework.views import APIView
+from rest_framework.response import Response
 from rest_framework.generics import (
         CreateAPIView,
         DestroyAPIView,
@@ -12,6 +14,7 @@ from rest_framework.generics import (
         RetrieveAPIView,
         RetrieveUpdateAPIView,
     )
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import (
         AllowAny,
         IsAuthenticated,
@@ -24,6 +27,7 @@ from .pagination import BlogLimitOffsetPagination, BlogPageNumberPagination
 from .permissions import IsOwnerOrReadOnly
 
 from .serializers import (
+    HtmlPageSerializer,
     BlogDetailSerializer,
     BlogListSerializer,
     CategoryDetailSerializer,
@@ -33,12 +37,20 @@ from .serializers import (
     )
 
 
-class PageDetailAPIView(RetrieveAPIView):
-    queryset = Page.objects.all()
-    serializer_class = PageDetailSerializer
+class PageHtmlAPIView(RetrieveAPIView):
+    queryset = Page.objects.filter(is_visible=True)
+    serializer_class = HtmlPageSerializer
     lookup_field = 'slug'
     permission_classes = [AllowAny]
     #lookup_url_kwarg = "abc"
+
+
+@api_view(['GET'])
+@permission_classes((AllowAny, ))
+def get_home_page(request):
+    p = Page.objects.get(is_home=True)
+    return Response(HtmlPageSerializer(p).data)
+
 
 class BlogDetailAPIView(RetrieveAPIView):
     queryset = Blog.objects.all()

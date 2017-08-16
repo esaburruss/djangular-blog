@@ -27,6 +27,12 @@ def section_default():
         new_order_default = Section.objects.all().aggregate(Max('order'))['order__max']+1
     return new_order_default
 
+class HtmlContent(Content):
+    body = models.TextField()
+
+    class Meta:
+        abstract = True
+
 
 class Section(Content):
     order = models.PositiveSmallIntegerField(unique=True,
@@ -60,9 +66,8 @@ class Section(Content):
         else:
             return None
 
-class Page(Content):
+class Page(HtmlContent):
     order = models.PositiveSmallIntegerField(blank=True, null=True)
-    body = models.TextField()
     footer_link = models.BooleanField(default=False)
     section = models.ForeignKey(
         Section,
@@ -109,8 +114,7 @@ class Category(Content):
         return ('view_blog_category', None, { 'slug': self.slug })
 
 
-class Blog(Content):
-    body = models.TextField()
+class Blog(HtmlContent):
     categories = models.ManyToManyField(Category, related_name='blogs')
     author = models.ForeignKey(Profile, on_delete=models.PROTECT)
 

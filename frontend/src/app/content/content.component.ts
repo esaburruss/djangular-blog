@@ -1,20 +1,19 @@
-import {
-  Component,
-  OnInit,
-  Input, } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+
 import { NavService } from '../services/nav.service';
 import { Navbar } from '../models/navbar.model';
 import { Blog } from '../models/blog.model';
 
 @Component({
-  selector: 'app-navbar',
-  templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.scss']
+  selector: 'app-content',
+  templateUrl: './content.component.html',
+  styleUrls: ['./content.component.scss']
 })
-export class NavbarComponent implements OnInit {
+export class ContentComponent implements OnInit {
   navbar: Navbar;
   blogs: Blog[] = [];
   navbarCollapsed: boolean;
+
   constructor(private navService: NavService) {
     this.navbarCollapsed = false;
     this.navbar = new Navbar();
@@ -28,6 +27,7 @@ export class NavbarComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log('Running');
     this.navService.getNavbar();
     this.navService.getBlogs();
   }

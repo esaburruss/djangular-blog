@@ -9,6 +9,8 @@ import { Subject } from 'rxjs/Subject';
 
 @Injectable()
 export class NavService {
+  private base_url: string;
+
   private navSource = new Subject<Navbar>();
   navbar$ = this.navSource.asObservable();
 
@@ -16,12 +18,19 @@ export class NavService {
   blogs$ = this.blogsSource.asObservable();
 
   constructor(private http: Http) {
-
+    this.base_url = 'http://127.0.0.1:8000/api/content/';
   }
 
   getNavbar() {
-      this.http.get(
-      'http://127.0.0.1:8000/api/content/navbar/')
+      this.http.get(this.base_url + 'navbar/')
+      .subscribe((res: Response) => {
+        console.log(res.json());
+        this.navSource.next(new Navbar(res.json()));
+      });
+  }
+
+  getHomePage() {
+      this.http.get(this.base_url + 'home/')
       .subscribe((res: Response) => {
         console.log(res.json());
         this.navSource.next(new Navbar(res.json()));
@@ -32,9 +41,9 @@ export class NavService {
     if(!nav_url)
       nav_url = 'home';
     console.log("URL Clicked: " + nav_url);
-
+    let apiUrl = this.base_url + 'page/' + nav_url + '/';
+    console.log(apiUrl);
     let promise = new Promise((resolve, reject) => {
-      let apiUrl = 'http://127.0.0.1:8000/api/content/page/' + nav_url;
       this.http.get(apiUrl)
         .toPromise()
         .then(res => {
@@ -48,7 +57,7 @@ export class NavService {
 
   getBlog(slug: string): Promise<Blog> {
     let promise = new Promise((resolve, reject) => {
-      let apiUrl = 'http://127.0.0.1:8000/api/content/blog/' + slug;
+      let apiUrl = this.base_url + 'blog/' + slug + '/';
       this.http.get(apiUrl)
         .toPromise()
         .then(res => {
@@ -60,7 +69,7 @@ export class NavService {
   }
 
   getBlogs() {
-    let apiUrl = 'http://127.0.0.1:8000/api/content/blog/';
+    let apiUrl = this.base_url + 'blog/';
     this.http.get(apiUrl)
     .subscribe((res: Response) => {
       console.log(res.json());
