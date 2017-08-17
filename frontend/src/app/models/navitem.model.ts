@@ -1,7 +1,7 @@
 export class NavItem {
-  private nav_title: string;
+  public title: string;
 
-  constructor(nav_title: string) {
-    this.nav_title = nav_title;
+  constructor(obj?: any) {
+    this.title         = obj && obj.title            || '';
   }
 }

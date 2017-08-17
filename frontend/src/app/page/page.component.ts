@@ -18,7 +18,7 @@ export class PageComponent implements OnInit {
     private route: ActivatedRoute,
     private location: Location
   ) {
-    this.page = new Page('Loading..', 'loading', 'Loading...');
+    this.page = new Page({});
   }
 
   ngOnInit() {

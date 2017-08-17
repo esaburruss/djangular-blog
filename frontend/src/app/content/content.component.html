@@ -11,15 +11,16 @@
     [ngbCollapse]="navbarCollapsed"
     id="navbarContent"
     >
+    <a class="navbar-brand" routerLink="/">{{ navbar.home.title }}</a>
 
     <ul class="navbar-nav mr-auto">
       <li
         *ngFor="let navitem of navbar.navitems"
-        [ngSwitch]="navitem.nav_pages"
+        [ngSwitch]="navitem.pages"
         class="nav-item" >
 
         <ng-template [ngSwitchCase]="undefined">
-          <a class="nav-link" routerLink="/page/{{navitem.nav_url}}" routerLinkActive="active">{{ navitem.nav_title }}</a>
+          <a class="nav-link" routerLink="/page/{{navitem.slug}}" routerLinkActive="active">{{ navitem.title }}</a>
         </ng-template>
 
         <ng-template ngSwitchDefault>
@@ -27,21 +28,21 @@
 
             <a
               class="nav-link dropdown-toggle"
-              id="dropdown_{{ navitem.nav_url }}"
+              id="dropdown_{{ navitem.slug }}"
               ngbDropdownToggle>
-              {{ navitem.nav_title }}
+              {{ navitem.title }}
             </a>
             <div
               class="dropdown-menu"
-              id="dropdown_{{ navitem.nav_url }}"
+              id="dropdown_{{ navitem.slug }}"
               ngbDropdownMenu
-              *ngIf="navitem.nav_pages">
+              *ngIf="navitem.pages">
               <button
-                *ngFor="let page of navitem.nav_pages"
-                routerLink="/page/{{page.nav_url}}"
+                *ngFor="let page of navitem.pages"
+                routerLink="/page/{{page.slug}}"
                 routerLinkActive="active"
                 class="dropdown-item">
-                {{ page.nav_title }}
+                {{ page.title }}
               </button>
             </div>
           </div>
@@ -54,6 +55,7 @@
 <div class="container">
   <div class="row">
     <div class="col-lg-9">
+      {{ navbar.home.title }}
       <router-outlet></router-outlet>
     </div>
     <div class="col">

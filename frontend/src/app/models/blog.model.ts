@@ -8,7 +8,6 @@ export class Blog {
   creation_date: Date;
   author: Profile;
   constructor(obj?: any) {
-    console.log(obj.creation_date);
     this.title         = obj && obj.title            || '';
     this.slug          = obj && obj.slug             || '';
     this.body          = obj && obj.body             || '';

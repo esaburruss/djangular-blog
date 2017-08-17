@@ -4,11 +4,9 @@ import { Page } from './page.model';
 
 export class Navbar {
   public navitems: NavItem[];
-  constructor(navitems?: NavItem[]) {
-    if(navitems) {
-      this.navitems = navitems;
-    } else {
-      this.navitems = [];
-    }
+  public home: Page;
+  constructor(obj?: any) {
+    this.home           = obj && obj.home || new Page();
+    this.navitems       = obj && obj.navitems    || [];
   }
 }

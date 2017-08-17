@@ -47,6 +47,18 @@ class PageHtmlAPIView(RetrieveAPIView):
 
 @api_view(['GET'])
 @permission_classes((AllowAny, ))
+def get_nav(request):
+    home = Page.objects.get(is_home=True)
+    nav = Section.objects.filter(is_visible=True)
+    
+    return Response({
+        'home':PageDetailSerializer(home).data,
+        'navitems':NavbarSerializer(nav, many=True).data
+    })
+
+
+@api_view(['GET'])
+@permission_classes((AllowAny, ))
 def get_home_page(request):
     p = Page.objects.get(is_home=True)
     return Response(HtmlPageSerializer(p).data)

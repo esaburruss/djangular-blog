@@ -22,13 +22,6 @@ import { NavService } from '../services/nav.service';
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'html',
-    pathMatch: 'full'
-    /*component: PageComponent,
-    outlet: 'content',*/
-  },
-  {
-    path: 'html',
     component: HtmlContentComponent,
     //outlet: 'content',
   },

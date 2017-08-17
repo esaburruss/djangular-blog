@@ -21,12 +21,15 @@ export class NavService {
     this.base_url = 'http://127.0.0.1:8000/api/content/';
   }
 
-  getNavbar() {
+  getNavbar(): Promise<Navbar> {
+    let promise = new Promise((resolve, reject) => {
       this.http.get(this.base_url + 'navbar/')
-      .subscribe((res: Response) => {
-        console.log(res.json());
-        this.navSource.next(new Navbar(res.json()));
-      });
+        .toPromise()
+        .then(res => {
+          resolve(new Navbar(res.json()));
+        });
+    });
+    return promise;
   }
 
   getHomePage() {
@@ -48,7 +51,7 @@ export class NavService {
         .toPromise()
         .then(res => {
           console.log(res.json());
-          let page = new Page(res.json().nav_title, res.json().nav_url, res.json().body);
+          let page = new Page(res.json());
           resolve(page);
         });
     });

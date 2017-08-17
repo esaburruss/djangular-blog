@@ -26,8 +26,8 @@ class PageDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Page
         fields = [
-            'nav_title',
-            'nav_url',
+            'title',
+            'slug',
             'body',
         ]
 
@@ -82,20 +82,36 @@ class NavbarPageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Page
         fields = [
-            'nav_title',
-            'nav_url',
+            'title',
+            'slug',
         ]
 
 
 class NavbarSerializer(serializers.ModelSerializer):
-    nav_pages = NavbarPageSerializer(many=True, read_only=True, required=False)
+    pages = serializers.SerializerMethodField('get_nav_pages')
+    #pages = NavbarPageSerializer(many=True, read_only=True, required=False)
+
+    title = serializers.SerializerMethodField('get_nav_title')
+    slug = serializers.SerializerMethodField('get_nav_slug')
     class Meta:
         model = Section
         fields = [
-            'nav_title',
-            'nav_url',
-            'nav_pages',
+            'title',
+            'slug',
+            'pages',
         ]
     def to_representation(self, instance):
         result = super(NavbarSerializer, self).to_representation(instance)
         return OrderedDict([(key, result[key]) for key in result if result[key] is not None])
+
+    def get_nav_title(self, obj):
+        return obj.nav_title()
+
+    def get_nav_slug(self, obj):
+        return obj.nav_slug()
+
+    def get_nav_pages(self, obj):
+        if obj.not_dropdown():
+            return None
+        else:
+            return NavbarPageSerializer(obj.nav_pages(), many=True).data

@@ -42,6 +42,8 @@ class Section(Content):
     def nav_pages(self):
         if self.pages.all().count() > 1:
             return self.pages.all()
+        else:
+            return None;
     def not_dropdown(self):
         if self.pages.all().count() == 1:
             return True
@@ -60,9 +62,7 @@ class Section(Content):
     def nav_url(self):
         if self.not_dropdown():
             p = self.pages.first()
-            if p.is_home:
-                return '/home'
-            return '/' + p.slug
+            return p.slug
         else:
             return None
 
