@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-
+import {
+  ActivatedRoute,
+  Router
+} from '@angular/router';
 import { NavService } from '../services/nav.service';
 import { Navbar } from '../models/navbar.model';
 import { Blog } from '../models/blog.model';
@@ -14,7 +17,11 @@ export class ContentComponent implements OnInit {
   blogs: Blog[] = [];
   navbarCollapsed: boolean;
 
-  constructor(private navService: NavService) {
+  constructor(
+    private navService: NavService,
+    private router: Router,
+    private route: ActivatedRoute
+  ) {
     this.navbarCollapsed = false;
     this.navbar = new Navbar();
 

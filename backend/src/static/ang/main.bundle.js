@@ -5,8 +5,9 @@ webpackJsonp([1,4],{
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_nav_service__ = __webpack_require__(37);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__models_navbar_model__ = __webpack_require__(138);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__(35);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_nav_service__ = __webpack_require__(38);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__models_navbar_model__ = __webpack_require__(138);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ContentComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -20,13 +21,16 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var ContentComponent = (function () {
-    function ContentComponent(navService) {
+    function ContentComponent(navService, router, route) {
         var _this = this;
         this.navService = navService;
+        this.router = router;
+        this.route = route;
         this.blogs = [];
         this.navbarCollapsed = false;
-        this.navbar = new __WEBPACK_IMPORTED_MODULE_2__models_navbar_model__["a" /* Navbar */]();
+        this.navbar = new __WEBPACK_IMPORTED_MODULE_3__models_navbar_model__["a" /* Navbar */]();
         navService.navbar$.subscribe(function (nav) {
             _this.navbar = nav;
         });
@@ -44,13 +48,13 @@ var ContentComponent = (function () {
 ContentComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_0" /* Component */])({
         selector: 'app-content',
-        template: __webpack_require__(248),
-        styles: [__webpack_require__(243)]
+        template: __webpack_require__(249),
+        styles: [__webpack_require__(244)]
     }),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__services_nav_service__["a" /* NavService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__services_nav_service__["a" /* NavService */]) === "function" && _a || Object])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__services_nav_service__["a" /* NavService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__services_nav_service__["a" /* NavService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["c" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["c" /* Router */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* ActivatedRoute */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* ActivatedRoute */]) === "function" && _c || Object])
 ], ContentComponent);
 
-var _a;
+var _a, _b, _c;
 //# sourceMappingURL=content.component.js.map
 
 /***/ }),
@@ -81,8 +85,8 @@ var DashboardComponent = (function () {
 DashboardComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_0" /* Component */])({
         selector: 'app-dashboard',
-        template: __webpack_require__(249),
-        styles: [__webpack_require__(244)]
+        template: __webpack_require__(250),
+        styles: [__webpack_require__(245)]
     }),
     __metadata("design:paramtypes", [])
 ], DashboardComponent);
@@ -95,7 +99,7 @@ DashboardComponent = __decorate([
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__profile_model__ = __webpack_require__(184);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__profile_model__ = __webpack_require__(185);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Blog; });
 
 var Blog = (function () {
@@ -140,7 +144,7 @@ var Navbar = (function () {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__navitem_model__ = __webpack_require__(183);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__navitem_model__ = __webpack_require__(184);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Page; });
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
@@ -168,7 +172,7 @@ var Page = (function (_super) {
 
 /***/ }),
 
-/***/ 167:
+/***/ 168:
 /***/ (function(module, exports) {
 
 function webpackEmptyContext(req) {
@@ -177,20 +181,20 @@ function webpackEmptyContext(req) {
 webpackEmptyContext.keys = function() { return []; };
 webpackEmptyContext.resolve = webpackEmptyContext;
 module.exports = webpackEmptyContext;
-webpackEmptyContext.id = 167;
+webpackEmptyContext.id = 168;
 
 
 /***/ }),
 
-/***/ 168:
+/***/ 169:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_platform_browser_dynamic__ = __webpack_require__(172);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_app_module__ = __webpack_require__(178);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__environments_environment__ = __webpack_require__(186);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_platform_browser_dynamic__ = __webpack_require__(173);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_app_module__ = __webpack_require__(179);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__environments_environment__ = __webpack_require__(187);
 
 
 
@@ -203,7 +207,7 @@ __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_platform_browser_dyna
 
 /***/ }),
 
-/***/ 177:
+/***/ 178:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -230,8 +234,8 @@ var AppComponent = (function () {
 AppComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_0" /* Component */])({
         selector: 'app-root',
-        template: __webpack_require__(245),
-        styles: [__webpack_require__(242)]
+        template: __webpack_require__(246),
+        styles: [__webpack_require__(243)]
     }),
     __metadata("design:paramtypes", [])
 ], AppComponent);
@@ -240,21 +244,21 @@ AppComponent = __decorate([
 
 /***/ }),
 
-/***/ 178:
+/***/ 179:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__ = __webpack_require__(22);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_http__ = __webpack_require__(44);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_router__ = __webpack_require__(34);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_http__ = __webpack_require__(45);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_router__ = __webpack_require__(35);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ng_bootstrap_ng_bootstrap__ = __webpack_require__(109);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__app_component__ = __webpack_require__(177);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__app_component__ = __webpack_require__(178);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__content_content_component__ = __webpack_require__(135);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__content_content_module__ = __webpack_require__(181);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__content_content_module__ = __webpack_require__(182);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__dashboard_dashboard_component__ = __webpack_require__(136);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__dashboard_dashboard_module__ = __webpack_require__(182);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__dashboard_dashboard_module__ = __webpack_require__(183);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -273,6 +277,18 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
+var routes = [
+    //{ path: '', redirectTo: 'content', pathMatch: 'full' },
+    {
+        path: '',
+        component: __WEBPACK_IMPORTED_MODULE_7__content_content_component__["a" /* ContentComponent */],
+        children: __WEBPACK_IMPORTED_MODULE_8__content_content_module__["a" /* routes */]
+    },
+    {
+        path: 'dashboard',
+        component: __WEBPACK_IMPORTED_MODULE_9__dashboard_dashboard_component__["a" /* DashboardComponent */]
+    }
+];
 var AppModule = (function () {
     function AppModule() {
     }
@@ -287,18 +303,9 @@ AppModule = __decorate([
             __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["a" /* BrowserModule */],
             __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormsModule */],
             __WEBPACK_IMPORTED_MODULE_3__angular_http__["a" /* HttpModule */],
-            __WEBPACK_IMPORTED_MODULE_4__angular_router__["a" /* RouterModule */].forRoot([
-                {
-                    path: '',
-                    component: __WEBPACK_IMPORTED_MODULE_7__content_content_component__["a" /* ContentComponent */]
-                },
-                {
-                    path: 'dashboard',
-                    component: __WEBPACK_IMPORTED_MODULE_9__dashboard_dashboard_component__["a" /* DashboardComponent */]
-                }
-            ], { enableTracing: true }),
+            __WEBPACK_IMPORTED_MODULE_4__angular_router__["a" /* RouterModule */].forRoot(routes, { enableTracing: true }),
             __WEBPACK_IMPORTED_MODULE_5__ng_bootstrap_ng_bootstrap__["a" /* NgbModule */].forRoot(),
-            __WEBPACK_IMPORTED_MODULE_8__content_content_module__["a" /* ContentModule */],
+            __WEBPACK_IMPORTED_MODULE_8__content_content_module__["b" /* ContentModule */],
             __WEBPACK_IMPORTED_MODULE_10__dashboard_dashboard_module__["a" /* DashboardModule */],
         ],
         providers: [],
@@ -310,7 +317,7 @@ AppModule = __decorate([
 
 /***/ }),
 
-/***/ 179:
+/***/ 180:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -345,8 +352,8 @@ __decorate([
 BlogListItemComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_0" /* Component */])({
         selector: 'app-blog-list-item',
-        template: __webpack_require__(246),
-        styles: [__webpack_require__(239)]
+        template: __webpack_require__(247),
+        styles: [__webpack_require__(240)]
     }),
     __metadata("design:paramtypes", [])
 ], BlogListItemComponent);
@@ -356,16 +363,16 @@ var _a;
 
 /***/ }),
 
-/***/ 180:
+/***/ 181:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_rxjs_add_operator_switchMap__ = __webpack_require__(153);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_rxjs_add_operator_switchMap__ = __webpack_require__(154);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_rxjs_add_operator_switchMap___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_rxjs_add_operator_switchMap__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_router__ = __webpack_require__(34);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_router__ = __webpack_require__(35);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_common__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_nav_service__ = __webpack_require__(37);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_nav_service__ = __webpack_require__(38);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__models_blog_model__ = __webpack_require__(137);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BlogComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -404,8 +411,8 @@ var BlogComponent = (function () {
 BlogComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_0" /* Component */])({
         selector: 'app-blog',
-        template: __webpack_require__(247),
-        styles: [__webpack_require__(240)]
+        template: __webpack_require__(248),
+        styles: [__webpack_require__(241)]
     }),
     __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_4__services_nav_service__["a" /* NavService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__services_nav_service__["a" /* NavService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__angular_router__["b" /* ActivatedRoute */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_router__["b" /* ActivatedRoute */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__angular_common__["f" /* Location */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__angular_common__["f" /* Location */]) === "function" && _c || Object])
 ], BlogComponent);
@@ -415,22 +422,24 @@ var _a, _b, _c;
 
 /***/ }),
 
-/***/ 181:
+/***/ 182:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__ = __webpack_require__(22);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_common__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_router__ = __webpack_require__(34);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_http__ = __webpack_require__(44);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_router__ = __webpack_require__(35);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_http__ = __webpack_require__(45);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ng_bootstrap_ng_bootstrap__ = __webpack_require__(109);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__content_component__ = __webpack_require__(135);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__blog_blog_component__ = __webpack_require__(180);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__blog_list_item_blog_list_item_component__ = __webpack_require__(179);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__page_page_component__ = __webpack_require__(185);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__services_nav_service__ = __webpack_require__(37);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ContentModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__html_content_html_content_component__ = __webpack_require__(290);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__content_component__ = __webpack_require__(135);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__blog_blog_component__ = __webpack_require__(181);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__blog_list_item_blog_list_item_component__ = __webpack_require__(180);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__page_page_component__ = __webpack_require__(186);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__services_nav_service__ = __webpack_require__(38);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return routes; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return ContentModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -448,6 +457,28 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
+
+var routes = [
+    {
+        path: '',
+        redirectTo: 'html',
+        pathMatch: 'full'
+        /*component: PageComponent,
+        outlet: 'content',*/
+    },
+    {
+        path: 'html',
+        component: __WEBPACK_IMPORTED_MODULE_6__html_content_html_content_component__["a" /* HtmlContentComponent */],
+    },
+    {
+        path: 'blog/:slug',
+        component: __WEBPACK_IMPORTED_MODULE_8__blog_blog_component__["a" /* BlogComponent */],
+    },
+    {
+        path: 'page/:nav_url',
+        component: __WEBPACK_IMPORTED_MODULE_10__page_page_component__["a" /* PageComponent */],
+    }
+];
 var ContentModule = (function () {
     function ContentModule() {
     }
@@ -459,42 +490,21 @@ ContentModule = __decorate([
             __WEBPACK_IMPORTED_MODULE_2__angular_common__["a" /* CommonModule */],
             __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["a" /* BrowserModule */],
             __WEBPACK_IMPORTED_MODULE_4__angular_http__["a" /* HttpModule */],
-            __WEBPACK_IMPORTED_MODULE_3__angular_router__["a" /* RouterModule */].forChild([
-                {
-                    path: '',
-                    component: __WEBPACK_IMPORTED_MODULE_6__content_component__["a" /* ContentComponent */],
-                    children: [
-                        {
-                            path: 'blog/:slug',
-                            component: __WEBPACK_IMPORTED_MODULE_7__blog_blog_component__["a" /* BlogComponent */],
-                            outlet: 'content',
-                        },
-                        {
-                            path: '',
-                            component: __WEBPACK_IMPORTED_MODULE_9__page_page_component__["a" /* PageComponent */],
-                            outlet: 'content',
-                        },
-                        {
-                            path: 'page/:nav_url',
-                            component: __WEBPACK_IMPORTED_MODULE_9__page_page_component__["a" /* PageComponent */],
-                            outlet: 'content',
-                        }
-                    ]
-                },
-            ]),
+            __WEBPACK_IMPORTED_MODULE_3__angular_router__["a" /* RouterModule */],
             __WEBPACK_IMPORTED_MODULE_5__ng_bootstrap_ng_bootstrap__["a" /* NgbModule */],
         ],
         declarations: [
-            __WEBPACK_IMPORTED_MODULE_6__content_component__["a" /* ContentComponent */],
-            __WEBPACK_IMPORTED_MODULE_9__page_page_component__["a" /* PageComponent */],
-            __WEBPACK_IMPORTED_MODULE_7__blog_blog_component__["a" /* BlogComponent */],
-            __WEBPACK_IMPORTED_MODULE_8__blog_list_item_blog_list_item_component__["a" /* BlogListItemComponent */],
+            __WEBPACK_IMPORTED_MODULE_7__content_component__["a" /* ContentComponent */],
+            __WEBPACK_IMPORTED_MODULE_6__html_content_html_content_component__["a" /* HtmlContentComponent */],
+            __WEBPACK_IMPORTED_MODULE_10__page_page_component__["a" /* PageComponent */],
+            __WEBPACK_IMPORTED_MODULE_8__blog_blog_component__["a" /* BlogComponent */],
+            __WEBPACK_IMPORTED_MODULE_9__blog_list_item_blog_list_item_component__["a" /* BlogListItemComponent */],
         ],
         providers: [
-            __WEBPACK_IMPORTED_MODULE_10__services_nav_service__["a" /* NavService */]
+            __WEBPACK_IMPORTED_MODULE_11__services_nav_service__["a" /* NavService */]
         ],
         bootstrap: [
-            __WEBPACK_IMPORTED_MODULE_6__content_component__["a" /* ContentComponent */]
+            __WEBPACK_IMPORTED_MODULE_7__content_component__["a" /* ContentComponent */]
         ],
     })
 ], ContentModule);
@@ -503,7 +513,7 @@ ContentModule = __decorate([
 
 /***/ }),
 
-/***/ 182:
+/***/ 183:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -538,7 +548,7 @@ DashboardModule = __decorate([
 
 /***/ }),
 
-/***/ 183:
+/***/ 184:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -554,7 +564,7 @@ var NavItem = (function () {
 
 /***/ }),
 
-/***/ 184:
+/***/ 185:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -580,16 +590,16 @@ var Profile = (function () {
 
 /***/ }),
 
-/***/ 185:
+/***/ 186:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_rxjs_add_operator_switchMap__ = __webpack_require__(153);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_rxjs_add_operator_switchMap__ = __webpack_require__(154);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_rxjs_add_operator_switchMap___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_rxjs_add_operator_switchMap__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_router__ = __webpack_require__(34);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_router__ = __webpack_require__(35);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_common__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_nav_service__ = __webpack_require__(37);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_nav_service__ = __webpack_require__(38);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__models_page_model__ = __webpack_require__(139);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PageComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -628,8 +638,8 @@ var PageComponent = (function () {
 PageComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["_0" /* Component */])({
         selector: 'app-page',
-        template: __webpack_require__(250),
-        styles: [__webpack_require__(241)]
+        template: __webpack_require__(251),
+        styles: [__webpack_require__(242)]
     }),
     __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_4__services_nav_service__["a" /* NavService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__services_nav_service__["a" /* NavService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__angular_router__["b" /* ActivatedRoute */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_router__["b" /* ActivatedRoute */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__angular_common__["f" /* Location */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__angular_common__["f" /* Location */]) === "function" && _c || Object])
 ], PageComponent);
@@ -639,7 +649,7 @@ var _a, _b, _c;
 
 /***/ }),
 
-/***/ 186:
+/***/ 187:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -651,24 +661,6 @@ var environment = {
 
 /***/ }),
 
-/***/ 239:
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(24)(true);
-// imports
-
-
-// module
-exports.push([module.i, ".blog-item-small {\n  margin-bottom: 10px;\n}\n", "", {"version":3,"sources":["/Users/esaburruss/git/djangular-blog/frontend/src/app/blog-list-item/blog-list-item.component.css"],"names":[],"mappings":"AAAA;EACE,oBAAoB;CACrB","file":"blog-list-item.component.css","sourcesContent":[".blog-item-small {\n  margin-bottom: 10px;\n}\n"],"sourceRoot":""}]);
-
-// exports
-
-
-/*** EXPORTS FROM exports-loader ***/
-module.exports = module.exports.toString();
-
-/***/ }),
-
 /***/ 240:
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -677,7 +669,7 @@ exports = module.exports = __webpack_require__(24)(true);
 
 
 // module
-exports.push([module.i, "", "", {"version":3,"sources":[],"names":[],"mappings":"","file":"blog.component.css","sourceRoot":""}]);
+exports.push([module.i, ".blog-item-small {\n  margin-bottom: 10px;\n}\n", "", {"version":3,"sources":["/Users/esaburruss/Git/djangular-blog/frontend/src/app/blog-list-item/blog-list-item.component.css"],"names":[],"mappings":"AAAA;EACE,oBAAoB;CACrB","file":"blog-list-item.component.css","sourcesContent":[".blog-item-small {\n  margin-bottom: 10px;\n}\n"],"sourceRoot":""}]);
 
 // exports
 
@@ -695,7 +687,7 @@ exports = module.exports = __webpack_require__(24)(true);
 
 
 // module
-exports.push([module.i, "", "", {"version":3,"sources":[],"names":[],"mappings":"","file":"page.component.css","sourceRoot":""}]);
+exports.push([module.i, "", "", {"version":3,"sources":[],"names":[],"mappings":"","file":"blog.component.css","sourceRoot":""}]);
 
 // exports
 
@@ -713,7 +705,7 @@ exports = module.exports = __webpack_require__(24)(true);
 
 
 // module
-exports.push([module.i, ".container {\n  padding-top: 75px; }\n", "", {"version":3,"sources":["/Users/esaburruss/git/djangular-blog/frontend/src/app/app.component.scss"],"names":[],"mappings":"AAAA;EACE,kBAAgB,EACjB","file":"app.component.scss","sourcesContent":[".container {\n  padding-top:75px;\n}\n"],"sourceRoot":""}]);
+exports.push([module.i, "", "", {"version":3,"sources":[],"names":[],"mappings":"","file":"page.component.css","sourceRoot":""}]);
 
 // exports
 
@@ -731,7 +723,7 @@ exports = module.exports = __webpack_require__(24)(true);
 
 
 // module
-exports.push([module.i, ".container {\n  margin-top: 75px; }\n", "", {"version":3,"sources":["/Users/esaburruss/git/djangular-blog/frontend/src/app/content/content.component.scss"],"names":[],"mappings":"AAAA;EACE,iBAAgB,EACjB","file":"content.component.scss","sourcesContent":[".container {\n  margin-top: 75px;\n}\n"],"sourceRoot":""}]);
+exports.push([module.i, ".container {\n  padding-top: 75px; }\n", "", {"version":3,"sources":["/Users/esaburruss/Git/djangular-blog/frontend/src/app/app.component.scss"],"names":[],"mappings":"AAAA;EACE,kBAAgB,EACjB","file":"app.component.scss","sourcesContent":[".container {\n  padding-top:75px;\n}\n"],"sourceRoot":""}]);
 
 // exports
 
@@ -749,7 +741,7 @@ exports = module.exports = __webpack_require__(24)(true);
 
 
 // module
-exports.push([module.i, "", "", {"version":3,"sources":[],"names":[],"mappings":"","file":"dashboard.component.scss","sourceRoot":""}]);
+exports.push([module.i, ".container {\n  margin-top: 75px; }\n", "", {"version":3,"sources":["/Users/esaburruss/Git/djangular-blog/frontend/src/app/content/content.component.scss"],"names":[],"mappings":"AAAA;EACE,iBAAgB,EACjB","file":"content.component.scss","sourcesContent":[".container {\n  margin-top: 75px;\n}\n"],"sourceRoot":""}]);
 
 // exports
 
@@ -760,63 +752,147 @@ module.exports = module.exports.toString();
 /***/ }),
 
 /***/ 245:
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = "<router-outlet></router-outlet>\n"
+exports = module.exports = __webpack_require__(24)(true);
+// imports
+
+
+// module
+exports.push([module.i, "", "", {"version":3,"sources":[],"names":[],"mappings":"","file":"dashboard.component.scss","sourceRoot":""}]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
 
 /***/ }),
 
 /***/ 246:
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"card blog-item-small\">\n  <div class=\"card-body\">\n    <h4 class=\"card-title\">\n      <a routerLink=\"/blog/{{blog.slug}}\" routerLinkActive=\"active\">\n        {{ blog.title }}\n      </a>\n    </h4>\n    <h6 class=\"card-subtitle mb-2 text-muted\">\n      {{ blog.author.last_name }}, {{ blog.author.first_name }} - {{ blog.creation_date | date: 'MM/dd/yy' }}\n    </h6>\n  </div>\n</div>\n"
+module.exports = "<router-outlet></router-outlet>\n"
 
 /***/ }),
 
 /***/ 247:
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"content-block\">\n  <h3 [innerHTML]=\"blog.title\"></h3>\n  <div [innerHTML]=\"blog.body\"></div>\n</div>\n"
+module.exports = "<div class=\"card blog-item-small\">\n  <div class=\"card-body\">\n    <h4 class=\"card-title\">\n      <a routerLink=\"/blog/{{blog.slug}}\" routerLinkActive=\"active\">\n        {{ blog.title }}\n      </a>\n    </h4>\n    <h6 class=\"card-subtitle mb-2 text-muted\">\n      {{ blog.author.last_name }}, {{ blog.author.first_name }} - {{ blog.creation_date | date: 'MM/dd/yy' }}\n    </h6>\n  </div>\n</div>\n"
 
 /***/ }),
 
 /***/ 248:
 /***/ (function(module, exports) {
 
-module.exports = "<nav class=\"navbar navbar-dark text-white bg-dark fixed-top navbar-expand-lg\">\n  <button\n    class=\"navbar-toggler navbar-toggler-right\"\n    type=\"button\"\n    (click)=\"navbarCollapsed = !navbarCollapsed\"\n    >\n    <span class=\"navbar-toggler-icon\"></span>\n  </button>\n  <div\n    class=\"navbar-collapse\"\n    [ngbCollapse]=\"navbarCollapsed\"\n    id=\"navbarContent\"\n    >\n\n    <ul class=\"navbar-nav mr-auto\">\n      <li\n        *ngFor=\"let navitem of navbar.navitems\"\n        [ngSwitch]=\"navitem.nav_pages\"\n        class=\"nav-item\" >\n\n        <ng-template [ngSwitchCase]=\"undefined\">\n          <a class=\"nav-link\" routerLink=\"/page/{{navitem.nav_url}}\" routerLinkActive=\"active\">{{ navitem.nav_title }}</a>\n        </ng-template>\n\n        <ng-template ngSwitchDefault>\n          <div class=\"ng-dropdown\" ngbDropdown >\n\n            <a\n              class=\"nav-link dropdown-toggle\"\n              id=\"dropdown_{{ navitem.nav_url }}\"\n              ngbDropdownToggle>\n              {{ navitem.nav_title }}\n            </a>\n            <div\n              class=\"dropdown-menu\"\n              id=\"dropdown_{{ navitem.nav_url }}\"\n              ngbDropdownMenu\n              *ngIf=\"navitem.nav_pages\">\n              <button\n                *ngFor=\"let page of navitem.nav_pages\"\n                routerLink=\"/page/{{page.nav_url}}\"\n                routerLinkActive=\"active\"\n                class=\"dropdown-item\">\n                {{ page.nav_title }}\n              </button>\n            </div>\n          </div>\n        </ng-template>\n\n      </li>\n    </ul>\n  </div>\n</nav>\n<div class=\"container\">\n  <div class=\"row\">\n    <div class=\"col-lg-9\">\n      <router-outlet name=\"content\"></router-outlet>\n    </div>\n    <div class=\"col\">\n      <app-blog-list-item *ngFor=\"let blog of blogs\" [blog]=\"blog\">\n      </app-blog-list-item>\n    </div>\n  </div>\n</div>\n"
+module.exports = "<div class=\"content-block\">\n  <h3 [innerHTML]=\"blog.title\"></h3>\n  <div [innerHTML]=\"blog.body\"></div>\n</div>\n"
 
 /***/ }),
 
 /***/ 249:
 /***/ (function(module, exports) {
 
-module.exports = "<p>\n  dashboard works!\n</p>\n"
+module.exports = "<nav class=\"navbar navbar-dark text-white bg-dark fixed-top navbar-expand-lg\">\n  <button\n    class=\"navbar-toggler navbar-toggler-right\"\n    type=\"button\"\n    (click)=\"navbarCollapsed = !navbarCollapsed\"\n    >\n    <span class=\"navbar-toggler-icon\"></span>\n  </button>\n  <div\n    class=\"navbar-collapse\"\n    [ngbCollapse]=\"navbarCollapsed\"\n    id=\"navbarContent\"\n    >\n\n    <ul class=\"navbar-nav mr-auto\">\n      <li\n        *ngFor=\"let navitem of navbar.navitems\"\n        [ngSwitch]=\"navitem.nav_pages\"\n        class=\"nav-item\" >\n\n        <ng-template [ngSwitchCase]=\"undefined\">\n          <a class=\"nav-link\" routerLink=\"/page/{{navitem.nav_url}}\" routerLinkActive=\"active\">{{ navitem.nav_title }}</a>\n        </ng-template>\n\n        <ng-template ngSwitchDefault>\n          <div class=\"ng-dropdown\" ngbDropdown >\n\n            <a\n              class=\"nav-link dropdown-toggle\"\n              id=\"dropdown_{{ navitem.nav_url }}\"\n              ngbDropdownToggle>\n              {{ navitem.nav_title }}\n            </a>\n            <div\n              class=\"dropdown-menu\"\n              id=\"dropdown_{{ navitem.nav_url }}\"\n              ngbDropdownMenu\n              *ngIf=\"navitem.nav_pages\">\n              <button\n                *ngFor=\"let page of navitem.nav_pages\"\n                routerLink=\"/page/{{page.nav_url}}\"\n                routerLinkActive=\"active\"\n                class=\"dropdown-item\">\n                {{ page.nav_title }}\n              </button>\n            </div>\n          </div>\n        </ng-template>\n\n      </li>\n    </ul>\n  </div>\n</nav>\n<div class=\"container\">\n  <div class=\"row\">\n    <div class=\"col-lg-9\">\n      <router-outlet></router-outlet>\n    </div>\n    <div class=\"col\">\n      <app-blog-list-item *ngFor=\"let blog of blogs\" [blog]=\"blog\">\n      </app-blog-list-item>\n    </div>\n  </div>\n</div>\n"
 
 /***/ }),
 
 /***/ 250:
 /***/ (function(module, exports) {
 
+module.exports = "<p>\n  dashboard works!\n</p>\n"
+
+/***/ }),
+
+/***/ 251:
+/***/ (function(module, exports) {
+
 module.exports = "<div class=\"content-block\">\n  <div [innerHTML]=\"page.body\"></div>\n</div>\n"
 
 /***/ }),
 
-/***/ 283:
+/***/ 284:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(168);
+module.exports = __webpack_require__(169);
 
 
 /***/ }),
 
-/***/ 37:
+/***/ 290:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_rxjs_add_operator_toPromise__ = __webpack_require__(254);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__(35);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return HtmlContentComponent; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var HtmlContentComponent = (function () {
+    function HtmlContentComponent(route) {
+        this.route = route;
+        console.log("AAAA");
+    }
+    HtmlContentComponent.prototype.ngOnInit = function () {
+    };
+    return HtmlContentComponent;
+}());
+HtmlContentComponent = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_0" /* Component */])({
+        selector: 'app-html-content',
+        template: __webpack_require__(292),
+        styles: [__webpack_require__(291)]
+    }),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* ActivatedRoute */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* ActivatedRoute */]) === "function" && _a || Object])
+], HtmlContentComponent);
+
+var _a;
+//# sourceMappingURL=html-content.component.js.map
+
+/***/ }),
+
+/***/ 291:
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(24)(true);
+// imports
+
+
+// module
+exports.push([module.i, "", "", {"version":3,"sources":[],"names":[],"mappings":"","file":"html-content.component.scss","sourceRoot":""}]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ 292:
+/***/ (function(module, exports) {
+
+module.exports = "<p>\n  html-content works!\n</p>\n"
+
+/***/ }),
+
+/***/ 38:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_rxjs_add_operator_toPromise__ = __webpack_require__(255);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_rxjs_add_operator_toPromise___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_rxjs_add_operator_toPromise__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_http__ = __webpack_require__(44);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_http__ = __webpack_require__(45);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__models_navbar_model__ = __webpack_require__(138);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__models_page_model__ = __webpack_require__(139);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_Subject__ = __webpack_require__(21);
@@ -914,5 +990,5 @@ var _a;
 
 /***/ })
 
-},[283]);
+},[284]);
 //# sourceMappingURL=main.bundle.js.map

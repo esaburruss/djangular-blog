@@ -1,11 +1,17 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule }   from '@angular/router';
+import {
+  RouterModule,
+  ActivatedRoute,
+  Router,
+  Routes,
+}   from '@angular/router';
 import { HttpModule } from '@angular/http';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
+import { HtmlContentComponent } from './html-content/html-content.component';
 import { ContentComponent } from './content.component';
 import { BlogComponent } from '../blog/blog.component';
 import { BlogListItemComponent } from '../blog-list-item/blog-list-item.component';
@@ -13,39 +19,42 @@ import { PageComponent } from '../page/page.component';
 
 import { NavService } from '../services/nav.service';
 
+export const routes: Routes = [
+  {
+    path: '',
+    redirectTo: 'html',
+    pathMatch: 'full'
+    /*component: PageComponent,
+    outlet: 'content',*/
+  },
+  {
+    path: 'html',
+    component: HtmlContentComponent,
+    //outlet: 'content',
+  },
+  {
+    path: 'blog/:slug',
+    component: BlogComponent,
+    //outlet: 'content',
+  },
+  {
+    path: 'page/:nav_url',
+    component: PageComponent,
+    //outlet: 'content',
+  }
+];
+
 @NgModule({
   imports: [
     CommonModule,
     BrowserModule,
     HttpModule,
-    RouterModule.forChild([
-      {
-        path: '',
-        component: ContentComponent,
-        children: [
-
-          {
-            path: 'blog/:slug',
-            component: BlogComponent,
-            outlet: 'content',
-          },
-          {
-            path: '',
-            component: PageComponent,
-            outlet: 'content',
-          },
-          {
-            path: 'page/:nav_url',
-            component: PageComponent,
-            outlet: 'content',
-          }
-        ]
-      },
-    ]),
+    RouterModule,
     NgbModule,
   ],
   declarations: [
     ContentComponent,
+    HtmlContentComponent,
     PageComponent,
     BlogComponent,
     BlogListItemComponent,
