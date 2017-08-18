@@ -1,11 +1,7 @@
-import { NavItem } from './navitem.model';
+import { Content } from './content.model';
 
-export class Page extends NavItem {
-  public nav_url: string;
-  public body: string;
+export class Page extends Content {
   constructor(obj?: any) {
     super(obj);
-    this.nav_url      = obj && obj.nav_url         || '';
-    this.body         = obj && obj.body            || null;
   }
 }

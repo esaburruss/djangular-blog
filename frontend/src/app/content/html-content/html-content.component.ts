@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+
+import { NavService } from '../../services/nav.service';
+
+import { Content } from '../../models/content.model';
+import { Page } from '../../models/page.model';
 
 @Component({
   selector: 'app-html-content',
@@ -7,12 +11,14 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./html-content.component.scss']
 })
 export class HtmlContentComponent implements OnInit {
-
-  constructor(private route: ActivatedRoute) {
-    console.log("AAAA");
+  content: Content;
+  constructor(private navService: NavService) {
+    this.content = new Content({});
+    navService.content$.subscribe(content => {
+      this.content = content;
+    });
   }
 
   ngOnInit() {
   }
-
 }

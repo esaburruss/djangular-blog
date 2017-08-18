@@ -15,15 +15,17 @@ import { HtmlContentComponent } from './html-content/html-content.component';
 import { ContentComponent } from './content.component';
 import { BlogComponent } from '../blog/blog.component';
 import { BlogListItemComponent } from '../blog-list-item/blog-list-item.component';
-import { PageComponent } from '../page/page.component';
+import { PageComponent } from './page/page.component';
 
 import { NavService } from '../services/nav.service';
 
 export const routes: Routes = [
   {
-    path: '',
-    component: HtmlContentComponent,
+    path: '', redirectTo: 'page/', pathMatch: 'full'
     //outlet: 'content',
+  },
+  {
+    path: 'page', redirectTo: 'page/', pathMatch: 'full'
   },
   {
     path: 'blog/:slug',
@@ -31,7 +33,7 @@ export const routes: Routes = [
     //outlet: 'content',
   },
   {
-    path: 'page/:nav_url',
+    path: 'page/:slug',
     component: PageComponent,
     //outlet: 'content',
   }

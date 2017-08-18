@@ -41,7 +41,10 @@ export class ContentComponent implements OnInit {
   ngOnInit() {
     this.route.paramMap
       .switchMap((params: ParamMap) => this.navService.getNavbar())
-      .subscribe(nav => this.navbar = nav)
+      .subscribe(nav => {
+        this.navbar = nav;
+        this.navService.initializeLoadedPages();
+      });
     //this.navService.getNavbar();
     //this.navService.getBlogs();
   }
