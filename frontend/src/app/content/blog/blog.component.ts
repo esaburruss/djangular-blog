@@ -3,18 +3,16 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { Location }                 from '@angular/common';
 
-import { HtmlContentComponent } from '../html-content/html-content.component';
-
 import { NavService } from '../../services/nav.service';
-import { Page } from '../../models/page.model';
+import { Blog } from '../../models/blog.model';
 
 @Component({
-  selector: 'app-page',
-  templateUrl: './page.component.html',
-  styleUrls: ['./page.component.css'],
+  selector: 'app-blog',
+  templateUrl: './blog.component.html',
+  styleUrls: ['./blog.component.css']
 })
-export class PageComponent implements OnInit {
-  public page: Page;
+export class BlogComponent implements OnInit {
+  public blog: Blog = new Blog({title: 'loading...', body:'loading...'});
   public url: string;
   private _navReady: boolean;
 
@@ -23,26 +21,27 @@ export class PageComponent implements OnInit {
     private route: ActivatedRoute,
     private location: Location
   ) {
-    this.page = new Page({'title':'unchanged','body':'<p>AAA</p>'});
     this._navReady = this.navService.isLoaded();
+
     route.params.subscribe(params => {
       this.url = params['slug'];
       if(this._navReady) {
-        this.loadPage();
+        this.loadBlog();
       }
     });
 
     navService.loaded$.subscribe(_navReady => {
       this._navReady = _navReady;
-      this.loadPage();
+      this.loadBlog();
     });
+
   }
 
   ngOnInit() {
   }
 
-  loadPage() {
-    this.navService.getContent('page', this.url);
+  loadBlog() {
+    this.navService.getContent('blog', this.url);
   }
 
   goBack(): void {

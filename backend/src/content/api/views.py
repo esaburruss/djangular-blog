@@ -50,10 +50,12 @@ class PageHtmlAPIView(RetrieveAPIView):
 def get_nav(request):
     home = Page.objects.get(is_home=True)
     nav = Section.objects.filter(is_visible=True)
-    
+    blogs = Blog.objects.filter(is_visible=True)
+
     return Response({
-        'home':PageDetailSerializer(home).data,
-        'navitems':NavbarSerializer(nav, many=True).data
+        'navbar':{'home':PageDetailSerializer(home).data,
+        'navitems':NavbarSerializer(nav, many=True).data},
+        'blogs':BlogListSerializer(blogs, many=True).data
     })
 
 

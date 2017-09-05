@@ -13,8 +13,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { HtmlContentComponent } from './html-content/html-content.component';
 import { ContentComponent } from './content.component';
-import { BlogComponent } from '../blog/blog.component';
-import { BlogListItemComponent } from '../blog-list-item/blog-list-item.component';
+import { BlogComponent } from './blog/blog.component';
+import { BlogListItemComponent } from './blog-list-item/blog-list-item.component';
 import { PageComponent } from './page/page.component';
 
 import { NavService } from '../services/nav.service';

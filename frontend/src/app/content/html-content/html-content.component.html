@@ -1,8 +1,4 @@
-<br />
-<br />
-<br />
-<br /><br />
-<br />
-{{ content.title }}
-<br />
-{{ content.body }}
+<div class="content-block">
+  <h3 [innerHTML]="content.title"></h3>
+  <div [innerHTML]="content.body"></div>
+</div>

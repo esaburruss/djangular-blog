@@ -13,12 +13,13 @@ import { Page } from '../../models/page.model';
 export class HtmlContentComponent implements OnInit {
   content: Content;
   constructor(private navService: NavService) {
-    this.content = new Content({});
+    this.content = new Content({'title': 'Loading', 'body': 'Loading'});//navService.getCurrentContent();
     navService.content$.subscribe(content => {
       this.content = content;
     });
   }
 
   ngOnInit() {
+    this.content = this.navService.getCurrentContent();
   }
 }

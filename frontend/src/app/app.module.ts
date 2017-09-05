@@ -17,7 +17,7 @@ import {
 } from './content/content.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { DashboardModule } from './dashboard/dashboard.module';
-
+import { LoginFormComponent } from './login-form/login-form.component';
 import { NavService } from './services/nav.service';
 
 const routes: Routes = [
@@ -35,6 +35,7 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     AppComponent,
+    LoginFormComponent,
   ],
   imports: [
     BrowserModule,

@@ -18,24 +18,33 @@ export class NavService {
 
   private contentSource = new Subject<Content>();
   content$ = this.contentSource.asObservable();
+  private _content: Content;
 
   private _loadedSource = new Subject<boolean>();
   loaded$ = this._loadedSource.asObservable();
+  private _loaded: boolean;
 
   private blogsSource = new Subject<Blog[]>();
   blogs$ = this.blogsSource.asObservable();
+  private _blogs: Blog[];
 
   constructor(private http: Http) {
     this.base_url = 'http://127.0.0.1:8000/api/content/';
     this._loadedContent = {};
+    this._content = new Content({});
+    this._loaded = false;
+    this._blogs = [];
   }
 
   getNavbar(): Promise<Navbar> {
-    let promise = new Promise((resolve, reject) => {
+    let promise = new Promise<Navbar>((resolve, reject) => {
       this.http.get(this.base_url + 'navbar/')
         .toPromise()
         .then(res => {
-          this._navbar = new Navbar(res.json());
+          let response = res.json();
+          this.blogsSource.next(response.blogs);
+          this._blogs = response.blogs;
+          this._navbar = new Navbar(response.navbar);
           resolve(this._navbar);
         });
     });
@@ -53,74 +62,39 @@ export class NavService {
         this._loadedContent['page/' + (navitem as Page).slug] = (navitem as Page);
       }
     }
+    for (let blog of this._blogs) {
+      this._loadedContent['blog/' + blog.slug] = blog;
+    }
+    console.log(this._loadedContent);
     this._loadedSource.next(true);
+    this._loaded = true;
   }
 
   getContent(type: string, slug: string) {
     let url = '/';
-    console.log(slug);
+
     if(slug) {
       url = type + '/' + slug;
     }
-    console.log(this._loadedContent[url].body);
     if(this._loadedContent[url].body) {
-      console.log('Did not do HTTP');
       this.contentSource.next(this._loadedContent[url]);
+      this._content = this._loadedContent[url];
     } else {
       let apiUrl = this.base_url + url + '/';
       this.http.get(apiUrl)
       .subscribe((res: Response) => {
-        this._loadedContent[url].body = res.json().body
+        this._loadedContent[url].body = res.json().body;
+        this._content = this._loadedContent[url];
         this.contentSource.next(this._loadedContent[url]);
       });
     }
   }
 
-  getHomePage() {
-      this.http.get(this.base_url + 'home/')
-      .subscribe((res: Response) => {
-        console.log(res.json());
-        //this.navSource.next(new Navbar(res.json()));
-      });
+  isLoaded() {
+    return this._loaded;
   }
 
-  getPage(slug: string): Promise<Page> {
-    if(!slug)
-      slug = 'home';
-    console.log("URL Clicked: " + slug);
-    let apiUrl = this.base_url + 'page/' + slug + '/';
-    console.log(apiUrl);
-    let promise = new Promise((resolve, reject) => {
-      this.http.get(apiUrl)
-        .toPromise()
-        .then(res => {
-          console.log(res.json());
-          let page = new Page(res.json());
-          resolve(page);
-        });
-    });
-    return promise;
-  }
-
-  getBlog(slug: string): Promise<Blog> {
-    let promise = new Promise((resolve, reject) => {
-      let apiUrl = this.base_url + 'blog/' + slug + '/';
-      this.http.get(apiUrl)
-        .toPromise()
-        .then(res => {
-          console.log(res.json());
-          resolve(res.json());
-        });
-    });
-    return promise;
-  }
-
-  getBlogs() {
-    let apiUrl = this.base_url + 'blog/';
-    this.http.get(apiUrl)
-    .subscribe((res: Response) => {
-      console.log(res.json());
-      this.blogsSource.next(res.json().results);
-    });
+  getCurrentContent() {
+    return this._content;
   }
 }

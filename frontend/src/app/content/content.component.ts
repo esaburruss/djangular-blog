@@ -32,10 +32,10 @@ export class ContentComponent implements OnInit {
 
     /*navService.navbar$.subscribe( nav => {
       this.navbar = nav;
-    });
+    });*/
     navService.blogs$.subscribe( blogs => {
       this.blogs = blogs;
-    });*/
+    });
   }
 
   ngOnInit() {
