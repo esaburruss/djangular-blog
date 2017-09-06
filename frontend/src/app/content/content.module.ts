@@ -15,6 +15,7 @@ import { HtmlContentComponent } from './html-content/html-content.component';
 import { ContentComponent } from './content.component';
 import { BlogComponent } from './blog/blog.component';
 import { BlogListItemComponent } from './blog-list-item/blog-list-item.component';
+import { BlogListPageComponent } from './blog-list-page/blog-list-page.component';
 import { PageComponent } from './page/page.component';
 
 import { NavService } from '../services/nav.service';
@@ -26,6 +27,11 @@ export const routes: Routes = [
   },
   {
     path: 'page', redirectTo: 'page/', pathMatch: 'full'
+  },
+  {
+    path: 'blog',
+    component: BlogListPageComponent,
+    //outlet: 'content',
   },
   {
     path: 'blog/:slug',
@@ -53,6 +59,7 @@ export const routes: Routes = [
     PageComponent,
     BlogComponent,
     BlogListItemComponent,
+    BlogListPageComponent,
   ],
   providers: [
     NavService
