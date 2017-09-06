@@ -54,12 +54,23 @@
 </nav>
 <div class="container">
   <div class="row">
-    <div class="col-lg-9">
+    <div class="col-lg-8">
       <router-outlet></router-outlet>
     </div>
-    <div class="col">
+    <div class="col-lg-4">
       <app-blog-list-item *ngFor="let blog of blogs" [blog]="blog">
       </app-blog-list-item>
+      <div style="padding: 3px" class ="d-inline-block" *ngFor="let category of categories">
+      <button class="btn btn-light btn-sm text-truncate">
+        <small>{{ category.title }}</small>
+      </button>
+      </div>
+      <div style="padding: 3px;" class="mw-100 d-inline-block">
+        <button class="mw-100 btn btn-light btn-sm text-truncate">
+          <small>ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZ
+          </small>
+        </button>
+      </div>
     </div>
   </div>
 </div>

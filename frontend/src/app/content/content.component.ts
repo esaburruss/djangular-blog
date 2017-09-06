@@ -8,8 +8,10 @@ import { Location }                 from '@angular/common';
 
 import { NavService } from '../services/nav.service';
 import { Navbar } from '../models/navbar.model';
+import { Nav } from '../models/nav.model';
 import { Page } from '../models/page.model';
 import { Blog } from '../models/blog.model';
+import { Category } from '../models/category.model';
 
 @Component({
   selector: 'app-content',
@@ -19,6 +21,7 @@ import { Blog } from '../models/blog.model';
 export class ContentComponent implements OnInit {
   navbar: Navbar;
   blogs: Blog[] = [];
+  categories: Category[] = [];
   navbarCollapsed: boolean;
 
   constructor(
@@ -28,21 +31,23 @@ export class ContentComponent implements OnInit {
     private location: Location
   ) {
     this.navbarCollapsed = false;
-    this.navbar = new Navbar(new Page());
+    this.navbar = new Navbar({});
 
     /*navService.navbar$.subscribe( nav => {
       this.navbar = nav;
-    });*/
+    });
     navService.blogs$.subscribe( blogs => {
       this.blogs = blogs;
-    });
+    });*/
   }
 
   ngOnInit() {
     this.route.paramMap
-      .switchMap((params: ParamMap) => this.navService.getNavbar())
+      .switchMap((params: ParamMap) => this.navService.getNav())
       .subscribe(nav => {
-        this.navbar = nav;
+        this.navbar = nav.navbar;
+        this.blogs = nav.blogs;
+        this.categories = nav.categories;
         this.navService.initializeLoadedPages();
       });
     //this.navService.getNavbar();

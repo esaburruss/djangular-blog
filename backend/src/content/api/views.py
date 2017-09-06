@@ -51,11 +51,13 @@ def get_nav(request):
     home = Page.objects.get(is_home=True)
     nav = Section.objects.filter(is_visible=True)
     blogs = Blog.objects.filter(is_visible=True)
+    categories = Category.objects.filter(is_visible=True)
 
     return Response({
         'navbar':{'home':PageDetailSerializer(home).data,
         'navitems':NavbarSerializer(nav, many=True).data},
-        'blogs':BlogListSerializer(blogs, many=True).data
+        'blogs':BlogListSerializer(blogs, many=True).data,
+        'categories':CategoryListSerializer(categories, many=True).data
     })
 
 

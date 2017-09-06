@@ -3,6 +3,7 @@ import 'rxjs/add/operator/toPromise';
 import { Injectable } from '@angular/core';
 import { Http, Response, Headers } from '@angular/http';
 import { Navbar } from '../models/navbar.model';
+import { Nav } from '../models/nav.model';
 import { Page } from '../models/page.model';
 import { Blog } from '../models/blog.model';
 import { Section } from '../models/section.model';
@@ -14,7 +15,7 @@ export class NavService {
   private base_url: string;
 
   private _loadedContent: { [id:string] : Content };
-  private _navbar: Navbar;
+  private _nav: Nav;
 
   private contentSource = new Subject<Content>();
   content$ = this.contentSource.asObservable();
@@ -24,36 +25,29 @@ export class NavService {
   loaded$ = this._loadedSource.asObservable();
   private _loaded: boolean;
 
-  private blogsSource = new Subject<Blog[]>();
-  blogs$ = this.blogsSource.asObservable();
-  private _blogs: Blog[];
-
   constructor(private http: Http) {
     this.base_url = 'http://127.0.0.1:8000/api/content/';
     this._loadedContent = {};
     this._content = new Content({});
     this._loaded = false;
-    this._blogs = [];
+    this._nav = new Nav({});
   }
 
-  getNavbar(): Promise<Navbar> {
-    let promise = new Promise<Navbar>((resolve, reject) => {
-      this.http.get(this.base_url + 'navbar/')
+  getNav(): Promise<Nav> {
+    let promise = new Promise<Nav>((resolve, reject) => {
+      this.http.get(this.base_url + 'nav/')
         .toPromise()
         .then(res => {
-          let response = res.json();
-          this.blogsSource.next(response.blogs);
-          this._blogs = response.blogs;
-          this._navbar = new Navbar(response.navbar);
-          resolve(this._navbar);
+          this._nav = new Nav(res.json());
+          resolve(this._nav);
         });
     });
     return promise;
   }
 
   initializeLoadedPages() {
-    this._loadedContent['/'] = this._navbar.home;
-    for (let navitem of this._navbar.navitems) {
+    this._loadedContent['/'] = this._nav.navbar.home;
+    for (let navitem of this._nav.navbar.navitems) {
       if((navitem as any).pages) {
         for (let page of (navitem as Section).pages) {
           this._loadedContent['page/' + (page as Page).slug] = (page as Page);
@@ -62,10 +56,9 @@ export class NavService {
         this._loadedContent['page/' + (navitem as Page).slug] = (navitem as Page);
       }
     }
-    for (let blog of this._blogs) {
+    for (let blog of this._nav.blogs) {
       this._loadedContent['blog/' + blog.slug] = blog;
     }
-    console.log(this._loadedContent);
     this._loadedSource.next(true);
     this._loaded = true;
   }
