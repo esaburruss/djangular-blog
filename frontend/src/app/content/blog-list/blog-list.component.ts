@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Blog } from '../../models/blog.model';
 import { NavService } from '../../services/nav.service';
 @Component({
@@ -8,7 +8,10 @@ import { NavService } from '../../services/nav.service';
 })
 export class BlogListComponent implements OnInit {
   public blogs: Blog[];
+  @Input()
+  public big: boolean;
   private _navReady: boolean;
+
 
   constructor(
     private navService: NavService

@@ -8,6 +8,10 @@ import { Blog } from '../../models/blog.model';
 export class BlogListItemComponent implements OnInit {
   @Input()
   public blog: Blog;
+
+  @Input()
+  public big: boolean;
+  
   constructor() { }
 
   ngOnInit() {

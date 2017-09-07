@@ -8,6 +8,7 @@ import { Blog } from '../../models/blog.model';
 export class BlogListPageComponent implements OnInit {
   @Input()
   public blog: Blog;
+
   constructor() { }
 
   ngOnInit() {
