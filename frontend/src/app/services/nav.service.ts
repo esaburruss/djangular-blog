@@ -90,4 +90,12 @@ export class NavService {
   getCurrentContent() {
     return this._content;
   }
+
+  getBlogList() {
+    return this._nav.blogs;
+  }
+
+  getCategoryList() {
+    return this._nav.categories;
+  }
 }

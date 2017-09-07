@@ -15,6 +15,8 @@ import { HtmlContentComponent } from './html-content/html-content.component';
 import { ContentComponent } from './content.component';
 import { BlogComponent } from './blog/blog.component';
 import { BlogListItemComponent } from './blog-list-item/blog-list-item.component';
+import { BlogListComponent } from './blog-list/blog-list.component';
+import { CategoryListComponent } from './category-list/category-list.component';
 import { BlogListPageComponent } from './blog-list-page/blog-list-page.component';
 import { PageComponent } from './page/page.component';
 
@@ -60,6 +62,8 @@ export const routes: Routes = [
     BlogComponent,
     BlogListItemComponent,
     BlogListPageComponent,
+    BlogListComponent,
+    CategoryListComponent,
   ],
   providers: [
     NavService

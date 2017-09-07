@@ -19,6 +19,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { LoginFormComponent } from './login-form/login-form.component';
 import { NavService } from './services/nav.service';
+import {MockHttpModule} from './mock-http/mock-http.module';
+import {environment} from '../environments/environment';
 
 const routes: Routes = [
   //{ path: '', redirectTo: 'content', pathMatch: 'full' },
@@ -40,7 +42,7 @@ const routes: Routes = [
   imports: [
     BrowserModule,
     FormsModule,
-    HttpModule,
+    environment.production ? HttpModule : MockHttpModule,
     RouterModule.forRoot(
       routes,
       //{ enableTracing: true }

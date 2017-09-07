@@ -32,13 +32,6 @@ export class ContentComponent implements OnInit {
   ) {
     this.navbarCollapsed = false;
     this.navbar = new Navbar({});
-
-    /*navService.navbar$.subscribe( nav => {
-      this.navbar = nav;
-    });
-    navService.blogs$.subscribe( blogs => {
-      this.blogs = blogs;
-    });*/
   }
 
   ngOnInit() {
@@ -50,8 +43,6 @@ export class ContentComponent implements OnInit {
         this.categories = nav.categories;
         this.navService.initializeLoadedPages();
       });
-    //this.navService.getNavbar();
-    //this.navService.getBlogs();
   }
 
   goBack(): void {

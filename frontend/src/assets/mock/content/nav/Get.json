@@ -1,0 +1,95 @@
+{
+    "navbar": {
+        "home": {
+            "title": "Home",
+            "slug": "home",
+            "body": "<h1>Hello World!</h1><p>Welcome To my Djangular Blog!</p>"
+        },
+        "navitems": [
+            {
+                "title": "About",
+                "slug": "about"
+            },
+            {
+                "title": "Dropdown",
+                "slug": "dropdown",
+                "pages": [
+                    {
+                        "title": "Page 1",
+                        "slug": "page-1"
+                    },
+                    {
+                        "title": "Page 2",
+                        "slug": "page-2"
+                    },
+                    {
+                        "title": "Page 3",
+                        "slug": "page-3"
+                    }
+                ]
+            }
+        ]
+    },
+    "blogs": [
+        {
+            "title": "Test Blog",
+            "slug": "test-blog-1",
+            "creation_date": "2017-08-16T14:29:43.038057Z",
+            "author": {
+                "username": "esaburruss",
+                "first_name": "Edward",
+                "last_name": "Burruss"
+            }
+        },
+        {
+            "title": "Test Blog 2",
+            "slug": "test-blog-2",
+            "creation_date": "2017-08-16T14:29:43.038131Z",
+            "author": {
+                "username": "esaburruss",
+                "first_name": "Edward",
+                "last_name": "Burruss"
+            }
+        },
+        {
+            "title": "Test Blog 3",
+            "slug": "test-blog-3",
+            "creation_date": "2017-08-16T14:29:43.038181Z",
+            "author": {
+                "username": "esaburruss",
+                "first_name": "Edward",
+                "last_name": "Burruss"
+            }
+        }
+    ],
+    "categories": [
+        {
+            "title": "Test Category",
+            "slug": "test-category"
+        },
+        {
+            "title": "Software Engineering",
+            "slug": "software-engineering"
+        },
+        {
+            "title": "Gaming",
+            "slug": "gaming"
+        },
+        {
+            "title": "Diddle",
+            "slug": "diddle"
+        },
+        {
+            "title": "Foo",
+            "slug": "foo"
+        },
+        {
+            "title": "Star Wars",
+            "slug": "star-wars"
+        },
+        {
+            "title": "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZ",
+            "slug": "long"
+        }
+    ]
+}
