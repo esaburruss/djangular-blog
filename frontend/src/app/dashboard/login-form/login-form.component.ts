@@ -4,7 +4,7 @@ import { Http, Response, Headers } from '@angular/http';
 @Component({
   selector: 'app-login-form',
   templateUrl: './login-form.component.html',
-  styleUrls: ['./login-form.component.css']
+  styleUrls: ['./login-form.component.scss']
 })
 export class LoginFormComponent implements OnInit {
   csrftoken: string;
@@ -33,14 +33,14 @@ export class LoginFormComponent implements OnInit {
     login() {
 
       this.http.post(
-        'http://127.0.0.1:8000/test/',
+        'http://127.0.0.1:8000/api/auth/login/',
         JSON.stringify({
           username: 'esaburruss',
           password: 'p@ssword'
         }),
         {headers: new Headers({'Content-Type': 'application/json', 'X-CSRFToken':this.csrftoken})})
         .subscribe((res: Response) => {
-          console.log(res.json());
+          console.log(res);
 
         });
     }

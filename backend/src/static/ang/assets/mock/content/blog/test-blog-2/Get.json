@@ -1,0 +1,25 @@
+{
+    "title": "Test Blog 2",
+    "slug": "test-blog-2",
+    "body": "<p>Hello World!</p>",
+    "categories": [
+        {
+            "title": "Test Category",
+            "slug": "test-category"
+        }
+    ],
+    "creation_date": "2017-08-16T14:29:43.038131Z",
+    "author": {
+        "username": "esaburruss",
+        "first_name": "Edward",
+        "last_name": "Burruss",
+        "email": "edward@esaburruss.com",
+        "picture": "http://127.0.0.1:8000/media/Headshot.jpg",
+        "facebook": "BudBurruss",
+        "twitter": "esaburruss",
+        "instagram": "budburruss",
+        "pinterest": null,
+        "github": "esaburruss",
+        "stackoveflow": null
+    }
+}

@@ -22,6 +22,7 @@ from content.api.views import BlogListAPIView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^api/auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^api/content/', include("content.api.urls", namespace='content-api')),
     url(r'^.*', TemplateView.as_view(template_name="home.html"), name='home'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
