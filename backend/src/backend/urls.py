@@ -17,12 +17,14 @@ from django.conf import settings
 from django.conf.urls import include, url
 from django.conf.urls.static import static
 from django.contrib import admin
+from .views import login_user
 from django.views.generic.base import TemplateView
 from content.api.views import BlogListAPIView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^api/auth/', include('rest_framework.urls', namespace='rest_framework')),
+    url(r'^api/auth/login', login_user),
     url(r'^api/content/', include("content.api.urls", namespace='content-api')),
+    url(r'^dashboard/*', TemplateView.as_view(template_name="dashboard.html"), name='dashboard'),
     url(r'^.*', TemplateView.as_view(template_name="home.html"), name='home'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

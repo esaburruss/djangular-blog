@@ -1,1 +1,62 @@
-<router-outlet></router-outlet>
+<nav class="navbar navbar-dark text-white bg-dark fixed-top navbar-expand-lg">
+  <button
+    class="navbar-toggler navbar-toggler-right"
+    type="button"
+    (click)="navbarCollapsed = !navbarCollapsed"
+    >
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div
+    class="navbar-collapse"
+    [ngbCollapse]="navbarCollapsed"
+    id="navbarContent"
+    >
+    <a class="navbar-brand" routerLink="/">{{ navbar.home.title }}</a>
+
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/blog/" routerLinkActive="active">
+          Blog
+        </a>
+      </li>
+      <li
+        *ngFor="let navitem of navbar.navitems"
+        [ngSwitch]="navitem.pages"
+        class="nav-item" >
+
+        <ng-template [ngSwitchCase]="undefined">
+          <a class="nav-link" routerLink="/page/{{navitem.slug}}" routerLinkActive="active">{{ navitem.title }}</a>
+        </ng-template>
+
+        <ng-template ngSwitchDefault>
+          <div class="ng-dropdown" ngbDropdown >
+
+            <a
+              class="nav-link dropdown-toggle"
+              id="dropdown_{{ navitem.slug }}"
+              ngbDropdownToggle>
+              {{ navitem.title }}
+            </a>
+            <div
+              class="dropdown-menu"
+              id="dropdown_{{ navitem.slug }}"
+              ngbDropdownMenu
+              *ngIf="navitem.pages">
+              <button
+                *ngFor="let page of navitem.pages"
+                routerLink="/page/{{page.slug}}"
+                routerLinkActive="active"
+                class="dropdown-item">
+                {{ page.title }}
+              </button>
+            </div>
+          </div>
+        </ng-template>
+
+      </li>
+    </ul>
+  </div>
+</nav>
+<div class="container">
+  <router-outlet></router-outlet>
+</div>

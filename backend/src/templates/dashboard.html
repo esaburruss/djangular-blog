@@ -1,0 +1,25 @@
+{% load static %}
+ <!doctype html>
+ <html lang="en">
+ <head>
+   <meta charset="utf-8">
+   <title>Budpress Dashboard</title>
+   <base href="/">
+   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+   <link rel="icon" type="image/x-icon" href="{% static 'ang/favicon.ico' %}">
+       <!-- index.html -->
+     <!--<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">-->
+ <link href="{% static 'ang/dash/styles.bundle.css' %}" rel="stylesheet"/></head>
+
+ <body>
+   {% csrf_token %}
+   <app-root>Loading...</app-root>
+
+     <!--<script type="text/javascript" src="{% static 'ang/build.js.min' %}"></script>-->
+     <script type="text/javascript" src="{% static 'ang/dash/inline.bundle.js' %}"></script>
+     <script type="text/javascript" src="{% static 'ang/dash/polyfills.bundle.js' %}"></script>
+     <script type="text/javascript" src="{% static 'ang/dash/vendor.bundle.js' %}"></script>
+     <script type="text/javascript" src="{% static 'ang/dash/main.bundle.js' %}"></script>
+
+ </body>
+ </html>

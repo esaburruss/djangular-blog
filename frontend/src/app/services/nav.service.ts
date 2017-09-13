@@ -7,19 +7,19 @@ import { Nav } from '../models/nav.model';
 import { Page } from '../models/page.model';
 import { Blog } from '../models/blog.model';
 import { Section } from '../models/section.model';
-import { Content } from '../models/content.model';
+import { HtmlContent } from '../models/htmlcontent.model';
 import { Subject } from 'rxjs/Subject';
 
 @Injectable()
 export class NavService {
   private base_url: string;
 
-  private _loadedContent: { [id:string] : Content };
+  private _loadedContent: { [id:string] : HtmlContent };
   private _nav: Nav;
 
-  private contentSource = new Subject<Content>();
+  private contentSource = new Subject<HtmlContent>();
   content$ = this.contentSource.asObservable();
-  private _content: Content;
+  private _content: HtmlContent;
 
   private _loadedSource = new Subject<boolean>();
   loaded$ = this._loadedSource.asObservable();
@@ -28,7 +28,7 @@ export class NavService {
   constructor(private http: Http) {
     this.base_url = 'http://127.0.0.1:8000/api/content/';
     this._loadedContent = {};
-    this._content = new Content({});
+    this._content = new HtmlContent({});
     this._loaded = false;
     this._nav = new Nav({});
   }
