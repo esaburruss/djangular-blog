@@ -14,7 +14,8 @@ from rest_framework.generics import (
         RetrieveAPIView,
         RetrieveUpdateAPIView,
     )
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import api_view, permission_classes, parser_classes
+from rest_framework.parsers import MultiPartParser, FileUploadParser
 from rest_framework.permissions import (
         AllowAny,
         IsAuthenticated,
@@ -27,14 +28,42 @@ from .pagination import BlogLimitOffsetPagination, BlogPageNumberPagination
 from .permissions import IsOwnerOrReadOnly
 
 from .serializers import (
-    HtmlPageSerializer,
-    BlogDetailSerializer,
-    BlogListSerializer,
-    CategoryDetailSerializer,
-    CategoryListSerializer,
-    PageDetailSerializer,
-    NavbarSerializer,
+        HtmlPageSerializer,
+        BlogDetailSerializer,
+        BlogListSerializer,
+        CategoryDetailSerializer,
+        CategoryListSerializer,
+        PageDetailSerializer,
+        PageListSerializer,
+        NavbarSerializer,
+        ContentImageSerializer,
     )
+
+@parser_classes((MultiPartParser, FileUploadParser,))
+class PageAPIView(APIView):
+    def get(self, request, format=None):
+        pages = Page.objects.all()
+        serializer = PageListSerializer(pages, many=True)
+        return Response(serializer.data)
+
+    def post(self, request, format=None):
+        serializer = PageDetailSerializer(data=request.data)
+        print(request.FILES['image0'])
+        return Response('To-Do')
+
+@parser_classes((MultiPartParser, ))
+class PageAPIDetailView(APIView):
+
+    def get_object(self, pk):
+        try:
+            return Page.objects.get(pk=pk)
+        except Page.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk, format=None):
+        page = self.get_object(pk)
+        serializer = PageDetailSerializer(page)
+        return Response(serializer.data)
 
 
 class PageHtmlAPIView(RetrieveAPIView):

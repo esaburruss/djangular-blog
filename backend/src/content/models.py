@@ -4,7 +4,7 @@ from django.db import models
 from django.db.models import permalink
 from django.db.models import Max
 
-from profiles.models import Profile
+from core.models import Profile
 # Create your models here.
 class Content(models.Model):
     title = models.CharField(max_length=100, unique=True)
@@ -27,8 +27,12 @@ def section_default():
         new_order_default = Section.objects.all().aggregate(Max('order'))['order__max']+1
     return new_order_default
 
+class ContentImage(Content):
+    image = models.ImageField(upload_to = 'content-img', blank=True, null=True)
+
 class HtmlContent(Content):
     body = models.TextField()
+    images = models.ManyToManyField(ContentImage, related_name='%(class)s')
 
     class Meta:
         abstract = True

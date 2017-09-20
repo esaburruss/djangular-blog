@@ -1,10 +1,38 @@
 from collections import OrderedDict
-from profiles.models import Profile
-from profiles.api.serializers import ProfileDetailSerializer, ProfileListSerializer
-from ..models import Blog, Category, Page, Section, HtmlContent
+from core.models import Profile
+from core.api.serializers import ProfileDetailSerializer, ProfileListSerializer
+from ..models import Blog, Category, Page, Section, HtmlContent, ContentImage
 from rest_framework import serializers
 from rest_framework.relations import Hyperlink, PKOnlyObject
 
+CONTENT_FIELDS = [
+        'title',
+        'slug',
+        'is_visible',
+        'creation_date',
+        'changed_date',
+    ]
+
+HTML_CONTENT_FIELDS = CONTENT_FIELDS + [
+        'body',
+        'images',
+    ]
+
+
+class ContentImageSerializer(serializers.ModelSerializer):
+    x1 = serializers.IntegerField(write_only=True)
+    y1 = serializers.IntegerField(write_only=True)
+    x2 = serializers.IntegerField(write_only=True)
+    y2 = serializers.IntegerField(write_only=True)
+    class Meta:
+        model = ContentImage
+        fields = CONTENT_FIELDS + [
+            'image',
+            'x1',
+            'y1',
+            'x2',
+            'y2',
+        ]
 class HtmlPageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Page
@@ -21,16 +49,25 @@ class HtmlBlogSerializer(serializers.ModelSerializer):
             'categories',
         ]
 
+class SectionDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Section
+        fields = CONTENT_FIELDS
+
 
 class PageDetailSerializer(serializers.ModelSerializer):
+    images = ContentImageSerializer(many=True)
+    section = SectionDetailSerializer(read_only=False)
     class Meta:
         model = Page
-        fields = [
-            'title',
-            'slug',
-            'body',
+        fields = HTML_CONTENT_FIELDS + [
+            'section',
         ]
 
+class PageListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Page
+        fields = CONTENT_FIELDS
 
 class CategoryListSerializer(serializers.ModelSerializer):
     class Meta:
@@ -43,15 +80,12 @@ class CategoryListSerializer(serializers.ModelSerializer):
 
 class BlogDetailSerializer(serializers.ModelSerializer):
     author = ProfileDetailSerializer(read_only=True)
-    categories = CategoryListSerializer(read_only=True, many=True)
+    images = ContentImageSerializer(many=True)
+    categories = CategoryListSerializer(read_only=False, many=True)
     class Meta:
         model = Blog
-        fields = [
-            'title',
-            'slug',
-            'body',
+        fields = HTML_CONTENT_FIELDS + [
             'categories',
-            'creation_date',
             'author',
         ]
 

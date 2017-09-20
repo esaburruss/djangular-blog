@@ -6,7 +6,7 @@ def create_defaults(apps, schema_editor):
     Page = apps.get_model("content", "Page")
     Category = apps.get_model("content", "Category")
     Blog = apps.get_model("content", "Blog")
-    Profile = apps.get_model("profiles", "Profile")
+    Profile = apps.get_model("core", "Profile")
     db_alias = schema_editor.connection.alias
     Section.objects.using(db_alias).bulk_create([
         Section(
@@ -26,7 +26,7 @@ def create_defaults(apps, schema_editor):
         Page(
             title="Home",
             slug="home",
-            body="<h1>Hello World!</h1><p>Welcome To my Djangular Blog!</p>",
+            body="<p>Welcome To my Djangular Blog! This engine was created by <a href=\"www.esaburruss.com\">Edward Burruss</a></p>",
             is_visible=True,
             footer_link=True,
             order=0,
@@ -35,7 +35,7 @@ def create_defaults(apps, schema_editor):
         Page(
             title="About",
             slug="about",
-            body="<p>Tell me baby, what's your story?</p>",
+            body="<p>Generic About Page for author/company</p><p>Edward Burruss is a Software Engineer at <a href=\"www.messagegears.com\">MessageGears</a></p>",
             is_visible=True,
             footer_link=True,
             order=1,
@@ -115,8 +115,8 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('content', '0001_initial'),
-        ('profiles', '0001_initial'),
-        ('profiles', '0002_initial_setup_profile'),
+        ('core', '0001_initial'),
+        ('core', '0002_initial_setup_core'),
     ]
 
     operations = [

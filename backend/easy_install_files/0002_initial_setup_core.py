@@ -15,13 +15,13 @@ def create_defaults(apps, schema_editor):
     superuser.set_password('p@ssword')
     superuser.save()
 
-    Profile = apps.get_model("profiles", "Profile")
+    Profile = apps.get_model("core", "Profile")
     Usr = apps.get_model("auth", "User")
     db_alias = schema_editor.connection.alias
     Profile.objects.using(db_alias).bulk_create([
         Profile(
             user=Usr.objects.using(db_alias).get(pk=1),
-            picture='Headshot.jpg',
+            picture='profile-img/Headshot.jpg',
             facebook='BudBurruss',
             twitter='esaburruss',
             instagram='budburruss',
@@ -29,11 +29,24 @@ def create_defaults(apps, schema_editor):
         )
     ])
 
+    ConfigurationItem = apps.get_model("core", "ConfigurationItem")
+
+    ConfigurationItem.objects.using(db_alias).bulk_create([
+        ConfigurationItem(
+            configuration_key = 1,
+            configuration_value = "E.S.A. Burruss",
+        ),
+        ConfigurationItem(
+            configuration_key = 6,
+            configuration_value = "False",
+            is_string = False,
+        ),
+    ])
 
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('profiles', '0001_initial'),
+        ('core', '0001_initial'),
     ]
 
     operations = [
