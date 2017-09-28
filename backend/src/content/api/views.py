@@ -10,19 +10,20 @@ from rest_framework.generics import (
         CreateAPIView,
         DestroyAPIView,
         ListAPIView,
+        ListCreateAPIView,
         UpdateAPIView,
         RetrieveAPIView,
         RetrieveUpdateAPIView,
     )
 from rest_framework.decorators import api_view, permission_classes, parser_classes
-from rest_framework.parsers import MultiPartParser, FileUploadParser
+from rest_framework.parsers import MultiPartParser, FileUploadParser, JSONParser, FormParser
 from rest_framework.permissions import (
         AllowAny,
         IsAuthenticated,
         IsAdminUser,
         IsAuthenticatedOrReadOnly,
     )
-from ..models import Blog, Category, Page, Section
+from ..models import Blog, Category, Page, Section, ContentImage
 
 from .pagination import BlogLimitOffsetPagination, BlogPageNumberPagination
 from .permissions import IsOwnerOrReadOnly
@@ -33,23 +34,60 @@ from .serializers import (
         BlogListSerializer,
         CategoryDetailSerializer,
         CategoryListSerializer,
+        SectionDetailSerializer,
         PageDetailSerializer,
         PageListSerializer,
         NavbarSerializer,
         ContentImageSerializer,
     )
 
-@parser_classes((MultiPartParser, FileUploadParser,))
-class PageAPIView(APIView):
-    def get(self, request, format=None):
-        pages = Page.objects.all()
-        serializer = PageListSerializer(pages, many=True)
-        return Response(serializer.data)
+@parser_classes((FormParser, MultiPartParser,))
+class ContentImageAPIView(ListCreateAPIView):
+    serializer_class = ContentImageSerializer
 
-    def post(self, request, format=None):
-        serializer = PageDetailSerializer(data=request.data)
-        print(request.FILES['image0'])
-        return Response('To-Do')
+    def get_queryset(self):
+        pages = ContentImage.objects.filter(page__slug=self.kwargs['slug'])
+        return pages
+
+    def page(self, slug):
+        page = Page.objects.filter(slug=slug)
+
+        if page is None:
+            raise NotFound('Page Not Found')
+        return page
+
+    def get_serializer_context(self):
+        print(self.request.data)
+        return {
+            'page': self.page(self.kwargs['slug']),
+            #'json': self.request.data['json'],
+        }
+
+    '''def post(self, request, *args, **kwargs):
+        print(request.data['json'])
+        print(request.data['image'])
+        return HttpResponse('You Suck')'''
+
+class PageInSectionAPIView(ListCreateAPIView):
+
+    serializer_class = PageDetailSerializer
+
+    def get_queryset(self):
+        pages = Page.objects.filter(section__slug=self.kwargs['slug'])
+        return pages
+
+    def section(self, slug):
+        print(slug)
+        section = Section.objects.get(slug=slug)
+
+        if section is None:
+            raise NotFound('Section Not Found')
+        return section
+
+    def get_serializer_context(self):
+        return {
+            'section': self.section(self.kwargs['slug'])
+        }
 
 @parser_classes((MultiPartParser, ))
 class PageAPIDetailView(APIView):

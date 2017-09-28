@@ -19,20 +19,59 @@ HTML_CONTENT_FIELDS = CONTENT_FIELDS + [
     ]
 
 
+class PageListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Page
+        fields = CONTENT_FIELDS
+
 class ContentImageSerializer(serializers.ModelSerializer):
-    x1 = serializers.IntegerField(write_only=True)
-    y1 = serializers.IntegerField(write_only=True)
-    x2 = serializers.IntegerField(write_only=True)
-    y2 = serializers.IntegerField(write_only=True)
+    x1 = serializers.IntegerField(write_only=True, required=False)
+    y1 = serializers.IntegerField(write_only=True, required=False)
+    x2 = serializers.IntegerField(write_only=True, required=False)
+    y2 = serializers.IntegerField(write_only=True, required=False)
+    pages = PageListSerializer(read_only=True, many=True)
     class Meta:
         model = ContentImage
         fields = CONTENT_FIELDS + [
+            'pages',
             'image',
             'x1',
             'y1',
             'x2',
             'y2',
         ]
+
+    def create(self, validated_data):
+        img = super().create(validated_data)
+        i = ContentImage.objects.get(slug=img.slug)
+        for page in self.context['page']:
+            print(page)
+            page.images.add(i)
+            page.save()
+        
+        return img
+
+class BaseSerializer(serializers.ModelSerializer):
+
+    '''def validate(self, instance):
+        title = instance.get('title')
+        slug = instance.get('slug')
+        if title == None and slug == None:
+            raise serializers.ValidationError('Name and Slug are blank')
+        return instance'''
+
+
+
+    class Meta:
+        fields = CONTENT_FIELDS
+        extra_kwargs = {
+            'title': {'required': True},
+            #'slug': {'read_only': True},
+        }
+
+
+
+
 class HtmlPageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Page
@@ -49,25 +88,38 @@ class HtmlBlogSerializer(serializers.ModelSerializer):
             'categories',
         ]
 
-class SectionDetailSerializer(serializers.ModelSerializer):
-    class Meta:
+class SectionDetailSerializer(BaseSerializer):
+    class Meta(BaseSerializer.Meta):
         model = Section
-        fields = CONTENT_FIELDS
 
 
-class PageDetailSerializer(serializers.ModelSerializer):
-    images = ContentImageSerializer(many=True)
-    section = SectionDetailSerializer(read_only=False)
+
+
+
+
+class PageDetailSerializer(BaseSerializer):
+    images = ContentImageSerializer(many=True, read_only=True)
+    section = SectionDetailSerializer(read_only=True)
+
+    def create(self, validated_data):
+        '''print(self.context['section'])
+        if self.context['section'].is_valid():
+            print(self.context['section'].data)'''
+        validated_data['section'] = self.context['section']
+        return super().create(validated_data)
+        '''else:
+            print(self.context['section'].errors)
+        return None'''
+
+
     class Meta:
         model = Page
-        fields = HTML_CONTENT_FIELDS + [
+        fields = BaseSerializer.Meta.fields + [
+            'body',
+            'images',
             'section',
         ]
 
-class PageListSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Page
-        fields = CONTENT_FIELDS
 
 class CategoryListSerializer(serializers.ModelSerializer):
     class Meta:
