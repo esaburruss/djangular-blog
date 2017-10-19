@@ -21,7 +21,7 @@ def create_defaults(apps, schema_editor):
     Profile.objects.using(db_alias).bulk_create([
         Profile(
             user=Usr.objects.using(db_alias).get(pk=1),
-            picture='Headshot.jpg',
+            picture='profile-img/Headshot.jpg',
             facebook='BudBurruss',
             twitter='esaburruss',
             instagram='budburruss',

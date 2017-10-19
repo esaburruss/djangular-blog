@@ -39,6 +39,7 @@ from .serializers import (
         PageListSerializer,
         NavbarSerializer,
         ContentImageSerializer,
+        ContentImageCreateSerializer,
     )
 
 @parser_classes((FormParser, MultiPartParser,))
@@ -63,10 +64,23 @@ class ContentImageAPIView(ListCreateAPIView):
             #'json': self.request.data['json'],
         }
 
-    '''def post(self, request, *args, **kwargs):
-        print(request.data['json'])
-        print(request.data['image'])
-        return HttpResponse('You Suck')'''
+    def post(self, request, *args, **kwargs):
+        page = Page.objects.get(slug=kwargs['slug'])
+        if page is not None:
+            if 'image' in request.data:
+                print(request.data)
+                image = ContentImageCreateSerializer(data=request.data)
+                if image.is_valid():
+                    img = image.save()
+                    page.images.add(img)
+                    page.save()
+                    return JsonResponse(image.data, status=201)
+                else:
+                    return JsonResponse(image.errors, status=400)
+            else:
+                return JsonResponse('Image File not included in request', status=400)
+        else:
+            return JsonResponse('Page Not Found', status=404)
 
 class PageInSectionAPIView(ListCreateAPIView):
 
