@@ -1,0 +1,247 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Angular",
+		"_postman_id": "7936d6bf-2cc2-0986-0184-868ea2589999",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Content",
+			"description": "",
+			"item": [
+				{
+					"name": "Get Nav",
+					"request": {
+						"url": "http://127.0.0.1:8000/api/content/nav/",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "dashboard",
+			"description": "",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"postman.setEnvironmentVariable(\"csrf\",postman.getResponseCookie(\"csrftoken\").value);",
+									"",
+									"tests[\"Status code is 200\"] = responseCode.code === 200;",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"loggedIn\"] = jsonData.login === 1;"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "{{http}}://{{origin}}:{{port}}/api/auth/login/",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Origin",
+								"value": "{{origin}}",
+								"description": ""
+							},
+							{
+								"key": "X-CSRFToken",
+								"value": "{{csrf}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\":\"{{username}}\",\n\t\"password\":\"{{password}}\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Post Section",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"sectionId\", jsonData.pk);",
+									"",
+									"tests[\"Status code is 201\"] = responseCode.code === 201;",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"pk\"] = jsonData.pk > 0;",
+									"tests[\"title\"] = jsonData.title.has(\"Dropdown \");",
+									"tests[\"slug\"] = jsonData.slug.has(\"dropdown-\");"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "{{http}}://{{origin}}:{{port}}/api/content/section/",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Origin",
+								"value": "{{origin}}",
+								"description": ""
+							},
+							{
+								"key": "X-CSRFToken",
+								"value": "{{csrf}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Dropdown {{$timestamp}}\",\n    \"slug\": \"dropdown-{{$timestamp}}\",\n    \"is_visible\": true\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Post Page",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"pageId\", jsonData.pk);",
+									"",
+									"tests[\"Status code is 201\"] = responseCode.code === 201;",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"tests[\"pk\"] = jsonData.pk > 0;",
+									"tests[\"title\"] = jsonData.title.has(\"Test Page \");",
+									"tests[\"slug\"] = jsonData.slug.has(\"test-page-\");"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "{{http}}://{{origin}}:{{port}}/api/content/section/{{sectionId}}/page/",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Origin",
+								"value": "{{origin}}",
+								"description": ""
+							},
+							{
+								"key": "X-CSRFToken",
+								"value": "{{csrf}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Test Page {{$timestamp}}\",\n    \"slug\": \"test-page-{{$timestamp}}\",\n    \"is_visible\": true,\n    \"body\": \"<p>This Page has an image file attached to it {% img__test_jinja %}</p>\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Post Image",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"imageId\", jsonData.pk);",
+									"",
+									"tests[\"Status code is 201\"] = responseCode.code === 201;",
+									"",
+									"var jsonData = JSON.parse(responseBody);",
+									"//tests[\"pk\"] = jsonData.pk > 0;",
+									"tests[\"title\"] = jsonData.title.has(\"Test\");",
+									"tests[\"slug\"] = jsonData.slug.has(\"test-\");"
+								]
+							}
+						}
+					],
+					"request": {
+						"url": "{{http}}://{{origin}}:{{port}}/api/content/page/{{pageId}}/image/",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Origin",
+								"value": "{{origin}}",
+								"description": ""
+							},
+							{
+								"key": "X-CSRFToken",
+								"value": "{{csrf}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "Test{{$timestamp}}",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "image",
+									"description": "",
+									"type": "file",
+									"src": "Eclipse.png"
+								},
+								{
+									"key": "slug",
+									"value": "test-jinja",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "crop",
+									"value": "1,1,300,300",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
