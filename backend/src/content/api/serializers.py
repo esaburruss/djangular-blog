@@ -88,7 +88,7 @@ class HtmlPageSerializer(serializers.ModelSerializer):
     def get_body(self, obj):
         templateVars = {}
         for img in obj.images.all():
-            templateVars['img__' + str(img.pk)] = '<img src="' + img.image.url +'" />' 
+            templateVars['img__' + str(img.slug)] = '<img src="' + img.image.url +'" />' 
         rtemplate = Environment(loader=BaseLoader()).from_string(obj.body)
         return rtemplate.render(templateVars)
 
