@@ -23,6 +23,8 @@ from rest_framework.permissions import (
         IsAdminUser,
         IsAuthenticatedOrReadOnly,
     )
+import jinja2
+
 from ..models import Blog, Category, Page, Section, ContentImage
 
 from .pagination import BlogLimitOffsetPagination, BlogPageNumberPagination
@@ -34,7 +36,7 @@ from .serializers import (
         BlogListSerializer,
         CategoryDetailSerializer,
         CategoryListSerializer,
-        SectionDetailSerializer,
+        SectionSerializer,
         PageDetailSerializer,
         PageListSerializer,
         NavbarSerializer,
@@ -42,30 +44,18 @@ from .serializers import (
         ContentImageCreateSerializer,
     )
 
-@parser_classes((FormParser, MultiPartParser, JSONParser,))
-class ContentImageAPIView(ListCreateAPIView):
+@parser_classes((FormParser, MultiPartParser,))
+class ContentImageAPIView(CreateAPIView):
     serializer_class = ContentImageSerializer
-
-    def get_queryset(self):
-        pages = ContentImage.objects.filter(page__slug=self.kwargs['slug'])
-        return pages
-
-    def page(self, slug):
-        page = Page.objects.filter(slug=slug)
-
-        if page is None:
-            raise NotFound('Page Not Found')
-        return page
 
     def get_serializer_context(self):
         print(self.request.data)
         return {
-            'page': self.page(self.kwargs['slug']),
-            #'json': self.request.data['json'],
+            'page': self.page(self.kwargs['pk']),
         }
 
     def post(self, request, *args, **kwargs):
-        page = Page.objects.get(slug=kwargs['slug'])
+        page = Page.objects.get(pk=kwargs['pk'])
         if page is not None:
             if 'image' in request.data:
                 print(request.data)
@@ -83,17 +73,20 @@ class ContentImageAPIView(ListCreateAPIView):
         else:
             return JsonResponse('Page Not Found', status=404)
 
+class SectionListCreateAPIView(ListCreateAPIView):
+    serializer_class = SectionSerializer
+    queryset = Section.objects.all()
+
 class PageInSectionAPIView(ListCreateAPIView):
 
     serializer_class = PageDetailSerializer
 
     def get_queryset(self):
-        pages = Page.objects.filter(section__slug=self.kwargs['slug'])
+        pages = Page.objects.filter(section__pk=self.kwargs['pk'])
         return pages
 
-    def section(self, slug):
-        print(slug)
-        section = Section.objects.get(slug=slug)
+    def section(self, pk):
+        section = Section.objects.get(pk=pk)
 
         if section is None:
             raise NotFound('Section Not Found')
@@ -101,10 +94,9 @@ class PageInSectionAPIView(ListCreateAPIView):
 
     def get_serializer_context(self):
         return {
-            'section': self.section(self.kwargs['slug'])
+            'section': self.section(self.kwargs['pk'])
         }
 
-@parser_classes((MultiPartParser, ))
 class PageAPIDetailView(APIView):
 
     def get_object(self, pk):
@@ -203,10 +195,3 @@ class CategoryListAPIView(ListAPIView):
                     Q(user__last_name__icontains=query)
                     ).distinct()
         return queryset_list
-
-
-class NavbarAPIView(ListAPIView):
-    queryset = Section.objects.filter(is_visible=True)
-    serializer_class = NavbarSerializer
-    #filter_backends= [SearchFilter, OrderingFilter]
-    permission_classes = [AllowAny]

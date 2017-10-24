@@ -1,3 +1,5 @@
+from collections import OrderedDict
+
 from rest_framework import serializers
 from rest_framework.relations import Hyperlink, PKOnlyObject
 
@@ -5,6 +7,9 @@ from drf_img_crop.serializers import ImageCreateSerializer
 
 from core.models import Profile
 from core.api.serializers import ProfileDetailSerializer, ProfileListSerializer
+
+from jinja2 import Environment, BaseLoader
+
 
 from ..models import Blog, Category, Page, Section, HtmlContent, ContentImage
 
@@ -55,32 +60,37 @@ class ContentImageCreateSerializer(ImageCreateSerializer):
 
 class BaseSerializer(serializers.ModelSerializer):
 
-    '''def validate(self, instance):
+    def validate(self, instance):
         title = instance.get('title')
         slug = instance.get('slug')
         if title == None and slug == None:
             raise serializers.ValidationError('Name and Slug are blank')
-        return instance'''
-
-
+        return instance
 
     class Meta:
-        fields = CONTENT_FIELDS
+        fields = ['pk'] + CONTENT_FIELDS
         extra_kwargs = {
             'title': {'required': True},
-            #'slug': {'read_only': True},
+            'slug': {'required': True},
         }
 
 
 
 
 class HtmlPageSerializer(serializers.ModelSerializer):
+    body = serializers.SerializerMethodField()
     class Meta:
         model = Page
         fields = [
             'body',
         ]
 
+    def get_body(self, obj):
+        templateVars = {}
+        for img in obj.images.all():
+            templateVars['img__' + str(img.pk)] = '<img src="' + img.image.url +'" />' 
+        rtemplate = Environment(loader=BaseLoader()).from_string(obj.body)
+        return rtemplate.render(templateVars)
 
 class HtmlBlogSerializer(serializers.ModelSerializer):
     class Meta:
@@ -90,7 +100,7 @@ class HtmlBlogSerializer(serializers.ModelSerializer):
             'categories',
         ]
 
-class SectionDetailSerializer(BaseSerializer):
+class SectionSerializer(BaseSerializer):
     class Meta(BaseSerializer.Meta):
         model = Section
 
@@ -101,7 +111,7 @@ class SectionDetailSerializer(BaseSerializer):
 
 class PageDetailSerializer(BaseSerializer):
     images = ContentImageSerializer(many=True, read_only=True)
-    section = SectionDetailSerializer(read_only=True)
+    section = SectionSerializer(read_only=True)
 
     def create(self, validated_data):
         '''print(self.context['section'])
