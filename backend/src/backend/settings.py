@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'drf_img_crop',
     'core',
     'content',
 ]
@@ -144,8 +145,7 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
          'rest_framework.authentication.SessionAuthentication',
          #'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
-        #'rest_framework.authentication.BasicAuthentication'
-
+         #'rest_framework.authentication.BasicAuthentication'
     ),
     "DEFAULT_PERMISSION_CLASSES": (
         'rest_framework.permissions.IsAuthenticated',

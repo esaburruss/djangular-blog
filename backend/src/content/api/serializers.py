@@ -1,15 +1,11 @@
-from collections import OrderedDict
-from io import BytesIO
-import sys
-
-
-from django.core.files.uploadedfile import InMemoryUploadedFile
 from rest_framework import serializers
 from rest_framework.relations import Hyperlink, PKOnlyObject
-from PIL import Image
+
+from drf_img_crop.serializers import ImageCreateSerializer
 
 from core.models import Profile
 from core.api.serializers import ProfileDetailSerializer, ProfileListSerializer
+
 from ..models import Blog, Category, Page, Section, HtmlContent, ContentImage
 
 
@@ -44,51 +40,17 @@ class ContentImageSerializer(serializers.ModelSerializer):
             'image': {'read_only': True},
         }
 
-    '''def create(self, validated_data):
-        img = super().create(validated_data)
-        i = ContentImage.objects.get(slug=img.slug)
-        for page in self.context['page']:
-            print(page)
-            page.images.add(i)
-            page.save()
+class ContentImageCreateSerializer(ImageCreateSerializer):
 
-        return img'''
-
-class ContentImageCreateSerializer(serializers.ModelSerializer):
-    x1 = serializers.IntegerField(write_only=True, required=False)
-    y1 = serializers.IntegerField(write_only=True, required=False)
-    x2 = serializers.IntegerField(write_only=True, required=False)
-    y2 = serializers.IntegerField(write_only=True, required=False)
     class Meta:
         model = ContentImage
         fields = CONTENT_FIELDS + [
             'image',
-            'x1',
-            'y1',
-            'x2',
-            'y2',
+            'crop',
         ]
         extra_kwargs = {
             'image': {'required': True},
         }
-    '''def save(self):
-
-        print(self['image'])'''
-
-    def create(self, validated_data):
-        if 'x1' in validated_data and 'y1' in validated_data and 'x2' in validated_data and 'y2' in validated_data:
-            if validated_data['x1'] > 0 and validated_data['y1'] > 0 and validated_data['x2'] > validated_data['x1'] and validated_data['y2'] > validated_data['y1']:
-                print(validated_data['image'])
-                img = Image.open(validated_data['image'])
-                print(img)
-                img2 = img.crop((validated_data['x1'],validated_data['y1'],validated_data['x2'],validated_data['y2']))
-                new_image_io = BytesIO()
-                print(img2)
-                img2.save(new_image_io, format='JPEG', quality=90)
-                validated_data['image'] = InMemoryUploadedFile(new_image_io, None, validated_data['slug']+'.jpg', 'image/jpeg',
-                                          sys.getsizeof(new_image_io), None)
-            del validated_data['x1'],validated_data['y1'],validated_data['x2'],validated_data['y2']
-        return super().create(validated_data)
 
 
 class BaseSerializer(serializers.ModelSerializer):

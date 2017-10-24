@@ -42,7 +42,7 @@ from .serializers import (
         ContentImageCreateSerializer,
     )
 
-@parser_classes((FormParser, MultiPartParser,))
+@parser_classes((FormParser, MultiPartParser, JSONParser,))
 class ContentImageAPIView(ListCreateAPIView):
     serializer_class = ContentImageSerializer
 
@@ -70,6 +70,7 @@ class ContentImageAPIView(ListCreateAPIView):
             if 'image' in request.data:
                 print(request.data)
                 image = ContentImageCreateSerializer(data=request.data)
+                print(image)
                 if image.is_valid():
                     img = image.save()
                     page.images.add(img)
