@@ -1,14 +1,16 @@
 from __future__ import unicode_literals
+import re
 
 from django.db import models
 from django.db.models import permalink
 from django.db.models import Max
+from django.db.utils import IntegrityError
 
 from core.models import Profile
 # Create your models here.
 class Content(models.Model):
     title = models.CharField(max_length=100, unique=True)
-    slug = models.SlugField(max_length=100, unique=True)
+    slug = models.SlugField(max_length=100, unique=True, editable=False)
     creation_date = models.DateTimeField(auto_now_add=True)
     changed_date = models.DateTimeField(auto_now=True)
     is_visible = models.BooleanField(default=False)
@@ -19,6 +21,12 @@ class Content(models.Model):
         return self.title
     def __unicode__(self):
         return '%s' % self.title
+
+    def save(self, *args, **kwargs):
+        if not self.pk:
+            self.slug = re.sub(r'[^\w]', '', self.title.replace(' ', '_').lower())
+            super().save(*args, **kwargs)
+
 
 def section_default():
     if Section.objects.all().count() == 0:

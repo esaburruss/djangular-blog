@@ -14,7 +14,9 @@ from rest_framework.generics import (
         UpdateAPIView,
         RetrieveAPIView,
         RetrieveUpdateAPIView,
+        RetrieveUpdateDestroyAPIView,
     )
+from rest_framework.reverse import reverse
 from rest_framework.decorators import api_view, permission_classes, parser_classes
 from rest_framework.parsers import MultiPartParser, FileUploadParser, JSONParser, FormParser
 from rest_framework.permissions import (
@@ -24,6 +26,16 @@ from rest_framework.permissions import (
         IsAuthenticatedOrReadOnly,
     )
 import jinja2
+
+from drf_hateoas_base.views import (
+        HateoasListView,
+        HateoasRetrieveView,
+        HateoasUpdateView,
+        HateoasCreateView,
+        HateoasDestroyView,
+        create_link,
+        ExtraLinksAwarePageNumberPagination,
+    )
 
 from ..models import Blog, Category, Page, Section, ContentImage
 
@@ -37,12 +49,30 @@ from .serializers import (
         CategoryDetailSerializer,
         CategoryListSerializer,
         SectionSerializer,
-        PageDetailSerializer,
+        PageSerializer,
         PageListSerializer,
         NavbarSerializer,
         ContentImageSerializer,
         ContentImageCreateSerializer,
     )
+
+class SectionLCAPIView(ListCreateAPIView):
+    serializer_class = SectionSerializer
+    queryset = Section.objects.all()
+
+class SectionRUDAPIView(RetrieveUpdateDestroyAPIView):
+    serializer_class = SectionSerializer
+    queryset = Section.objects.all()
+    lookup_fields = ('pk',)
+
+class PageLCAPIView(ListCreateAPIView):
+    serializer_class = PageSerializer
+    queryset = Page.objects.all()
+
+class PageRUDAPIView(RetrieveUpdateDestroyAPIView):
+    serializer_class = PageSerializer
+    queryset = Page.objects.all()
+    lookup_fields = ('pk',)
 
 @parser_classes((FormParser, MultiPartParser,))
 class ContentImageAPIView(CreateAPIView):
@@ -73,13 +103,10 @@ class ContentImageAPIView(CreateAPIView):
         else:
             return JsonResponse('Page Not Found', status=404)
 
-class SectionListCreateAPIView(ListCreateAPIView):
-    serializer_class = SectionSerializer
-    queryset = Section.objects.all()
 
 class PageInSectionAPIView(ListCreateAPIView):
 
-    serializer_class = PageDetailSerializer
+    serializer_class = PageSerializer
 
     def get_queryset(self):
         pages = Page.objects.filter(section__pk=self.kwargs['pk'])
@@ -97,7 +124,7 @@ class PageInSectionAPIView(ListCreateAPIView):
             'section': self.section(self.kwargs['pk'])
         }
 
-class PageAPIDetailView(APIView):
+'''class PageAPIDetailView(APIView):
 
     def get_object(self, pk):
         try:
@@ -108,7 +135,7 @@ class PageAPIDetailView(APIView):
     def get(self, request, pk, format=None):
         page = self.get_object(pk)
         serializer = PageDetailSerializer(page)
-        return Response(serializer.data)
+        return Response(serializer.data)'''
 
 
 class PageHtmlAPIView(RetrieveAPIView):
@@ -195,3 +222,64 @@ class CategoryListAPIView(ListAPIView):
                     Q(user__last_name__icontains=query)
                     ).distinct()
         return queryset_list
+
+class PageViewSet(HateoasListView, HateoasRetrieveView, HateoasUpdateView, HateoasCreateView,
+                  HateoasDestroyView):
+    queryset = Page.objects.all()
+    #serializer_class = PageSerializer
+
+    def get_serializer_class(self):
+        if self.action == 'list':
+            return PageListSerializer
+        return PageSerializer
+
+    def get_list_links(self, request):
+        return [
+            {
+                'desc': 'Self',
+                'href': request.build_absolute_uri(request.path),
+                'method': 'GET',
+            },
+            {
+                'desc': 'New Page',
+                'href': request.build_absolute_uri(request.path),
+                'method': 'POST'
+            }
+        ]
+
+    def linkify_list_data(self, request, data):
+        for page in data:
+            detail_link = request.build_absolute_uri(reverse('page-detail', kwargs={'pk': page['pk']}))
+            page['_links'] = [
+                create_link('Page detail', detail_link, 'GET'),
+            ]
+        return data
+
+    def get_retrieve_links(self, request, instance):
+        self_link = request.build_absolute_uri(request.path)
+        #image_link = request.build_absolute_uri(reverse('page-images-list', kwargs={'page_pk': instance.pk}))
+        #memberlist_link = request.build_absolute_uri(reverse('band-members-list', kwargs={'page_pk': instance.pk}))
+
+        return [
+            create_link('Self', self_link, 'GET'),
+            create_link('Update self', self_link, 'PUT'),
+            create_link('Delete self', self_link, 'DELETE'),
+            #create_link('List of images', image_link, 'GET'),
+            #create_link('Add new image', image_link, 'POST'),
+            #create_link('List of members', memberlist_link, 'GET'),
+            #create_link('Add new member', memberlist_link, 'POST')
+        ]
+
+    def get_create_links(self, request, data):
+        detail_link = request.build_absolute_uri(reverse('page-detail', kwargs={'pk': data['pk']}))
+
+        return [
+            create_link('Detail of page', detail_link, 'GET')
+        ]
+
+    def get_update_links(self, request, instance):
+        detail_link = request.build_absolute_uri(reverse('page-detail', kwargs={'pk': instance.pk}))
+
+        return [
+            create_link('Detail of page', detail_link, 'GET')
+       ]

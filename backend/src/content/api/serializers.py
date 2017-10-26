@@ -1,3 +1,4 @@
+import re
 from collections import OrderedDict
 
 from rest_framework import serializers
@@ -12,9 +13,10 @@ from jinja2 import Environment, BaseLoader
 
 
 from ..models import Blog, Category, Page, Section, HtmlContent, ContentImage
-
+from .validators import TitleValidator
 
 CONTENT_FIELDS = [
+        'pk',
         'title',
         'slug',
         'is_visible',
@@ -27,23 +29,93 @@ HTML_CONTENT_FIELDS = CONTENT_FIELDS + [
         'images',
     ]
 
+BASE_KWARGS = {
+    'pk': {'read_only': True},
+    'slug': {'read_only': True},
+    'creation_date': {'read_only': True},
+    'changed_date': {'read_only': True},
+}
 
-class PageListSerializer(serializers.ModelSerializer):
+READ_ONLY_KWARGS = {**BASE_KWARGS, **{'title': {'read_only': True}}}
+
+CONTENT_FIELDS_KWARGS = {**BASE_KWARGS, **{'title': {'required': True}}}
+
+
+def GET_CONTENT_FIELDS_KWARGS(queryset):
+    return {**BASE_KWARGS, **{'title': {'required': True, 'validators':[TitleValidator(queryset=queryset)]}}}
+
+#SLUG_REGEX = re.compile('^(\w+)$')
+
+'''class BaseSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Page
         fields = CONTENT_FIELDS
+        extra_kwargs = CONTENT_FIELDS_KWARGS'''
+
+class BaseListSerializer(serializers.ModelSerializer):
+    class Meta:
+        fields = CONTENT_FIELDS
+        extra_kwargs = READ_ONLY_KWARGS
+
+class PageListSerializer(BaseListSerializer):
+    class Meta(BaseListSerializer.Meta):
+        model = Page
+
+class SectionSerializer(serializers.ModelSerializer):
+    pages = PageListSerializer(read_only=True, many=True)
+    class Meta:
+        model = Section
+        fields = CONTENT_FIELDS + ['pages']
+        extra_kwargs = GET_CONTENT_FIELDS_KWARGS(queryset=model.objects.all())
+
+
+class BlogListSerializer(serializers.ModelSerializer):
+    author = ProfileListSerializer(read_only=True)
+    class Meta:
+        model = Blog
+        fields = CONTENT_FIELDS + ['Author']
+        extra_kwargs = GET_CONTENT_FIELDS_KWARGS(queryset=model.objects.all())
+
+
+class CategorySerializer(serializers.ModelSerializer):
+    blogs = BlogListSerializer(many=True, read_only=True)
+    class Meta:
+        model = Blog
+        fields = CONTENT_FIELDS + ['blogs']
+        extra_kwargs = GET_CONTENT_FIELDS_KWARGS(queryset=model.objects.all())
+
+
 
 class ContentImageSerializer(serializers.ModelSerializer):
     pages = PageListSerializer(read_only=True, many=True)
     class Meta:
         model = ContentImage
         fields = CONTENT_FIELDS + [
+            'pk',
             'pages',
             'image',
         ]
         extra_kwargs = {
             'image': {'read_only': True},
+            'pk': {'read_only': True},
         }
+
+class PageSerializer(serializers.ModelSerializer):
+    #images = ContentImageSerializer(many=True, read_only=True)
+    #section = SectionSerializer(read_only=True)
+
+    def create(self, validated_data):
+        if self.context['section'] is not None:
+            validated_data['section'] = self.context['section']
+        return super().create(validated_data)
+
+    class Meta:
+        model = Page
+        fields = CONTENT_FIELDS + [
+            'body',
+            #'images',
+            #'section',
+        ]
+        extra_kwargs = GET_CONTENT_FIELDS_KWARGS(queryset=model.objects.all())
 
 class ContentImageCreateSerializer(ImageCreateSerializer):
 
@@ -58,25 +130,6 @@ class ContentImageCreateSerializer(ImageCreateSerializer):
         }
 
 
-class BaseSerializer(serializers.ModelSerializer):
-
-    def validate(self, instance):
-        title = instance.get('title')
-        slug = instance.get('slug')
-        if title == None and slug == None:
-            raise serializers.ValidationError('Name and Slug are blank')
-        return instance
-
-    class Meta:
-        fields = ['pk'] + CONTENT_FIELDS
-        extra_kwargs = {
-            'title': {'required': True},
-            'slug': {'required': True},
-        }
-
-
-
-
 class HtmlPageSerializer(serializers.ModelSerializer):
     body = serializers.SerializerMethodField()
     class Meta:
@@ -88,7 +141,7 @@ class HtmlPageSerializer(serializers.ModelSerializer):
     def get_body(self, obj):
         templateVars = {}
         for img in obj.images.all():
-            templateVars['img__' + str(img.slug)] = '<img src="' + img.image.url +'" />' 
+            templateVars['img__' + str(img.slug)] = '<img src="' + img.image.url +'" />'
         rtemplate = Environment(loader=BaseLoader()).from_string(obj.body)
         return rtemplate.render(templateVars)
 
@@ -100,37 +153,6 @@ class HtmlBlogSerializer(serializers.ModelSerializer):
             'categories',
         ]
 
-class SectionSerializer(BaseSerializer):
-    class Meta(BaseSerializer.Meta):
-        model = Section
-
-
-
-
-
-
-class PageDetailSerializer(BaseSerializer):
-    images = ContentImageSerializer(many=True, read_only=True)
-    section = SectionSerializer(read_only=True)
-
-    def create(self, validated_data):
-        '''print(self.context['section'])
-        if self.context['section'].is_valid():
-            print(self.context['section'].data)'''
-        validated_data['section'] = self.context['section']
-        return super().create(validated_data)
-        '''else:
-            print(self.context['section'].errors)
-        return None'''
-
-
-    class Meta:
-        model = Page
-        fields = BaseSerializer.Meta.fields + [
-            'body',
-            'images',
-            'section',
-        ]
 
 
 class CategoryListSerializer(serializers.ModelSerializer):
@@ -150,18 +172,6 @@ class BlogDetailSerializer(serializers.ModelSerializer):
         model = Blog
         fields = HTML_CONTENT_FIELDS + [
             'categories',
-            'author',
-        ]
-
-
-class BlogListSerializer(serializers.ModelSerializer):
-    author = ProfileListSerializer(read_only=True)
-    class Meta:
-        model = Blog
-        fields = [
-            'title',
-            'slug',
-            'creation_date',
             'author',
         ]
 

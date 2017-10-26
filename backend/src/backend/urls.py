@@ -19,12 +19,19 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from .views import login_user
 from django.views.generic.base import TemplateView
-from content.api.views import BlogListAPIView
+from content.api.views import BlogListAPIView, PageViewSet
+from rest_framework import routers
 
-urlpatterns = static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + [
+router = routers.SimpleRouter()
+
+router.register(r'page', PageViewSet)
+
+urlpatterns = static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + router.urls + [
+    #url(r'^hateoas/$', PageViewSet.as_view({'get': 'list'})),
+    #url(r'^hateoas/(?P<pk>[0-9]+)/$', PageViewSet.as_view({'get': 'detail'})),
     url(r'^admin/', admin.site.urls),
     url(r'^api/auth/login', login_user),
     url(r'^api/content/', include("content.api.urls", namespace='content-api')),
     url(r'^dashboard/*', TemplateView.as_view(template_name="dashboard.html"), name='dashboard'),
-    url(r'^.*', TemplateView.as_view(template_name="home.html"), name='home'),
+    #url(r'^.*', TemplateView.as_view(template_name="home.html"), name='home'),
 ]
