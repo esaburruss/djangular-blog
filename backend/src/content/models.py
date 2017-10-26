@@ -7,6 +7,9 @@ from django.db.models import Max
 from django.db.utils import IntegrityError
 
 from core.models import Profile
+
+def gen_slug(title):
+    return re.sub(r'[^\w]', '', title.replace(' ', '_').lower())
 # Create your models here.
 class Content(models.Model):
     title = models.CharField(max_length=100, unique=True)
@@ -24,7 +27,7 @@ class Content(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.pk:
-            self.slug = re.sub(r'[^\w]', '', self.title.replace(' ', '_').lower())
+            self.slug = gen_slug(self.title)
             super().save(*args, **kwargs)
 
 

@@ -60,6 +60,10 @@ class PageListSerializer(BaseListSerializer):
     class Meta(BaseListSerializer.Meta):
         model = Page
 
+class ContentImageListSerializer(BaseListSerializer):
+    class Meta(BaseListSerializer.Meta):
+        model = ContentImage
+
 class SectionSerializer(serializers.ModelSerializer):
     pages = PageListSerializer(read_only=True, many=True)
     class Meta:
@@ -125,9 +129,9 @@ class ContentImageCreateSerializer(ImageCreateSerializer):
             'image',
             'crop',
         ]
-        extra_kwargs = {
+        extra_kwargs = {**{
             'image': {'required': True},
-        }
+        }, **GET_CONTENT_FIELDS_KWARGS(queryset=model.objects.all())}
 
 
 class HtmlPageSerializer(serializers.ModelSerializer):

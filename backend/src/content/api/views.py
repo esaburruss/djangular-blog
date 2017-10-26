@@ -35,6 +35,7 @@ from drf_hateoas_base.views import (
         HateoasDestroyView,
         create_link,
         ExtraLinksAwarePageNumberPagination,
+        HateoasViewSet
     )
 
 from ..models import Blog, Category, Page, Section, ContentImage
@@ -53,6 +54,7 @@ from .serializers import (
         PageListSerializer,
         NavbarSerializer,
         ContentImageSerializer,
+        ContentImageListSerializer,
         ContentImageCreateSerializer,
     )
 
@@ -249,7 +251,7 @@ class PageViewSet(HateoasListView, HateoasRetrieveView, HateoasUpdateView, Hateo
 
     def linkify_list_data(self, request, data):
         for page in data:
-            detail_link = request.build_absolute_uri(reverse('page-detail', kwargs={'pk': page['pk']}))
+            detail_link = request.build_absolute_uri(reverse('content-api:page-detail', kwargs={'pk': page['pk']}))
             page['_links'] = [
                 create_link('Page detail', detail_link, 'GET'),
             ]
@@ -271,15 +273,114 @@ class PageViewSet(HateoasListView, HateoasRetrieveView, HateoasUpdateView, Hateo
         ]
 
     def get_create_links(self, request, data):
-        detail_link = request.build_absolute_uri(reverse('page-detail', kwargs={'pk': data['pk']}))
+        detail_link = request.build_absolute_uri(reverse('content-api:page-detail', kwargs={'pk': data['pk']}))
 
         return [
             create_link('Detail of page', detail_link, 'GET')
         ]
 
     def get_update_links(self, request, instance):
-        detail_link = request.build_absolute_uri(reverse('page-detail', kwargs={'pk': instance.pk}))
+        detail_link = request.build_absolute_uri(reverse('content-apipage-detail', kwargs={'pk': instance.pk}))
 
         return [
             create_link('Detail of page', detail_link, 'GET')
        ]
+
+@parser_classes((FormParser, MultiPartParser,))
+class ContentImageAPIView(HateoasCreateView):
+    serializer_class = ContentImageSerializer
+
+    '''def get_serializer_context(self):
+        print(self.request.data)
+        return {
+            'page': self.page(self.kwargs['pk']),
+        }'''
+
+    def post(self, request, *args, **kwargs):
+        page = Page.objects.get(pk=request.POST.get('page'))
+        if page is not None:
+            if 'image' in request.data:
+                print(request.data)
+                image = ContentImageCreateSerializer(data=request.data)
+                print(image)
+                if image.is_valid():
+                    img = image.save()
+                    page.images.add(img)
+                    page.save()
+                    return JsonResponse(image.data, status=201)
+                else:
+                    return JsonResponse(image.errors, status=400)
+            else:
+                return JsonResponse('Image File not included in request', status=400)
+        else:
+            return JsonResponse('Page Not Found', status=404)
+
+'''class HtmlContentImageList(HateoasViewSet, ):
+    serializer_class = ContentImageListSerializer
+    filter_backends= [SearchFilter, OrderingFilter]
+    #queryset = ContentImage.objects.all()
+    #permission_classes = [AllowAny]
+    #search_fields = ['slug']
+    #pagination_class = BlogPageNumberPagination #PageNumberPagination
+    def get_list_serializer(self):
+        return ContentImageListSerializer
+
+    def get_detail_serializer(self):
+        return Content
+
+    def get_object_name(self):
+        return ''
+
+    def get_parent_namespace(self):
+        return ''
+
+    def get_queryset(self, *args, **kwargs):
+        #queryset_list = super(PostListAPIView, self).get_queryset(*args, **kwargs)
+        queryset_list = None #filter(user=self.request.user)
+        #query = self.request.GET.get("q")
+        page = self.request.GET.get("page")
+        blog = self.request.GET.get("blog")
+        if page:
+            queryset_list = ContentImage.objects.filter(Q(page__pk=page))
+        elif blog:
+            queryset_list = ContentImage.objects.filter(Q(blog__pk=blog))
+        else:
+            queryset_list = ContentImage.objects.all()
+        return queryset_list'''
+
+class HtmlContentImageList(HateoasListView,
+        HateoasRetrieveView,
+        HateoasUpdateView,
+        ContentImageAPIView,
+        HateoasDestroyView):
+    #serializer_class = ContentImageListSerializer
+    filter_backends= [SearchFilter, OrderingFilter]
+    queryset = ContentImage.objects.all()
+    #permission_classes = [AllowAny]
+    #search_fields = ['slug']
+    #pagination_class = BlogPageNumberPagination #PageNumberPagination
+    def get_list_serializer(self):
+        return ContentImageListSerializer
+
+    def get_create_serializer(self):
+        return ContentImageCreateSerializer
+
+    def get_object_name(self):
+        return 'contentimage'
+
+    def get_parent_namespace(self):
+        return 'content-api'
+
+    def get_queryset(self, *args, **kwargs):
+        #queryset_list = super(PostListAPIView, self).get_queryset(*args, **kwargs)
+        queryset_list = None #filter(user=self.request.user)
+        #query = self.request.GET.get("q")
+        page = self.request.GET.get("page")
+        blog = self.request.GET.get("blog")
+        if page:
+            queryset_list = ContentImage.objects.filter(Q(page__pk=page))
+        elif blog:
+            queryset_list = ContentImage.objects.filter(Q(blog__pk=blog))
+        else:
+            queryset_list = ContentImage.objects.all()
+        return queryset_list

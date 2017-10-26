@@ -1,5 +1,7 @@
-from django.conf.urls import url
+from django.conf.urls import url, include
 from django.contrib import admin
+
+from rest_framework import routers
 
 from .views import (
         get_home_page,
@@ -15,7 +17,17 @@ from .views import (
         PageInSectionAPIView,
         ContentImageAPIView,
         PageViewSet,
+        HtmlContentImageList,
     )
+
+router = routers.SimpleRouter()
+
+router.register(r'page', PageViewSet)
+
+router2 = routers.SimpleRouter()
+
+router2.register(r'image', HtmlContentImageList)
+
 
 urlpatterns = [
     #Public
@@ -29,8 +41,8 @@ urlpatterns = [
     url(r'^section/$', SectionLCAPIView.as_view()),
     url(r'^section/(?P<pk>[0-9]+)/$', SectionRUDAPIView.as_view()),
     url(r'^section/(?P<pk>[0-9]+)/page/$', PageInSectionAPIView.as_view()),
-    url(r'^page/$', PageLCAPIView.as_view()),
-    url(r'^page/(?P<pk>[0-9]+)/$', PageRUDAPIView.as_view()),
-    url(r'^page/(?P<pk>[0-9]+)/image/$', ContentImageAPIView.as_view()),
-    
-]
+    #url(r'^page/$', PageLCAPIView.as_view()),
+    #url(r'^page/(?P<pk>[0-9]+)/$', PageRUDAPIView.as_view()),
+    url(r'^page/(?P<pk>[0-9]+)/', include(router2.urls)),
+    #url(r'^page/(?P<pk>[0-9]+)/image/$', ContentImageAPIView.as_view()),
+] + router2.urls
