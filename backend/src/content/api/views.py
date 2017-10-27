@@ -27,16 +27,17 @@ from rest_framework.permissions import (
     )
 import jinja2
 
-from drf_hateoas_base.views import (
-        HateoasListView,
-        HateoasRetrieveView,
-        HateoasUpdateView,
-        HateoasCreateView,
-        HateoasDestroyView,
-        create_link,
-        ExtraLinksAwarePageNumberPagination,
-        HateoasViewSet
+from drf_hateoas.pagination import ExtraLinksAwarePageNumberPagination
+from drf_hateoas.viewsets import HateoasViewSet, HateoasModelViewSet
+from drf_hateoas.mixins import (
+        HateoasListMixin,
+        HateoasRetrieveMixin,
+        HateoasUpdateMixin,
+        HateoasCreateMixin,
+        HateoasDestroyMixin
     )
+
+from drf_hateoas import viewsets, mixins, pagination
 
 from ..models import Blog, Category, Page, Section, ContentImage
 
@@ -58,7 +59,7 @@ from .serializers import (
         ContentImageCreateSerializer,
     )
 
-class SectionLCAPIView(ListCreateAPIView):
+class SectionModelViewSet(HateoasModelViewSet):
     serializer_class = SectionSerializer
     queryset = Section.objects.all()
 
@@ -225,76 +226,18 @@ class CategoryListAPIView(ListAPIView):
                     ).distinct()
         return queryset_list
 
-class PageViewSet(HateoasListView, HateoasRetrieveView, HateoasUpdateView, HateoasCreateView,
-                  HateoasDestroyView):
+class PageViewSet(HateoasModelViewSet):
     queryset = Page.objects.all()
-    #serializer_class = PageSerializer
+    serializer_class = PageSerializer
+    list_serializer_class = PageListSerializer
 
-    def get_serializer_class(self):
-        if self.action == 'list':
-            return PageListSerializer
-        return PageSerializer
-
-    def get_list_links(self, request):
-        return [
-            {
-                'desc': 'Self',
-                'href': request.build_absolute_uri(request.path),
-                'method': 'GET',
-            },
-            {
-                'desc': 'New Page',
-                'href': request.build_absolute_uri(request.path),
-                'method': 'POST'
-            }
-        ]
-
-    def linkify_list_data(self, request, data):
-        for page in data:
-            detail_link = request.build_absolute_uri(reverse('content-api:page-detail', kwargs={'pk': page['pk']}))
-            page['_links'] = [
-                create_link('Page detail', detail_link, 'GET'),
-            ]
-        return data
-
-    def get_retrieve_links(self, request, instance):
-        self_link = request.build_absolute_uri(request.path)
-        #image_link = request.build_absolute_uri(reverse('page-images-list', kwargs={'page_pk': instance.pk}))
-        #memberlist_link = request.build_absolute_uri(reverse('band-members-list', kwargs={'page_pk': instance.pk}))
-
-        return [
-            create_link('Self', self_link, 'GET'),
-            create_link('Update self', self_link, 'PUT'),
-            create_link('Delete self', self_link, 'DELETE'),
-            #create_link('List of images', image_link, 'GET'),
-            #create_link('Add new image', image_link, 'POST'),
-            #create_link('List of members', memberlist_link, 'GET'),
-            #create_link('Add new member', memberlist_link, 'POST')
-        ]
-
-    def get_create_links(self, request, data):
-        detail_link = request.build_absolute_uri(reverse('content-api:page-detail', kwargs={'pk': data['pk']}))
-
-        return [
-            create_link('Detail of page', detail_link, 'GET')
-        ]
-
-    def get_update_links(self, request, instance):
-        detail_link = request.build_absolute_uri(reverse('content-apipage-detail', kwargs={'pk': instance.pk}))
-
-        return [
-            create_link('Detail of page', detail_link, 'GET')
-       ]
-
-@parser_classes((FormParser, MultiPartParser,))
-class ContentImageAPIView(HateoasCreateView):
+@parser_classes((FormParser, MultiPartParser,JSONParser))
+class ContentImageAPIView(HateoasCreateMixin):
     serializer_class = ContentImageSerializer
 
-    '''def get_serializer_context(self):
+    def get_serializer_context(self):
         print(self.request.data)
-        return {
-            'page': self.page(self.kwargs['pk']),
-        }'''
+        return super().get_serializer_context()#{'page': self.page(self.kwargs['pk'])}
 
     def post(self, request, *args, **kwargs):
         page = Page.objects.get(pk=request.POST.get('page'))
@@ -348,28 +291,23 @@ class ContentImageAPIView(HateoasCreateView):
             queryset_list = ContentImage.objects.all()
         return queryset_list'''
 
-class HtmlContentImageList(HateoasListView,
-        HateoasRetrieveView,
-        HateoasUpdateView,
+@parser_classes((FormParser, MultiPartParser,JSONParser))
+class HtmlContentImageList(
+        HateoasViewSet,
+        HateoasListMixin,
+        HateoasRetrieveMixin,
+        HateoasUpdateMixin,
         ContentImageAPIView,
-        HateoasDestroyView):
-    #serializer_class = ContentImageListSerializer
+        HateoasDestroyMixin):
+    serializer_class = ContentImageListSerializer
+    create_serializer_class = ContentImageCreateSerializer
+
     filter_backends= [SearchFilter, OrderingFilter]
     queryset = ContentImage.objects.all()
     #permission_classes = [AllowAny]
     #search_fields = ['slug']
     #pagination_class = BlogPageNumberPagination #PageNumberPagination
-    def get_list_serializer(self):
-        return ContentImageListSerializer
 
-    def get_create_serializer(self):
-        return ContentImageCreateSerializer
-
-    def get_object_name(self):
-        return 'contentimage'
-
-    def get_parent_namespace(self):
-        return 'content-api'
 
     def get_queryset(self, *args, **kwargs):
         #queryset_list = super(PostListAPIView, self).get_queryset(*args, **kwargs)

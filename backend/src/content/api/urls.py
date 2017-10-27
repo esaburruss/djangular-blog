@@ -10,8 +10,7 @@ from .views import (
         BlogListAPIView,
         CategoryListAPIView,
         PageHtmlAPIView,
-        SectionLCAPIView,
-        SectionRUDAPIView,
+        SectionModelViewSet,
         PageLCAPIView,
         PageRUDAPIView,
         PageInSectionAPIView,
@@ -20,14 +19,14 @@ from .views import (
         HtmlContentImageList,
     )
 
-router = routers.SimpleRouter()
+routerPage = routers.SimpleRouter()
+routerPage.register(r'page', PageViewSet)
 
-router.register(r'page', PageViewSet)
+routerImg = routers.SimpleRouter()
+routerImg.register(r'image', HtmlContentImageList)
 
-router2 = routers.SimpleRouter()
-
-router2.register(r'image', HtmlContentImageList)
-
+routerSection = routers.SimpleRouter()
+routerSection.register(r'section', SectionModelViewSet)
 
 urlpatterns = [
     #Public
@@ -38,11 +37,11 @@ urlpatterns = [
     url(r'^category/$', CategoryListAPIView.as_view(), name='list'),
     #url(r'^page/(?P<slug>[\w-]+)/$', PageHtmlAPIView.as_view(), name='detail'),
     #Admin/Protected
-    url(r'^section/$', SectionLCAPIView.as_view()),
-    url(r'^section/(?P<pk>[0-9]+)/$', SectionRUDAPIView.as_view()),
-    url(r'^section/(?P<pk>[0-9]+)/page/$', PageInSectionAPIView.as_view()),
+    #url(r'^section/$', SectionLCAPIView.as_view()),
+    #url(r'^section/(?P<pk>[0-9]+)/$', SectionRUDAPIView.as_view()),
+    #url(r'^section/(?P<pk>[0-9]+)/page/$', PageInSectionAPIView.as_view()),
     #url(r'^page/$', PageLCAPIView.as_view()),
     #url(r'^page/(?P<pk>[0-9]+)/$', PageRUDAPIView.as_view()),
-    url(r'^page/(?P<pk>[0-9]+)/', include(router2.urls)),
+    #url(r'^page/(?P<pk>[0-9]+)/', include(router2.urls)),
     #url(r'^page/(?P<pk>[0-9]+)/image/$', ContentImageAPIView.as_view()),
-] + router2.urls
+] + routerPage.urls + routerImg.urls + routerSection.urls
