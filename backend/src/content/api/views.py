@@ -59,6 +59,7 @@ from .serializers import (
         ContentImageCreateSerializer,
     )
 
+BASE_PATH = '/api/content'
 class SectionModelViewSet(HateoasModelViewSet):
     serializer_class = SectionSerializer
     queryset = Section.objects.all()

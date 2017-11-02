@@ -1,4 +1,5 @@
 from rest_framework.viewsets import GenericViewSet
+from django.urls import reverse
 
 from drf_hateoas import mixins
 
