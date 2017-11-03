@@ -92,10 +92,8 @@ class HateoasCreateMixin(mixins.CreateModelMixin):
         data = serializer.data
         data['_links'] = self.get_create_links(request, serializer.data)
         return Response(data, status=status.HTTP_201_CREATED, headers=headers)'''
-        print(request.data)
         self.data = request.data
         response = super().create(self, request, *args, **kwargs)
-        print(response)
         response.data['_links'] = self.get_create_links(response.data)
         return response
 

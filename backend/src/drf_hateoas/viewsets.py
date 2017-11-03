@@ -11,7 +11,6 @@ class HateoasViewSet(GenericViewSet):
             url = self.request.build_absolute_uri(self.request.path)
 
         if obj:
-            print(obj)
             url += str(obj[self.lookup_field])
 
         if desc is None:
@@ -27,12 +26,16 @@ class HateoasViewSet(GenericViewSet):
         return result
 
     def get_serializer_class(self):
-        print('Get Serializer Called')
         if self.action == 'list' and self.list_serializer_class:
             return self.list_serializer_class
         if self.action == 'create' and self.create_serializer_class:
             return self.create_serializer_class
         return self.serializer_class
+
+    def get_serializer_context(self):
+        context = super(HateoasViewSet, self).get_serializer_context()
+        context['request'] = self.request
+        return context
 
 
 class HateoasModelViewSet(HateoasViewSet,

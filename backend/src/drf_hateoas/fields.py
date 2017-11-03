@@ -2,28 +2,34 @@ import collections
 import copy
 
 from rest_framework.fields import DictField, CharField
+from rest_framework.relations import HyperlinkedRelatedField
 
-class RelatedObject(object):
-    name = None
-    is_parent = False
-    url = None
-    def __init__(self, name, url, pk, is_parent=None):
-        self.name = name
-        self.url = url
-        self.pk = pk
-        if is_parent:
-            this.is_parent=True
+def get_url_dict(name, url, lookup=None, method='GET', many=False):
+    dict = {
+        'NAME': name,
+        'URL': url,
+        'METHOD': method,
+        'MANY': many
+    }
+    if lookup:
+        dict['LOOKUP'] = lookup
 
-'''class HateoasUrlField(DictField):
+    return dict
+class HateoasUrlField(HyperlinkedRelatedField):
     child = CharField()
     name = None
-    is_parent = False
-    url = None
-    pk = None
-    def __init__(self, name, url, pk, is_parent=None, *args, **kwargs):
+    method = 'GET'
+    many = False
+
+    def __init__(self, name, method=None, *args, **kwargs):
         super(HateoasUrlField, self).__init__(*args, **kwargs)
         self.name = name
-        self.url = url
-        self.pk = pk
-        if is_parent:
-            this.is_parent=True'''
+        if method:
+            self.method = method
+        #if many:
+            #self.many = many
+
+
+    def to_representation(self, value):
+        url = super(HateoasUrlField,self).to_representation(value)
+        return get_url_dict(self.name, url, lookup=value.__str__(), method=self.method, many=self.many)

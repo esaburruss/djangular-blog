@@ -27,6 +27,8 @@ from rest_framework.permissions import (
     )
 import jinja2
 
+from rest_framework_extensions.mixins import NestedViewSetMixin
+
 from drf_hateoas.pagination import ExtraLinksAwarePageNumberPagination
 from drf_hateoas.viewsets import HateoasViewSet, HateoasModelViewSet
 from drf_hateoas.mixins import (
@@ -83,7 +85,6 @@ class ContentImageAPIView(CreateAPIView):
     serializer_class = ContentImageSerializer
 
     def get_serializer_context(self):
-        print(self.request.data)
         return {
             'page': self.page(self.kwargs['pk']),
         }
@@ -92,9 +93,7 @@ class ContentImageAPIView(CreateAPIView):
         page = Page.objects.get(pk=kwargs['pk'])
         if page is not None:
             if 'image' in request.data:
-                print(request.data)
                 image = ContentImageCreateSerializer(data=request.data)
-                print(image)
                 if image.is_valid():
                     img = image.save()
                     page.images.add(img)
@@ -107,13 +106,19 @@ class ContentImageAPIView(CreateAPIView):
         else:
             return JsonResponse('Page Not Found', status=404)
 
+class PageViewSet(HateoasModelViewSet):
+    queryset = Page.objects.all()
+    serializer_class = PageSerializer
+    list_serializer_class = PageListSerializer
 
-class PageInSectionAPIView(ListCreateAPIView):
+class PageInSectionAPIView(NestedViewSetMixin, HateoasViewSet,
+        HateoasCreateMixin, HateoasListMixin):
 
     serializer_class = PageSerializer
+    list_serializer_class = PageListSerializer
 
     def get_queryset(self):
-        pages = Page.objects.filter(section__pk=self.kwargs['pk'])
+        pages = Page.objects.filter(section__pk=self.kwargs['parent_lookup_section_id'])
         return pages
 
     def section(self, pk):
@@ -124,9 +129,9 @@ class PageInSectionAPIView(ListCreateAPIView):
         return section
 
     def get_serializer_context(self):
-        return {
-            'section': self.section(self.kwargs['pk'])
-        }
+        context = super(PageInSectionAPIView, self).get_serializer_context()
+        context['section'] = self.section(self.kwargs['parent_lookup_section_id'])
+        return context
 
 '''class PageAPIDetailView(APIView):
 
@@ -227,26 +232,19 @@ class CategoryListAPIView(ListAPIView):
                     ).distinct()
         return queryset_list
 
-class PageViewSet(HateoasModelViewSet):
-    queryset = Page.objects.all()
-    serializer_class = PageSerializer
-    list_serializer_class = PageListSerializer
 
 @parser_classes((FormParser, MultiPartParser,JSONParser))
 class ContentImageAPIView(HateoasCreateMixin):
     serializer_class = ContentImageSerializer
 
     def get_serializer_context(self):
-        print(self.request.data)
         return super().get_serializer_context()#{'page': self.page(self.kwargs['pk'])}
 
     def post(self, request, *args, **kwargs):
         page = Page.objects.get(pk=request.POST.get('page'))
         if page is not None:
             if 'image' in request.data:
-                print(request.data)
                 image = ContentImageCreateSerializer(data=request.data)
-                print(image)
                 if image.is_valid():
                     img = image.save()
                     page.images.add(img)

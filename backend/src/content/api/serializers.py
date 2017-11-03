@@ -11,8 +11,15 @@ from core.api.serializers import ProfileDetailSerializer, ProfileListSerializer
 
 from jinja2 import Environment, BaseLoader
 
+from drf_compound_fields.fields import DictField
+from drf_compound_fields.fields import ListField
+from drf_compound_fields.fields import ListOrItemField
+from drf_compound_fields.fields import ListField
+
 #from drf_hateoas.fields import HateoasUrlField
 from drf_hateoas.serializers import HateoasSerializer
+from drf_hateoas.fields import HateoasUrlField
+
 from ..models import Blog, Category, Page, Section, HtmlContent, ContentImage
 from .validators import TitleValidator
 
@@ -24,6 +31,7 @@ CONTENT_FIELDS = [
         'creation_date',
         'changed_date',
     ]
+
 
 HTML_CONTENT_FIELDS = CONTENT_FIELDS + [
         'body',
@@ -69,8 +77,16 @@ class ContentImageListSerializer(BaseListSerializer):
     class Meta(BaseListSerializer.Meta):
         model = ContentImage
 
-class SectionSerializer(serializers.ModelSerializer):
-    #pages = HateoasUrlField(read_only=True)#PageListSerializer(read_only=True, many=True)
+class SectionListSerializer(HateoasSerializer):
+    class Meta:
+        model = Section
+        fields = CONTENT_FIELDS
+        extra_kwargs = GET_CONTENT_FIELDS_KWARGS(queryset=model.objects.all())
+
+
+class SectionSerializer(HateoasSerializer):
+    pages = HateoasUrlField(read_only=True, name='Page', many=True,
+                view_name='content-api:page-detail')
     class Meta:
         model = Section
         fields = CONTENT_FIELDS + ['pages']
@@ -111,8 +127,12 @@ class ContentImageSerializer(serializers.ModelSerializer):
 class PageSerializer(HateoasSerializer):
     #images = ContentImageSerializer(many=True, read_only=True)
     #section = SectionSerializer(read_only=True)
-    section = serializers.SerializerMethodField()
-    path = URLS['page']
+    #section = serializers.SerializerMethodField()
+    section = HateoasUrlField(read_only=False, name='Section',
+        view_name='content-api:section-detail',
+        queryset=Section.objects.all(),
+        required=False)
+
     def create(self, validated_data):
         if self.context['section'] is not None:
             validated_data['section'] = self.context['section']
@@ -122,14 +142,9 @@ class PageSerializer(HateoasSerializer):
         model = Page
         fields = CONTENT_FIELDS + [
             'body',
-            #'section_url',
-            #'images',
             'section',
         ]
         extra_kwargs = GET_CONTENT_FIELDS_KWARGS(queryset=model.objects.all())
-
-    def get_section(self, obj):
-        return self.get_hateoas_url('Section', URLS['section'], is_parent=True, pk=2)
 
 class ContentImageCreateSerializer(ImageCreateSerializer):
 
