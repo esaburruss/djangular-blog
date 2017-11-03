@@ -64,25 +64,16 @@ def GET_CONTENT_FIELDS_KWARGS(queryset):
 
 #SLUG_REGEX = re.compile('^(\w+)$')
 
-class BaseListSerializer(serializers.ModelSerializer):
+class BaseListSerializer(HateoasSerializer):
     class Meta:
         fields = CONTENT_FIELDS
         extra_kwargs = READ_ONLY_KWARGS
-
-class PageListSerializer(BaseListSerializer):
-    class Meta(BaseListSerializer.Meta):
-        model = Page
-
-class ContentImageListSerializer(BaseListSerializer):
-    class Meta(BaseListSerializer.Meta):
-        model = ContentImage
 
 class SectionListSerializer(HateoasSerializer):
     class Meta:
         model = Section
         fields = CONTENT_FIELDS
         extra_kwargs = GET_CONTENT_FIELDS_KWARGS(queryset=model.objects.all())
-
 
 class SectionSerializer(HateoasSerializer):
     pages = HateoasUrlField(read_only=True, name='Page', many=True,
@@ -92,37 +83,9 @@ class SectionSerializer(HateoasSerializer):
         fields = CONTENT_FIELDS + ['pages']
         extra_kwargs = GET_CONTENT_FIELDS_KWARGS(queryset=model.objects.all())
 
-
-class BlogListSerializer(serializers.ModelSerializer):
-    author = ProfileListSerializer(read_only=True)
-    class Meta:
-        model = Blog
-        fields = CONTENT_FIELDS + ['Author']
-        extra_kwargs = GET_CONTENT_FIELDS_KWARGS(queryset=model.objects.all())
-
-
-class CategorySerializer(serializers.ModelSerializer):
-    blogs = BlogListSerializer(many=True, read_only=True)
-    class Meta:
-        model = Blog
-        fields = CONTENT_FIELDS + ['blogs']
-        extra_kwargs = GET_CONTENT_FIELDS_KWARGS(queryset=model.objects.all())
-
-
-
-class ContentImageSerializer(serializers.ModelSerializer):
-    pages = PageListSerializer(read_only=True, many=True)
-    class Meta:
-        model = ContentImage
-        fields = CONTENT_FIELDS + [
-            'pk',
-            'pages',
-            'image',
-        ]
-        extra_kwargs = {
-            'image': {'read_only': True},
-            'pk': {'read_only': True},
-        }
+class PageListSerializer(BaseListSerializer):
+    class Meta(BaseListSerializer.Meta):
+        model = Page
 
 class PageSerializer(HateoasSerializer):
     #images = ContentImageSerializer(many=True, read_only=True)
@@ -146,6 +109,56 @@ class PageSerializer(HateoasSerializer):
         ]
         extra_kwargs = GET_CONTENT_FIELDS_KWARGS(queryset=model.objects.all())
 
+
+class CategoryListSerializer(BaseListSerializer):
+    class Meta(BaseListSerializer.Meta):
+        model = Category
+
+
+class CategorySerializer(serializers.ModelSerializer):
+    #blogs = BlogListSerializer(many=True, read_only=True)
+    class Meta:
+        model = Category
+        fields = CONTENT_FIELDS# + ['blogs']
+        extra_kwargs = GET_CONTENT_FIELDS_KWARGS(queryset=model.objects.all())
+
+
+class BlogListSerializer(BaseListSerializer):
+    class Meta(BaseListSerializer.Meta):
+        model = Blog
+
+
+class BlogSerializer(HateoasSerializer):
+    author = serializers.PrimaryKeyRelatedField(queryset=Profile.objects.all(), required=False)
+    #images = ContentImageSerializer(many=True)
+    #categories = CategoryListSerializer(read_only=False, many=True)
+    class Meta:
+        model = Blog
+        fields = CONTENT_FIELDS + [
+            'body',
+            'author',
+            #'section',
+        ]
+        extra_kwargs = GET_CONTENT_FIELDS_KWARGS(queryset=model.objects.all())
+
+
+class ContentImageListSerializer(BaseListSerializer):
+    class Meta(BaseListSerializer.Meta):
+        model = ContentImage
+
+class ContentImageSerializer(serializers.ModelSerializer):
+    #pages = PageListSerializer(read_only=True, many=True)
+    class Meta:
+        model = ContentImage
+        fields = CONTENT_FIELDS + [
+            'image',
+            #'pages',
+        ]
+        extra_kwargs = {
+            'image': {'read_only': True},
+            'pk': {'read_only': True},
+        }
+
 class ContentImageCreateSerializer(ImageCreateSerializer):
 
     class Meta:
@@ -158,62 +171,7 @@ class ContentImageCreateSerializer(ImageCreateSerializer):
             'image': {'required': True},
         }, **GET_CONTENT_FIELDS_KWARGS(queryset=model.objects.all())}
 
-
-class HtmlPageSerializer(serializers.ModelSerializer):
-    body = serializers.SerializerMethodField()
-    class Meta:
-        model = Page
-        fields = [
-            'body',
-        ]
-
-    def get_body(self, obj):
-        templateVars = {}
-        for img in obj.images.all():
-            templateVars['img__' + str(img.slug)] = '<img src="' + img.image.url +'" />'
-        rtemplate = Environment(loader=BaseLoader()).from_string(obj.body)
-        return rtemplate.render(templateVars)
-
-class HtmlBlogSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Page
-        fields = [
-            'body',
-            'categories',
-        ]
-
-
-
-class CategoryListSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Category
-        fields = [
-            'title',
-            'slug',
-        ]
-
-
-class BlogDetailSerializer(serializers.ModelSerializer):
-    author = ProfileDetailSerializer(read_only=True)
-    images = ContentImageSerializer(many=True)
-    categories = CategoryListSerializer(read_only=False, many=True)
-    class Meta:
-        model = Blog
-        fields = HTML_CONTENT_FIELDS + [
-            'categories',
-            'author',
-        ]
-
-
-class CategoryDetailSerializer(serializers.ModelSerializer):
-    blogs = BlogListSerializer(many=True, read_only=True)
-    class Meta:
-        model = Category
-        fields = [
-            'title',
-            'slug',
-            'blogs',
-        ]
+#Read only public serializers
 
 class NavbarPageSerializer(serializers.ModelSerializer):
     class Meta:
@@ -252,3 +210,27 @@ class NavbarSerializer(serializers.ModelSerializer):
             return None
         else:
             return NavbarPageSerializer(obj.nav_pages(), many=True).data
+
+
+class HtmlPageSerializer(serializers.ModelSerializer):
+    body = serializers.SerializerMethodField()
+    class Meta:
+        model = Page
+        fields = [
+            'body',
+        ]
+
+    def get_body(self, obj):
+        templateVars = {}
+        for img in obj.images.all():
+            templateVars['img__' + str(img.slug)] = '<img src="' + img.image.url +'" />'
+        rtemplate = Environment(loader=BaseLoader()).from_string(obj.body)
+        return rtemplate.render(templateVars)
+
+class HtmlBlogSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Page
+        fields = [
+            'body',
+            'categories',
+        ]

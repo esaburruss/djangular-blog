@@ -1,10 +1,9 @@
 {
-	"variables": [],
 	"info": {
 		"name": "Angular",
 		"_postman_id": "7936d6bf-2cc2-0986-0184-868ea2589999",
 		"description": "",
-		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
@@ -14,10 +13,26 @@
 				{
 					"name": "Get Nav",
 					"request": {
-						"url": "http://127.0.0.1:8000/api/content/nav/",
 						"method": "GET",
 						"header": [],
 						"body": {},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/content/nav/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"content",
+								"nav",
+								""
+							]
+						},
 						"description": ""
 					},
 					"response": []
@@ -29,428 +44,1366 @@
 			"description": "",
 			"item": [
 				{
-					"name": "Login",
-					"event": [
+					"name": "Auth",
+					"description": "",
+					"item": [
 						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"postman.setEnvironmentVariable(\"csrf\",postman.getResponseCookie(\"csrftoken\").value);",
-									"",
-									"tests[\"Status code is 200\"] = responseCode.code === 200;",
-									"",
-									"var jsonData = JSON.parse(responseBody);",
-									"tests[\"loggedIn\"] = jsonData.login === 1;"
-								]
-							}
-						}
-					],
-					"request": {
-						"url": "{{http}}://{{origin}}:{{port}}/api/auth/login/",
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"description": ""
-							},
-							{
-								"key": "Origin",
-								"value": "{{origin}}",
-								"description": ""
-							},
-							{
-								"key": "X-CSRFToken",
-								"value": "{{csrf}}",
-								"description": ""
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\t\"username\":\"{{username}}\",\n\t\"password\":\"{{password}}\"\n}"
-						},
-						"description": ""
-					},
-					"response": []
-				},
-				{
-					"name": "Post Section",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"var jsonData = JSON.parse(responseBody);",
-									"postman.setEnvironmentVariable(\"sectionId\", jsonData.pk);",
-									"",
-									"tests[\"Status code is 201\"] = responseCode.code === 201;",
-									"",
-									"var jsonData = JSON.parse(responseBody);",
-									"tests[\"pk\"] = jsonData.pk > 0;",
-									"tests[\"title\"] = jsonData.title.has(\"Dropdown \");",
-									"tests[\"slug\"] = jsonData.slug.has(\"dropdown_\");"
-								]
-							}
-						}
-					],
-					"request": {
-						"url": "{{http}}://{{origin}}:{{port}}/api/content/section/",
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"description": ""
-							},
-							{
-								"key": "Origin",
-								"value": "{{origin}}",
-								"description": ""
-							},
-							{
-								"key": "X-CSRFToken",
-								"value": "{{csrf}}",
-								"description": ""
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"title\": \"Dropdown {{$timestamp}}\",\n    \"is_visible\": true\n}"
-						},
-						"description": ""
-					},
-					"response": []
-				},
-				{
-					"name": "Get Section",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"var jsonData = JSON.parse(responseBody);",
-									"postman.setEnvironmentVariable(\"sectionId\", jsonData.pk);",
-									"",
-									"tests[\"Status code is 201\"] = responseCode.code === 201;",
-									"",
-									"var jsonData = JSON.parse(responseBody);",
-									"tests[\"pk\"] = jsonData.pk > 0;",
-									"tests[\"title\"] = jsonData.title.has(\"Dropdown \");",
-									"tests[\"slug\"] = jsonData.slug.has(\"dropdown_\");"
-								]
-							}
-						}
-					],
-					"request": {
-						"url": "{{http}}://{{origin}}:{{port}}/api/content/section/{{sectionId}}/",
-						"method": "GET",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"description": ""
-							},
-							{
-								"key": "Origin",
-								"value": "{{origin}}",
-								"description": ""
-							},
-							{
-								"key": "X-CSRFToken",
-								"value": "{{csrf}}",
-								"description": ""
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"title\": \"Dropdown {{$timestamp}}\",\n    \"is_visible\": true\n}"
-						},
-						"description": ""
-					},
-					"response": []
-				},
-				{
-					"name": "Post Page",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"var jsonData = JSON.parse(responseBody);",
-									"postman.setEnvironmentVariable(\"pageId\", jsonData.pk);",
-									"",
-									"tests[\"Status code is 201\"] = responseCode.code === 201;",
-									"",
-									"var jsonData = JSON.parse(responseBody);",
-									"tests[\"pk\"] = jsonData.pk > 0;",
-									"tests[\"title\"] = jsonData.title.has(\"Test Page \");",
-									"tests[\"slug\"] = jsonData.slug.has(\"test_page_\");"
-								]
-							}
-						}
-					],
-					"request": {
-						"url": "{{http}}://{{origin}}:{{port}}/api/content/section/{{sectionId}}/page/",
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"description": ""
-							},
-							{
-								"key": "Origin",
-								"value": "{{origin}}",
-								"description": ""
-							},
-							{
-								"key": "X-CSRFToken",
-								"value": "{{csrf}}",
-								"description": ""
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"title\": \"Test Page {{$timestamp}}\",\n    \"slug\": \"test-page-{{$timestamp}}\",\n    \"is_visible\": true,\n    \"body\": \"<p>This is a test page</p>\"\n}"
-						},
-						"description": ""
-					},
-					"response": []
-				},
-				{
-					"name": "Get Page",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"var jsonData = JSON.parse(responseBody);",
-									"postman.setEnvironmentVariable(\"pageId\", jsonData.pk);",
-									"",
-									"tests[\"Status code is 201\"] = responseCode.code === 201;",
-									"",
-									"var jsonData = JSON.parse(responseBody);",
-									"tests[\"pk\"] = jsonData.pk > 0;",
-									"tests[\"title\"] = jsonData.title.has(\"Test Page \");",
-									"tests[\"slug\"] = jsonData.slug.has(\"test_page_\");"
-								]
-							}
-						}
-					],
-					"request": {
-						"url": "{{http}}://{{origin}}:{{port}}/api/content/section/{{sectionId}}/page/",
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"description": ""
-							},
-							{
-								"key": "Origin",
-								"value": "{{origin}}",
-								"description": ""
-							},
-							{
-								"key": "X-CSRFToken",
-								"value": "{{csrf}}",
-								"description": ""
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"title\": \"Test Page {{$timestamp}}\",\n    \"slug\": \"test-page-{{$timestamp}}\",\n    \"is_visible\": true,\n    \"body\": \"<p>This is a test page</p>\"\n}"
-						},
-						"description": ""
-					},
-					"response": []
-				},
-				{
-					"name": "Post Image",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"var jsonData = JSON.parse(responseBody);",
-									"postman.setEnvironmentVariable(\"imageId\", jsonData.pk);",
-									"",
-									"tests[\"Status code is 201\"] = responseCode.code === 201;",
-									"",
-									"var jsonData = JSON.parse(responseBody);",
-									"//tests[\"pk\"] = jsonData.pk > 0;",
-									"tests[\"title\"] = jsonData.title.has(\"Test\");",
-									"tests[\"slug\"] = jsonData.slug.has(\"test-\");"
-								]
-							}
-						}
-					],
-					"request": {
-						"url": {
-							"raw": "{{http}}://{{origin}}:{{port}}/api/content/image/?page={{pageId}}",
-							"protocol": "{{http}}",
-							"host": [
-								"{{origin}}"
-							],
-							"port": "{{port}}",
-							"path": [
-								"api",
-								"content",
-								"image",
-								""
-							],
-							"query": [
+							"name": "Login",
+							"event": [
 								{
-									"key": "page",
-									"value": "{{pageId}}",
-									"equals": true,
-									"description": ""
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"postman.setEnvironmentVariable(\"csrf\",postman.getResponseCookie(\"csrftoken\").value);",
+											"",
+											"tests[\"Status code is 200\"] = responseCode.code === 200;",
+											"",
+											"var jsonData = JSON.parse(responseBody);",
+											"tests[\"loggedIn\"] = jsonData.login === 1;"
+										]
+									}
 								}
 							],
-							"variable": []
-						},
-						"method": "POST",
-						"header": [
-							{
-								"key": "Origin",
-								"value": "{{origin}}",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Origin",
+										"value": "{{origin}}"
+									},
+									{
+										"key": "X-CSRFToken",
+										"value": "{{csrf}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"username\":\"{{username}}\",\n  \"password\":\"{{password}}\"\n}"
+								},
+								"url": {
+									"raw": "{{http}}://{{origin}}:{{port}}/api/auth/login/",
+									"protocol": "{{http}}",
+									"host": [
+										"{{origin}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"api",
+										"auth",
+										"login",
+										""
+									]
+								},
 								"description": ""
 							},
-							{
-								"key": "X-CSRFToken",
-								"value": "{{csrf}}",
-								"description": ""
-							}
-						],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "title",
-									"value": "Test{{$timestamp}}",
-									"description": "",
-									"type": "text"
-								},
-								{
-									"key": "image",
-									"description": "",
-									"type": "file",
-									"src": "Eclipse.png"
-								},
-								{
-									"key": "slug",
-									"value": "test-jinja",
-									"description": "",
-									"type": "text",
-									"disabled": true
-								},
-								{
-									"key": "crop",
-									"value": "1,1,300,300",
-									"description": "",
-									"type": "text"
-								}
-							]
-						},
-						"description": ""
-					},
-					"response": []
-				},
-				{
-					"name": "Get Images in Page",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"type": "text/javascript",
-								"exec": [
-									"var jsonData = JSON.parse(responseBody);",
-									"postman.setEnvironmentVariable(\"imageId\", jsonData.pk);",
-									"",
-									"tests[\"Status code is 201\"] = responseCode.code === 201;",
-									"",
-									"var jsonData = JSON.parse(responseBody);",
-									"//tests[\"pk\"] = jsonData.pk > 0;",
-									"tests[\"title\"] = jsonData.title.has(\"Test\");",
-									"tests[\"slug\"] = jsonData.slug.has(\"test-\");"
-								]
-							}
+							"response": []
 						}
 					],
-					"request": {
-						"url": {
-							"raw": "{{http}}://{{origin}}:{{port}}/api/content/image?page={{pageId}}",
-							"protocol": "{{http}}",
-							"host": [
-								"{{origin}}"
-							],
-							"port": "{{port}}",
-							"path": [
-								"api",
-								"content",
-								"image"
-							],
-							"query": [
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Section",
+					"description": "",
+					"item": [
+						{
+							"name": "Post Section",
+							"event": [
 								{
-									"key": "page",
-									"value": "{{pageId}}",
-									"equals": true,
-									"description": ""
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);",
+											"postman.setEnvironmentVariable(\"sectionId\", jsonData.pk);",
+											"",
+											"tests[\"Status code is 201\"] = responseCode.code === 201;",
+											"",
+											"var jsonData = JSON.parse(responseBody);",
+											"tests[\"pk\"] = jsonData.pk > 0;",
+											"tests[\"title\"] = jsonData.title.has(\"Dropdown \");",
+											"tests[\"slug\"] = jsonData.slug.has(\"dropdown_\");"
+										]
+									}
 								}
 							],
-							"variable": []
-						},
-						"method": "GET",
-						"header": [
-							{
-								"key": "Origin",
-								"value": "{{origin}}",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Origin",
+										"value": "{{origin}}"
+									},
+									{
+										"key": "X-CSRFToken",
+										"value": "{{csrf}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"title\": \"Dropdown {{$timestamp}}\",\n    \"is_visible\": true\n}"
+								},
+								"url": {
+									"raw": "{{http}}://{{origin}}:{{port}}/api/content/sections/",
+									"protocol": "{{http}}",
+									"host": [
+										"{{origin}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"api",
+										"content",
+										"sections",
+										""
+									]
+								},
 								"description": ""
 							},
-							{
-								"key": "X-CSRFToken",
-								"value": "{{csrf}}",
-								"description": ""
-							}
-						],
-						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "title",
-									"value": "Test{{$timestamp}}",
-									"description": "",
-									"type": "text"
-								},
-								{
-									"key": "image",
-									"description": "",
-									"type": "file",
-									"src": "Eclipse.png"
-								},
-								{
-									"key": "slug",
-									"value": "test-jinja",
-									"description": "",
-									"type": "text"
-								},
-								{
-									"key": "crop",
-									"value": "1,1,300,300",
-									"description": "",
-									"type": "text"
-								}
-							]
+							"response": []
 						},
-						"description": ""
-					},
-					"response": []
+						{
+							"name": "Get Section",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);",
+											"postman.setEnvironmentVariable(\"sectionId\", jsonData.pk);",
+											"",
+											"tests[\"Status code is 200\"] = responseCode.code === 200;",
+											"tests[\"pk\"] = jsonData.pk > 0;",
+											"tests[\"title\"] = jsonData.title.has(\"Dropdown \");",
+											"tests[\"slug\"] = jsonData.slug.has(\"dropdown_\");"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Origin",
+										"value": "{{origin}}"
+									},
+									{
+										"key": "X-CSRFToken",
+										"value": "{{csrf}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"title\": \"Dropdown {{$timestamp}}\",\n    \"is_visible\": true\n}"
+								},
+								"url": {
+									"raw": "{{http}}://{{origin}}:{{port}}/api/content/sections/{{sectionId}}/",
+									"protocol": "{{http}}",
+									"host": [
+										"{{origin}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"api",
+										"content",
+										"sections",
+										"{{sectionId}}",
+										""
+									]
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "Get Section List",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);",
+											"tests[\"Status code is 200\"] = responseCode.code === 200;",
+											"",
+											""
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Origin",
+										"value": "{{origin}}"
+									},
+									{
+										"key": "X-CSRFToken",
+										"value": "{{csrf}}"
+									}
+								],
+								"body": {},
+								"url": {
+									"raw": "{{http}}://{{origin}}:{{port}}/api/content/sections/",
+									"protocol": "{{http}}",
+									"host": [
+										"{{origin}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"api",
+										"content",
+										"sections",
+										""
+									]
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "Get Pages in Section",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);",
+											"tests[\"Status code is 200\"] = responseCode.code === 200;"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Origin",
+										"value": "{{origin}}"
+									},
+									{
+										"key": "X-CSRFToken",
+										"value": "{{csrf}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"title\": \"Dropdown {{$timestamp}}\",\n    \"is_visible\": true\n}"
+								},
+								"url": {
+									"raw": "{{http}}://{{origin}}:{{port}}/api/content/sections/{{sectionId}}/pages",
+									"protocol": "{{http}}",
+									"host": [
+										"{{origin}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"api",
+										"content",
+										"sections",
+										"{{sectionId}}",
+										"pages"
+									]
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "PATCH Section",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);",
+											"postman.setEnvironmentVariable(\"sectionId\", jsonData.pk);",
+											"",
+											"tests[\"Status code is 202\"] = responseCode.code === 200;",
+											"",
+											"var jsonData = JSON.parse(responseBody);",
+											"tests[\"pk\"] = jsonData.pk > 0;",
+											"tests[\"title\"] = jsonData.title.has(\"Patched \");",
+											"tests[\"slug\"] = jsonData.slug.has(\"dropdown_\");"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Origin",
+										"value": "{{origin}}"
+									},
+									{
+										"key": "X-CSRFToken",
+										"value": "{{csrf}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"title\": \"Patched {{$timestamp}}\",\n    \"is_visible\": true\n}"
+								},
+								"url": {
+									"raw": "{{http}}://{{origin}}:{{port}}/api/content/sections/{{sectionId}}/",
+									"protocol": "{{http}}",
+									"host": [
+										"{{origin}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"api",
+										"content",
+										"sections",
+										"{{sectionId}}",
+										""
+									]
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "DELETE Section",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"tests[\"Status code is 204\"] = responseCode.code === 204;"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Origin",
+										"value": "{{origin}}"
+									},
+									{
+										"key": "X-CSRFToken",
+										"value": "{{csrf}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{http}}://{{origin}}:{{port}}/api/content/sections/{{sectionId}}/",
+									"protocol": "{{http}}",
+									"host": [
+										"{{origin}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"api",
+										"content",
+										"sections",
+										"{{sectionId}}",
+										""
+									]
+								},
+								"description": ""
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Pages",
+					"description": "",
+					"item": [
+						{
+							"name": "Post Page",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);",
+											"postman.setEnvironmentVariable(\"pageId\", jsonData.pk);",
+											"",
+											"tests[\"Status code is 201\"] = responseCode.code === 201;",
+											"",
+											"var jsonData = JSON.parse(responseBody);",
+											"tests[\"pk\"] = jsonData.pk > 0;",
+											"tests[\"title\"] = jsonData.title.has(\"Test Page \");",
+											"tests[\"slug\"] = jsonData.slug.has(\"test_page_\");"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Origin",
+										"value": "{{origin}}"
+									},
+									{
+										"key": "X-CSRFToken",
+										"value": "{{csrf}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"title\": \"Test Page {{$timestamp}}\",\n    \"slug\": \"test-page-{{$timestamp}}\",\n    \"is_visible\": true,\n    \"body\": \"<p>This is a test page</p>\"\n}"
+								},
+								"url": {
+									"raw": "{{http}}://{{origin}}:{{port}}/api/content/sections/{{sectionId}}/pages/",
+									"protocol": "{{http}}",
+									"host": [
+										"{{origin}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"api",
+										"content",
+										"sections",
+										"{{sectionId}}",
+										"pages",
+										""
+									]
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "Get Page",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);",
+											"postman.setEnvironmentVariable(\"pageId\", jsonData.pk);",
+											"",
+											"tests[\"Status code is 200\"] = responseCode.code === 200;",
+											"",
+											"var jsonData = JSON.parse(responseBody);",
+											"tests[\"pk\"] = jsonData.pk > 0;",
+											"tests[\"title\"] = jsonData.title.has(\"Test Page \");",
+											"tests[\"slug\"] = jsonData.slug.has(\"test_page_\");"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Origin",
+										"value": "{{origin}}"
+									},
+									{
+										"key": "X-CSRFToken",
+										"value": "{{csrf}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"title\": \"Test Page {{$timestamp}}\",\n    \"slug\": \"test-page-{{$timestamp}}\",\n    \"is_visible\": true,\n    \"body\": \"<p>This is a test page</p>\"\n}"
+								},
+								"url": {
+									"raw": "{{http}}://{{origin}}:{{port}}/api/content/pages/{{pageId}}",
+									"protocol": "{{http}}",
+									"host": [
+										"{{origin}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"api",
+										"content",
+										"pages",
+										"{{pageId}}"
+									]
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "Get Page List",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);",
+											"tests[\"Status code is 200\"] = responseCode.code === 200;",
+											"",
+											""
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Origin",
+										"value": "{{origin}}"
+									},
+									{
+										"key": "X-CSRFToken",
+										"value": "{{csrf}}"
+									}
+								],
+								"body": {},
+								"url": {
+									"raw": "{{http}}://{{origin}}:{{port}}/api/content/pages/",
+									"protocol": "{{http}}",
+									"host": [
+										"{{origin}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"api",
+										"content",
+										"pages",
+										""
+									]
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "PATCH Page",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);",
+											"postman.setEnvironmentVariable(\"pageId\", jsonData.pk);",
+											"",
+											"tests[\"Status code is 200\"] = responseCode.code === 200;",
+											"",
+											"var jsonData = JSON.parse(responseBody);",
+											"tests[\"pk\"] = jsonData.pk > 0;",
+											"tests[\"title\"] = jsonData.title.has(\"Patched \");",
+											"tests[\"slug\"] = jsonData.slug.has(\"test_page_\");"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Origin",
+										"value": "{{origin}}"
+									},
+									{
+										"key": "X-CSRFToken",
+										"value": "{{csrf}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"title\": \"Patched {{$timestamp}}\",\n    \"is_visible\": true\n}"
+								},
+								"url": {
+									"raw": "{{http}}://{{origin}}:{{port}}/api/content/pages/{{pageId}}/",
+									"protocol": "{{http}}",
+									"host": [
+										"{{origin}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"api",
+										"content",
+										"pages",
+										"{{pageId}}",
+										""
+									]
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "DELETE Category",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"tests[\"Status code is 204\"] = responseCode.code === 204;"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Origin",
+										"value": "{{origin}}"
+									},
+									{
+										"key": "X-CSRFToken",
+										"value": "{{csrf}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{http}}://{{origin}}:{{port}}/api/content/pages/{{pageId}}/",
+									"protocol": "{{http}}",
+									"host": [
+										"{{origin}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"api",
+										"content",
+										"pages",
+										"{{pageId}}",
+										""
+									]
+								},
+								"description": ""
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Category",
+					"description": "",
+					"item": [
+						{
+							"name": "Post Categories",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);",
+											"postman.setEnvironmentVariable(\"categoryId\", jsonData.pk);",
+											"",
+											"tests[\"Status code is 201\"] = responseCode.code === 201;",
+											"",
+											"var jsonData = JSON.parse(responseBody);",
+											"tests[\"pk\"] = jsonData.pk > 0;",
+											"tests[\"title\"] = jsonData.title.has(\"Category \");",
+											"tests[\"slug\"] = jsonData.slug.has(\"category_\");"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Origin",
+										"value": "{{origin}}"
+									},
+									{
+										"key": "X-CSRFToken",
+										"value": "{{csrf}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"title\": \"Category {{$timestamp}}\",\n    \"is_visible\": true\n}"
+								},
+								"url": {
+									"raw": "{{http}}://{{origin}}:{{port}}/api/content/categories/",
+									"protocol": "{{http}}",
+									"host": [
+										"{{origin}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"api",
+										"content",
+										"categories",
+										""
+									]
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "Get Category",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);",
+											"postman.setEnvironmentVariable(\"sectionId\", jsonData.pk);",
+											"",
+											"tests[\"Status code is 200\"] = responseCode.code === 200;",
+											"tests[\"pk\"] = jsonData.pk > 0;",
+											"tests[\"title\"] = jsonData.title.has(\"Dropdown \");",
+											"tests[\"slug\"] = jsonData.slug.has(\"dropdown_\");"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Origin",
+										"value": "{{origin}}"
+									},
+									{
+										"key": "X-CSRFToken",
+										"value": "{{csrf}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"title\": \"Dropdown {{$timestamp}}\",\n    \"is_visible\": true\n}"
+								},
+								"url": {
+									"raw": "{{http}}://{{origin}}:{{port}}/api/content/categories/{{categoryId}}/",
+									"protocol": "{{http}}",
+									"host": [
+										"{{origin}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"api",
+										"content",
+										"categories",
+										"{{categoryId}}",
+										""
+									]
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "Get Section List",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);",
+											"tests[\"Status code is 200\"] = responseCode.code === 200;",
+											"",
+											""
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Origin",
+										"value": "{{origin}}"
+									},
+									{
+										"key": "X-CSRFToken",
+										"value": "{{csrf}}"
+									}
+								],
+								"body": {},
+								"url": {
+									"raw": "{{http}}://{{origin}}:{{port}}/api/content/categories/",
+									"protocol": "{{http}}",
+									"host": [
+										"{{origin}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"api",
+										"content",
+										"categories",
+										""
+									]
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "PATCH Category",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);",
+											"postman.setEnvironmentVariable(\"sectionId\", jsonData.pk);",
+											"",
+											"tests[\"Status code is 200\"] = responseCode.code === 200;",
+											"",
+											"var jsonData = JSON.parse(responseBody);",
+											"tests[\"pk\"] = jsonData.pk > 0;",
+											"tests[\"title\"] = jsonData.title.has(\"Patched \");",
+											"tests[\"slug\"] = jsonData.slug.has(\"category_\");"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Origin",
+										"value": "{{origin}}"
+									},
+									{
+										"key": "X-CSRFToken",
+										"value": "{{csrf}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"title\": \"Patched {{$timestamp}}\",\n    \"is_visible\": true\n}"
+								},
+								"url": {
+									"raw": "{{http}}://{{origin}}:{{port}}/api/content/categories/{{categoryId}}/",
+									"protocol": "{{http}}",
+									"host": [
+										"{{origin}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"api",
+										"content",
+										"categories",
+										"{{categoryId}}",
+										""
+									]
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "DELETE Category",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"tests[\"Status code is 204\"] = responseCode.code === 204;"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Origin",
+										"value": "{{origin}}"
+									},
+									{
+										"key": "X-CSRFToken",
+										"value": "{{csrf}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{http}}://{{origin}}:{{port}}/api/content/categories/{{categoryId}}/",
+									"protocol": "{{http}}",
+									"host": [
+										"{{origin}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"api",
+										"content",
+										"categories",
+										"{{categoryId}}",
+										""
+									]
+								},
+								"description": ""
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Blogs",
+					"description": "",
+					"item": [
+						{
+							"name": "Post Blog",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);",
+											"postman.setEnvironmentVariable(\"blogId\", jsonData.pk);",
+											"",
+											"tests[\"Status code is 201\"] = responseCode.code === 201;",
+											"",
+											"var jsonData = JSON.parse(responseBody);",
+											"tests[\"pk\"] = jsonData.pk > 0;",
+											"tests[\"title\"] = jsonData.title.has(\"Blog \");",
+											"tests[\"slug\"] = jsonData.slug.has(\"blog_\");"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Origin",
+										"value": "{{origin}}"
+									},
+									{
+										"key": "X-CSRFToken",
+										"value": "{{csrf}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"title\": \"Blog {{$timestamp}}\",\n    \"is_visible\": true,\n    \"body\": \"<p>This is a test blog</p>\"\n}"
+								},
+								"url": {
+									"raw": "{{http}}://{{origin}}:{{port}}/api/content/blogs/",
+									"protocol": "{{http}}",
+									"host": [
+										"{{origin}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"api",
+										"content",
+										"blogs",
+										""
+									]
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "Get Blog",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);",
+											"postman.setEnvironmentVariable(\"sectionId\", jsonData.pk);",
+											"",
+											"tests[\"Status code is 200\"] = responseCode.code === 200;",
+											"tests[\"pk\"] = jsonData.pk > 0;",
+											"tests[\"title\"] = jsonData.title.has(\"Blog \");",
+											"tests[\"slug\"] = jsonData.slug.has(\"blog_\");"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Origin",
+										"value": "{{origin}}"
+									},
+									{
+										"key": "X-CSRFToken",
+										"value": "{{csrf}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"title\": \"Dropdown {{$timestamp}}\",\n    \"is_visible\": true\n}"
+								},
+								"url": {
+									"raw": "{{http}}://{{origin}}:{{port}}/api/content/blogs/{{blogId}}/",
+									"protocol": "{{http}}",
+									"host": [
+										"{{origin}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"api",
+										"content",
+										"blogs",
+										"{{blogId}}",
+										""
+									]
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "Get Section List",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);",
+											"tests[\"Status code is 200\"] = responseCode.code === 200;",
+											"",
+											""
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Origin",
+										"value": "{{origin}}"
+									},
+									{
+										"key": "X-CSRFToken",
+										"value": "{{csrf}}"
+									}
+								],
+								"body": {},
+								"url": {
+									"raw": "{{http}}://{{origin}}:{{port}}/api/content/blogs/",
+									"protocol": "{{http}}",
+									"host": [
+										"{{origin}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"api",
+										"content",
+										"blogs",
+										""
+									]
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "PATCH Blog",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);",
+											"postman.setEnvironmentVariable(\"blogId\", jsonData.pk);",
+											"",
+											"tests[\"Status code is 200\"] = responseCode.code === 200;",
+											"",
+											"var jsonData = JSON.parse(responseBody);",
+											"tests[\"pk\"] = jsonData.pk > 0;",
+											"tests[\"title\"] = jsonData.title.has(\"Patched \");",
+											"tests[\"slug\"] = jsonData.slug.has(\"blog_\");"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Origin",
+										"value": "{{origin}}"
+									},
+									{
+										"key": "X-CSRFToken",
+										"value": "{{csrf}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"title\": \"Patched {{$timestamp}}\",\n    \"is_visible\": true\n}"
+								},
+								"url": {
+									"raw": "{{http}}://{{origin}}:{{port}}/api/content/blogs/{{blogId}}/",
+									"protocol": "{{http}}",
+									"host": [
+										"{{origin}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"api",
+										"content",
+										"blogs",
+										"{{blogId}}",
+										""
+									]
+								},
+								"description": ""
+							},
+							"response": []
+						},
+						{
+							"name": "DELETE Category",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"tests[\"Status code is 204\"] = responseCode.code === 204;"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Origin",
+										"value": "{{origin}}"
+									},
+									{
+										"key": "X-CSRFToken",
+										"value": "{{csrf}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{http}}://{{origin}}:{{port}}/api/content/blogs/{{blogId}}/",
+									"protocol": "{{http}}",
+									"host": [
+										"{{origin}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"api",
+										"content",
+										"blogs",
+										"{{blogId}}",
+										""
+									]
+								},
+								"description": ""
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Images",
+					"description": "",
+					"item": [
+						{
+							"name": "Post Image",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);",
+											"postman.setEnvironmentVariable(\"imageId\", jsonData.pk);",
+											"",
+											"tests[\"Status code is 201\"] = responseCode.code === 201;",
+											"",
+											"var jsonData = JSON.parse(responseBody);",
+											"//tests[\"pk\"] = jsonData.pk > 0;",
+											"tests[\"title\"] = jsonData.title.has(\"Test\");",
+											"tests[\"slug\"] = jsonData.slug.has(\"test-\");"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Origin",
+										"value": "{{origin}}"
+									},
+									{
+										"key": "X-CSRFToken",
+										"value": "{{csrf}}"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "title",
+											"value": "Test{{$timestamp}}",
+											"description": "",
+											"type": "text"
+										},
+										{
+											"key": "image",
+											"value": "",
+											"description": "",
+											"type": "file"
+										},
+										{
+											"key": "slug",
+											"value": "test-jinja",
+											"description": "",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "crop",
+											"value": "1,1,300,300",
+											"description": "",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{http}}://{{origin}}:{{port}}/api/content/image/?page={{pageId}}",
+									"protocol": "{{http}}",
+									"host": [
+										"{{origin}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"api",
+										"content",
+										"image",
+										""
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "{{pageId}}",
+											"equals": true
+										}
+									]
+								},
+								"description": ""
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
 				}
 			]
 		}

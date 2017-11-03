@@ -131,7 +131,13 @@ class Category(Content):
 
 class Blog(HtmlContent):
     categories = models.ManyToManyField(Category, related_name='blogs')
-    author = models.ForeignKey(Profile, on_delete=models.PROTECT)
+    author = models.ForeignKey(
+            Profile,
+            on_delete=models.PROTECT,
+            #null=True,
+            #blank=True
+        )
+
 
     @permalink
     def get_absolute_url(self):
@@ -139,3 +145,9 @@ class Blog(HtmlContent):
 
     def get_categories(self):
         return Category.objects.filter(pk=1)
+
+    '''def save(self, *args, **kwargs):
+        if self.author is None:
+            #self.author = gen_slug(self.title)
+            print(args)
+        super().save(*args, **kwargs)'''

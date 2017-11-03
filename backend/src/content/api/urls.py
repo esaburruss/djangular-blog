@@ -8,17 +8,14 @@ from rest_framework_extensions.routers import ExtendedSimpleRouter
 from .views import (
         get_home_page,
         get_nav,
-        BlogDetailAPIView,
-        BlogListAPIView,
-        CategoryListAPIView,
         PageHtmlAPIView,
-        SectionModelViewSet,
-        PageLCAPIView,
-        PageRUDAPIView,
-        PageInSectionAPIView,
-        ContentImageAPIView,
+        BlogViewSet,
+        CategoryViewSet,
         PageViewSet,
-        HtmlContentImageList,
+        SectionViewSet,
+        PageInSectionAPIView,
+        #ContentImageAPIView,
+        #HtmlContentImageList,
     )
 
 
@@ -33,7 +30,7 @@ routerSection.register(r'section', SectionModelViewSet)'''
 
 sectionRouter = ExtendedSimpleRouter()
 (
-    sectionRouter.register(r'sections', SectionModelViewSet, base_name='section')
+    sectionRouter.register(r'sections', SectionViewSet, base_name='section')
           .register(r'pages',
                     PageInSectionAPIView,
                     base_name='sections-page',
@@ -44,14 +41,21 @@ pageRouter = ExtendedSimpleRouter()
     pageRouter.register(r'pages', PageViewSet, base_name='page')
 )
 
+categoryRouter = ExtendedSimpleRouter()
+(
+    sectionRouter.register(r'categories', CategoryViewSet, base_name='category')
+)
+
+blogRouter = ExtendedSimpleRouter()
+(
+    blogRouter.register(r'blogs', BlogViewSet, base_name='blog')
+)
 urlpatterns = [
     #Public
     url(r'^home/$', get_home_page, name='home'),
     url(r'^nav/$', get_nav, name='nav'),
-    url(r'^blog/$', BlogListAPIView.as_view(), name='list'),
-    url(r'^blog/(?P<slug>[\w-]+)/$', BlogDetailAPIView.as_view(), name='detail'),
-    url(r'^category/$', CategoryListAPIView.as_view(), name='list'),
-] + sectionRouter.urls + pageRouter.urls
+
+] + sectionRouter.urls + pageRouter.urls + categoryRouter.urls + blogRouter.urls
 
     #url(r'^page/(?P<slug>[\w-]+)/$', PageHtmlAPIView.as_view(), name='detail'),
     #Admin/Protected
