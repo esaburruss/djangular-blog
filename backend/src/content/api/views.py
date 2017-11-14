@@ -83,7 +83,7 @@ class BlogViewSet(HateoasModelViewSet):
         if 'author' not in request.data:
             request.data['author'] = Profile.objects.get(user__pk=request.user.pk).pk
         return super(BlogViewSet, self).create(request, args, kwargs)
-        
+
 
 class PageViewSet(HateoasModelViewSet):
     queryset = Page.objects.all()
@@ -218,7 +218,7 @@ def get_nav(request):
     categories = Category.objects.filter(is_visible=True)
 
     return Response({
-        'navbar':{'home':PageDetailSerializer(home).data,
+        'navbar':{'home':PageSerializer(home).data,
         'navitems':NavbarSerializer(nav, many=True).data},
         'blogs':BlogListSerializer(blogs, many=True).data,
         'categories':CategoryListSerializer(categories, many=True).data

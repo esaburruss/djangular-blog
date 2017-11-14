@@ -54,6 +54,7 @@ urlpatterns = [
     #Public
     url(r'^home/$', get_home_page, name='home'),
     url(r'^nav/$', get_nav, name='nav'),
+    url(r'^page/(?P<slug>[\w-]+)/$', PageHtmlAPIView.as_view(), name='html'),
 
 ] + sectionRouter.urls + pageRouter.urls + categoryRouter.urls + blogRouter.urls
 

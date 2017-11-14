@@ -13,7 +13,7 @@ class HateoasSerializer(ModelSerializer):
     #links=SerializerMethodField()
     def __init__(self, instance=None, data=empty, **kwargs):
         super(HateoasSerializer, self).__init__(instance, data, **kwargs)
-        self.base_url = self.context['request'].scheme + '://' + self.context['request'].get_host()
+        #self.base_url = self.context['request'].scheme + '://' + self.context['request'].get_host()
 
 
     '''def get_hateoas_url(self, name, url, pk=None, is_parent=False, method='GET', *args, **kwargs):

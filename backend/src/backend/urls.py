@@ -28,5 +28,5 @@ urlpatterns = static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + [
     url(r'^api/auth/login', login_user),
     url(r'^api/content/', include("content.api.urls", namespace='content-api')),
     url(r'^dashboard/*', TemplateView.as_view(template_name="dashboard.html"), name='dashboard'),
-    #url(r'^.*', TemplateView.as_view(template_name="home.html"), name='home'),
+    url(r'^.*', TemplateView.as_view(template_name="home.html"), name='home'),
 ]

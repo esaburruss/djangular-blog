@@ -11,11 +11,6 @@ from core.api.serializers import ProfileDetailSerializer, ProfileListSerializer
 
 from jinja2 import Environment, BaseLoader
 
-from drf_compound_fields.fields import DictField
-from drf_compound_fields.fields import ListField
-from drf_compound_fields.fields import ListOrItemField
-from drf_compound_fields.fields import ListField
-
 #from drf_hateoas.fields import HateoasUrlField
 from drf_hateoas.serializers import HateoasSerializer
 from drf_hateoas.fields import HateoasUrlField
